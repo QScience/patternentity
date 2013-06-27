@@ -1,0 +1,9 @@
+name = Pattern Entity
+description = build a new entity type for the Patterns module's pattern file.
+core = 7.x
+package = Patterns
+
+dependencies[] = entity
+
+files[] = includes/patternentity.inc
+files[] = includes/patternentity.controller.inc

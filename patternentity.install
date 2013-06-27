@@ -1,0 +1,95 @@
+<?php
+/**
+ * @file
+ * pattern entity
+ */
+
+/**
+ */
+function patternentity_schema() {
+  $schema['patternentity'] = array(
+    'description' => 'Pattern entity for Patterns module',
+    'fields' => array(
+      'pid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique pattern id',
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => 'Human readable name.', 
+      ),
+      'description' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => 'Description of the pattern.', 
+      ),
+      'category' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'description' => 'Category of the pattern.', 
+      ),
+      'pattern' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'description' => 'A serialized array containing pattern code.',
+      ),
+      'author' => array(
+        'type' => 'varchar',
+        'length' => 20,
+        'default' => '',
+        'description' => 'pattern\'s author',
+      ),
+      'file_name' => array(
+        'type' => 'varchar',
+        'length' => 55,
+        'default' => '',
+        'description' => 'Machine readable name of this pattern.',
+      ),
+      'file_format' => array(
+        'type' => 'varchar',
+        'length' => 10,
+        'default' => '',
+        'description' => 'Format of the patterns (XML, YAML, etc.).',
+      ),
+      'file_path' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Path of the pattern file relative to Drupal root.',
+      ),
+      'file_downloads' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Download Number.',
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'description' => 'The Unix timestamp indicating when the pattern file was created.',
+      ),
+      'updated' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => '0',
+        'description' => 'The Unix timestamp indicating when the pattern file was updated.',
+      ),
+      'uuuid' => array(
+        'type' => 'varchar',
+        'length' => 50,
+        'default' => '',
+        'description' => 'Identify patterns and their parent',
+      ),
+    ),
+    'primary key' => array('pid');
+  );
+  return $schema;
+}
