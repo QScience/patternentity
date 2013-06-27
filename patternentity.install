@@ -89,7 +89,7 @@ function patternentity_schema() {
         'description' => 'Identify patterns and their parent',
       ),
     ),
-    'primary key' => array('pid');
+    'primary key' => array('pid'),
   );
   return $schema;
 }

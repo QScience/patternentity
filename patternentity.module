@@ -5,17 +5,15 @@
 
 /**
  */
-function pattern_entity_entity_info() {
+function patternentity_entity_info() {
   $return['patternentity'] = array(
-    'label' => t('Pattern Entity');
+    'label' => t('Pattern Entity'),
     'base table' => 'patternentity',
-    'uri callback' => 'pattern_entity_uri',
     'entity keys' => array(
       'id' => 'pid',
     ),
-
-    'fieldable' => TRUE,
-    'static cache' => TRUE,
+    'entity class' => 'entity',
+    'uri callback' => 'pattern_entity_uri',
     'controller class' => 'PatternEntityController',
     //'bundles' => array(
     //  'patternentity' => array(
@@ -24,6 +22,14 @@ function pattern_entity_entity_info() {
     //    ),
     //  ),
     //),
+    //'fieldable' => TRUE,
+    //'static cache' => TRUE,
+    'admin ui' => array(
+      'path' => 'admin/structure/patternentity',
+      'file' => 'patternentity.admin.inc',
+    ),
+    'module' => 'patternentity',
+    'access callback' => 'patternentity_admin_access',
   );
 
   return $return;
@@ -31,19 +37,46 @@ function pattern_entity_entity_info() {
 
 /**
  */
-function pattern_entity_uri($pattern_entity) {
+function patternentity_admin_access($op, $profile = NULL, $account = NULL) {
+  return user_access('administer patternentity', $account);
+}
+
+/**
+ */
+function patternentity_permission() {
   return array(
-    'path' => 'pattern_entity/' . $pattern_entity->pid,
+    'administer patternentity' => array(
+      'title' => t('Administer patternentity'),
+    ),
   );
 }
 
 /**
  */
-function pattern_entity_menu() {
-    $items['admin/structure/pattern_entity'] = array(
-      'title' => 'Manage Pattern Entity',
-      'description' => 'Manage Pattern Entity',
-      'page callback' => 'pattern_entity_overview',
-      'access arguments' => array('administer pattern_entity'),
-    );
-}
+//function patternentity_menu() {
+//    $items['admin/structure/patternentity'] = array(
+//      'title' => 'Pattern Entity',
+//      'description' => 'Manage Pattern Entity',
+//      'page callback' => 'patternentity_admin_page',
+//      'access arguments' => array('administer patternentity'),
+//    );
+//    $items['pattern/%patternentity'] = array(
+//      'title' => 'patternentity_menu',
+//      'page callback' => 'patternentity_view_page',
+//      'page arguments' => array(1),
+//      'access callback' => TRUE,
+//    );
+//    return $items;
+//}
+
+/**
+ */
+//function patternentity_admin_page() {
+//  return "hello world ";
+//}
+//
+///**
+// */
+//function patternentity_view_page($pid) {
+//  return "hello world $pid";
+//}

@@ -1,7 +1,7 @@
 name = Pattern Entity
 description = build a new entity type for the Patterns module's pattern file.
 core = 7.x
-package = Patterns
+package = u_d
 
 dependencies[] = entity
 
