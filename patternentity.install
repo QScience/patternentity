@@ -45,6 +45,13 @@ function patternentity_schema() {
         'length' => 50,
         'description' => 'pattern\'s author',
       ),
+      'uploader' => array(
+        'type' => 'int',
+        'length' => 50,
+        'default' => 0,
+        'nut null' => TRUE,
+        'description' => 'pattern\'s uploader',
+      ),
       'file_name' => array(
         'type' => 'varchar',
         'length' => 155,

@@ -4,6 +4,9 @@ core = 7.x
 package = u_d
 
 dependencies[] = entity
+dependencies[] = patterns
+dependencies[] = patterns_xmlparser
+dependencies[] = patterns_yamlparser
 
 files[] = includes/patternentity.inc
 files[] = includes/patternentity.controller.inc

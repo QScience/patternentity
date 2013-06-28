@@ -9,6 +9,7 @@ function patternentity_entity_info() {
     'base table' => 'patternentity',
     'entity keys' => array(
       'id' => 'pid',
+      'label' => 'title',
     ),
     'entity class' => 'PatternEntity',
     'uri callback' => 'entity_class_uri',
@@ -40,4 +41,27 @@ function patternentity_permission() {
       'title' => t('Administer patternentity'),
     ),
   );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function patternentity_menu() {
+  $items = array();
+  $items['pattern_entity_test'] = array(
+    'title' => 'pattern entity test',
+    'description' => 'pattern entity test des', 
+    'page callback' => 'pattern_entity_test_page',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+/**
+ * callback hook_menu()
+ */
+function pattern_entity_test_page() {
+  //$file = files_load();
+  return "hello world";
 }
