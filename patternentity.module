@@ -1,9 +1,7 @@
 <?php
-/**
- *
- */
 
 /**
+ * Implements hook_entity_info().
  */
 function patternentity_entity_info() {
   $return['patternentity'] = array(
@@ -12,21 +10,12 @@ function patternentity_entity_info() {
     'entity keys' => array(
       'id' => 'pid',
     ),
-    'entity class' => 'entity',
-    'uri callback' => 'pattern_entity_uri',
+    'entity class' => 'PatternEntity',
+    'uri callback' => 'entity_class_uri',
     'controller class' => 'PatternEntityController',
-    //'bundles' => array(
-    //  'patternentity' => array(
-    //    'label' => 'qscience pattern',
-    //    'admin' => array(
-    //    ),
-    //  ),
-    //),
-    //'fieldable' => TRUE,
-    //'static cache' => TRUE,
     'admin ui' => array(
       'path' => 'admin/structure/patternentity',
-      'file' => 'patternentity.admin.inc',
+      'file' => 'includes/patternentity.admin.inc',
     ),
     'module' => 'patternentity',
     'access callback' => 'patternentity_admin_access',
@@ -36,12 +25,14 @@ function patternentity_entity_info() {
 }
 
 /**
+ * accesss callback function for hook_entity_info().
  */
 function patternentity_admin_access($op, $profile = NULL, $account = NULL) {
   return user_access('administer patternentity', $account);
 }
 
 /**
+ * Implements hook_permission().
  */
 function patternentity_permission() {
   return array(
@@ -50,33 +41,3 @@ function patternentity_permission() {
     ),
   );
 }
-
-/**
- */
-//function patternentity_menu() {
-//    $items['admin/structure/patternentity'] = array(
-//      'title' => 'Pattern Entity',
-//      'description' => 'Manage Pattern Entity',
-//      'page callback' => 'patternentity_admin_page',
-//      'access arguments' => array('administer patternentity'),
-//    );
-//    $items['pattern/%patternentity'] = array(
-//      'title' => 'patternentity_menu',
-//      'page callback' => 'patternentity_view_page',
-//      'page arguments' => array(1),
-//      'access callback' => TRUE,
-//    );
-//    return $items;
-//}
-
-/**
- */
-//function patternentity_admin_page() {
-//  return "hello world ";
-//}
-//
-///**
-// */
-//function patternentity_view_page($pid) {
-//  return "hello world $pid";
-//}

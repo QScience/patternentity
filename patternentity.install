@@ -1,10 +1,11 @@
 <?php
 /**
  * @file
- * pattern entity
+ * Implements pattern entity.
  */
 
 /**
+ * Implements hook_schema().
  */
 function patternentity_schema() {
   $schema['patternentity'] = array(
@@ -24,7 +25,6 @@ function patternentity_schema() {
       ),
       'description' => array(
         'type' => 'text',
-        'not null' => TRUE,
         'description' => 'Description of the pattern.', 
       ),
       'category' => array(
@@ -37,31 +37,30 @@ function patternentity_schema() {
         'type' => 'text',
         'size' => 'medium',
         'not null' => TRUE,
+        'serialize' => TRUE,
         'description' => 'A serialized array containing pattern code.',
       ),
       'author' => array(
         'type' => 'varchar',
-        'length' => 20,
-        'default' => '',
+        'length' => 50,
         'description' => 'pattern\'s author',
       ),
       'file_name' => array(
         'type' => 'varchar',
-        'length' => 55,
-        'default' => '',
+        'length' => 155,
+        'not null' => TRUE,
         'description' => 'Machine readable name of this pattern.',
       ),
       'file_format' => array(
         'type' => 'varchar',
         'length' => 10,
-        'default' => '',
+        'not null' => TRUE,
         'description' => 'Format of the patterns (XML, YAML, etc.).',
       ),
       'file_path' => array(
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-        'default' => '',
         'description' => 'Path of the pattern file relative to Drupal root.',
       ),
       'file_downloads' => array(
@@ -73,13 +72,15 @@ function patternentity_schema() {
       'created' => array(
         'type' => 'int',
         'not null' => TRUE,
-        'default' => '0',
+        'default' => 0,
+        'unsigned' => TRUE,
         'description' => 'The Unix timestamp indicating when the pattern file was created.',
       ),
       'updated' => array(
         'type' => 'int',
         'not null' => TRUE,
-        'default' => '0',
+        'default' => 0,
+        'unsigned' => TRUE,
         'description' => 'The Unix timestamp indicating when the pattern file was updated.',
       ),
       'uuuid' => array(
