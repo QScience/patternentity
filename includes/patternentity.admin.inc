@@ -24,14 +24,14 @@ function patternentity_form($form, &$form_state, $patternentity) {
 /**
  * validate function for ENTITY_TYPE_form
  */
-function patternentity_form_validate($form, &$form_state) {
+function patternentity_form_validate(&$form, &$form_state) {
   $validators = array('file_validate_extensions' => array('yaml xml'));
   $file = file_save_upload('pattern_file', $validators);
   dsm($file);
   $pattern = NULL;
   $file_extension = NULL;
   if ($file) {
-    $file_extension = pathinfo($file->uri, PATHINFO_EXTENSION);
+    $file_extension = pathinfo($file->filename, PATHINFO_EXTENSION);
 
     // Choose appropriate function based on the file extension.
     // Can be FALSE, if no parser is found.
@@ -46,6 +46,7 @@ function patternentity_form_validate($form, &$form_state) {
       form_set_error('pattern_file', t('pattern file has wrong syntax.'));
     }
 
+
     dsm($pattern);
   }
   else {
@@ -59,7 +60,7 @@ function patternentity_form_validate($form, &$form_state) {
   $form_state['values']['author'] = $pattern['info']['author'];
   Global $user;
   dsm($user);
-  //$form_state['values']['uploader'] = $user->uid;
+  $form_state['values']['uploader'] = $user->uid;
   $form_state['values']['file_name'] = $file->filename;
   $form_state['values']['file_format'] = $file_extension;
   $form_state['values']['file_path'] = $file->uri;
@@ -76,6 +77,7 @@ function patternentity_form_submit(&$form, &$form_state) {
   //$file->status = FILE_STATUS_PERMANENT;
   //file_save($file);
 
+  dsm($form_state);
 
   $patternentity = entity_ui_form_submit_build_entity($form, $form_state);
   $patternentity->save();

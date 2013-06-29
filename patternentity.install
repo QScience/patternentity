@@ -98,6 +98,7 @@ function patternentity_schema() {
       ),
     ),
     'primary key' => array('pid'),
+    'unique keys' => array('file_name' => array('file_name')),
   );
   return $schema;
 }

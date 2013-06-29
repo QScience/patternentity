@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('inc', 'patternentity', 'theme/theme');
+
 /**
  * Implements hook_entity_info().
  */
@@ -55,6 +57,14 @@ function patternentity_menu() {
     'access callback' => TRUE,
   );
 
+  $items['pattern/%'] = array(
+    'title' => 'pattern view',
+    'description' => 'pattern view page',
+    'page callback' => 'pattern_entity_view_page',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+  );
+
   return $items;
 }
 
@@ -65,3 +75,36 @@ function pattern_entity_test_page() {
   //$file = files_load();
   return "hello world";
 }
+
+/**
+ * callback for /pattern/pid
+ */
+function pattern_entity_view_page($pid) {
+  $pe = entity_load('patternentity', array($pid));
+  dsm($pe);
+  dsm($pe[1]);
+  $pe = $pe[1];
+
+  $items = array(
+    array( 'data' => $pe->title, 'class' => array()),
+    array( 'data' => $pe->description, 'class' => array()),
+    array( 'data' => $pe->category, 'class' => array()),
+    array( 'data' => $pe->author, 'class' => array()),
+    array( 'data' => $pe->uploader, 'class' => array()),
+    array( 'data' => $pe->file_name, 'class' => array()),
+    array( 'data' => $pe->file_format, 'class' => array()),
+    array( 'data' => $pe->file_path, 'class' => array()),
+    array( 'data' => $pe->file_downloads, 'class' => array()),
+  );
+
+  $content = theme('item_list', array(
+    'items' => $items,
+    'type' => 'ol',
+  ));
+
+  $content .= _pattern_entity_parser_field_pattern($pe->pattern);
+
+
+  return $content;
+}
+

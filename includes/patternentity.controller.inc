@@ -3,5 +3,5 @@
 /**
  * customise entity controller class.
  */
-class PatternEntityController extends DrupalDefaultEntityController {
+class PatternEntityController extends EntityAPIController {
 }
