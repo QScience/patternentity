@@ -82,8 +82,8 @@ function pattern_entity_test_page() {
 function pattern_entity_view_page($pid) {
   $pe = entity_load('patternentity', array($pid));
   dsm($pe);
-  dsm($pe[1]);
-  $pe = $pe[1];
+  dsm($pe[$pid]);
+  $pe = $pe[$pid];
 
   $items = array(
     array( 'data' => $pe->title, 'class' => array()),
