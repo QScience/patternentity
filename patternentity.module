@@ -18,10 +18,21 @@ function patternentity_entity_info() {
     'controller class' => 'PatternEntityController',
     'admin ui' => array(
       'path' => 'admin/structure/patternentity',
+      'controller class' => 'PatternEntityUIController',
       'file' => 'includes/patternentity.admin.inc',
     ),
     'module' => 'patternentity',
     'access callback' => 'patternentity_admin_access',
+    'fieldable' => TRUE,
+    'bundles' => array(
+      'patternentity' => array(
+        'label' => t('pattern entity bundle'),
+        'admin' => array(
+          'path' => 'admin/structure/patternentity',
+          'access arguments' => array('administer patternentity'),
+        ),
+      ),
+    ),
   );
 
   return $return;
@@ -53,14 +64,14 @@ function patternentity_menu() {
   $items['pattern_entity_test'] = array(
     'title' => 'pattern entity test',
     'description' => 'pattern entity test des', 
-    'page callback' => 'pattern_entity_test_page',
+    'page callback' => '_pattern_entity_test_page',
     'access callback' => TRUE,
   );
 
   $items['pattern/%'] = array(
     'title' => 'pattern view',
     'description' => 'pattern view page',
-    'page callback' => 'pattern_entity_view_page',
+    'page callback' => '_pattern_entity_view_page',
     'page arguments' => array(1),
     'access callback' => TRUE,
   );
@@ -71,7 +82,7 @@ function patternentity_menu() {
 /**
  * callback hook_menu()
  */
-function pattern_entity_test_page() {
+function _pattern_entity_test_page() {
   //$file = files_load();
   return "hello world";
 }
@@ -79,11 +90,14 @@ function pattern_entity_test_page() {
 /**
  * callback for /pattern/pid
  */
-function pattern_entity_view_page($pid) {
+function _pattern_entity_view_page($pid) {
   $pe = entity_load('patternentity', array($pid));
+  $pee = $pe;
   dsm($pe);
   dsm($pe[$pid]);
   $pe = $pe[$pid];
+  drupal_set_title($pe->title);
+
 
   $items = array(
     array( 'data' => $pe->title, 'class' => array()),
@@ -103,6 +117,7 @@ function pattern_entity_view_page($pid) {
   ));
 
   $content .= _pattern_entity_parser_field_pattern($pe->pattern);
+
 
 
   return $content;

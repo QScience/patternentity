@@ -13,6 +13,10 @@ function patternentity_form($form, &$form_state, $patternentity) {
     '#description' => t('Upload a file, allowed extensions: yaml, xml'),
   ); 
 
+  dsm($patternentity);
+
+  field_attach_form('patternentity', $patternentity, $form, $form_state);
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Upload and Parser'),
@@ -64,9 +68,6 @@ function patternentity_form_validate(&$form, &$form_state) {
   $form_state['values']['file_name'] = $file->filename;
   $form_state['values']['file_format'] = $file_extension;
   $form_state['values']['file_path'] = $file->uri;
-
-  $form_state['values']['created'] = REQUEST_TIME;
-  $form_state['values']['updated'] = REQUEST_TIME;
 }
 
 /**

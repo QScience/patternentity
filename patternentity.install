@@ -83,13 +83,6 @@ function patternentity_schema() {
         'unsigned' => TRUE,
         'description' => 'The Unix timestamp indicating when the pattern file was created.',
       ),
-      'updated' => array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'unsigned' => TRUE,
-        'description' => 'The Unix timestamp indicating when the pattern file was updated.',
-      ),
       'uuuid' => array(
         'type' => 'varchar',
         'length' => 50,

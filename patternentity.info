@@ -10,3 +10,4 @@ dependencies[] = patterns_yamlparser
 
 files[] = includes/patternentity.inc
 files[] = includes/patternentity.controller.inc
+files[] = includes/patternentity.ui.inc
