@@ -33,6 +33,17 @@ function patternentity_entity_info() {
         ),
       ),
     ),
+
+    'view modes' => array(
+      'full pattern' => array(
+        'label' => t('full for pattern'),
+        'custom settings' => FALSE,
+      ),
+      'teaser pattern' => array(
+        'label' => t('teaser for pattern'),
+        'custom settings' => FALSE,
+      ),
+    ),
   );
 
   return $return;
@@ -118,7 +129,8 @@ function _pattern_entity_view_page($pid) {
 
   $content .= _pattern_entity_parser_field_pattern($pe->pattern);
 
-
+  $var = entity_view('patternentity', array($pid => $pe));
+  $content .= drupal_render($var);
 
   return $content;
 }
