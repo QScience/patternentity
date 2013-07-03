@@ -62,10 +62,10 @@ class PatternEntityUIController extends EntityDefaultUIController {
     // Add operations with the right colspan.
     $header[] = t('Category');
     $header[] = t('Author');
-    $header[] = t('Uploader');
     $header[] = t('Format');
-    $header[] = t('Download');
     $header[] = t('Uuuid');
+    $header[] = t('Download');
+    $header[] = t('Uploader');
     $header[] = array('data' => t('Operations'), 'colspan' => $this->operationCount());
     return $header;
   }
@@ -99,11 +99,11 @@ class PatternEntityUIController extends EntityDefaultUIController {
 
     $row[] = $ety_obj->category;
     $row[] = $ety_obj->author;
-    $row[] = l('uploader', '/user/' . $ety_obj->uploader);
-    //'#markup' => l($pattern->title, $public_link . '/info/' . $pid, array('attributes' => array('class' => "info-link"))),
     $row[] = $ety_obj->file_format;
-    $row[] = $ety_obj->file_path;
     $row[] = $ety_obj->uuuid;
+    $row[] = $ety_obj->file_path;
+    $usr_obj = user_load($ety_obj->uploader);
+    $row[] = l($usr_obj->name , '/user/' . $ety_obj->uploader);
 
     // Add a row for the exportable status.
     if (!empty($this->entityInfo['exportable'])) {

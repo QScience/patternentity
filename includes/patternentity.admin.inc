@@ -31,6 +31,7 @@ function patternentity_form($form, &$form_state, $patternentity) {
 function patternentity_form_validate(&$form, &$form_state) {
   $validators = array('file_validate_extensions' => array('yaml xml'));
   $file = file_save_upload('pattern_file', $validators);
+  $form_state['storage']['file_obj'] = $file;
   dsm($file);
   $pattern = NULL;
   $file_extension = NULL;
@@ -57,11 +58,31 @@ function patternentity_form_validate(&$form, &$form_state) {
     form_set_error('pattern_file', t('No file was uploaded.'));
   }
   
-  $form_state['values']['title'] = $pattern['info']['title'];
-  $form_state['values']['description'] = $pattern['info']['description'];
-  $form_state['values']['category'] = $pattern['info']['category'];
+  if (isset($pattern['info']['title']) && !empty($pattern['info']['title'])) {
+    $form_state['values']['title'] = $pattern['info']['title'];
+  }
+  else {
+    form_set_error('pattern_file', t('file don\'t have \'title\' field.'));
+  }
+  if (isset($pattern['info']['description']) && !empty($pattern['info']['description'])) {
+    $form_state['values']['description'] = $pattern['info']['description'];
+  }
+  else {
+    form_set_error('pattern_file', t('file don\'t have \'description\' field.'));
+  }
+  if (isset($pattern['info']['category']) && !empty($pattern['info']['category'])) {
+    $form_state['values']['category'] = $pattern['info']['category'];
+  }
+  else {
+    form_set_error('pattern_file', t('file don\'t have \'category\' field.'));
+  }
   $form_state['values']['pattern'] = $pattern;
-  $form_state['values']['author'] = $pattern['info']['author'];
+  if (isset($pattern['info']['author']) && !empty($pattern['info']['author'])) {
+    $form_state['values']['author'] = $pattern['info']['author'];
+  }
+  else {
+    form_set_error('pattern_file', t('file don\'t have \'author\' field.'));
+  }
   Global $user;
   dsm($user);
   $form_state['values']['uploader'] = $user->uid;
@@ -74,7 +95,7 @@ function patternentity_form_validate(&$form, &$form_state) {
  * submit function for ENTITY_TYPE_form.
  */
 function patternentity_form_submit(&$form, &$form_state) {
-  //$file = $form_state['storage']['pattern_file'];
+  //$file = $form_state['storage']['file_obj'];
   //$file->status = FILE_STATUS_PERMANENT;
   //file_save($file);
 
