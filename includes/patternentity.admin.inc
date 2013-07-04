@@ -88,17 +88,28 @@ function patternentity_form_validate(&$form, &$form_state) {
   $form_state['values']['uploader'] = $user->uid;
   $form_state['values']['file_name'] = $file->filename;
   $form_state['values']['file_format'] = $file_extension;
-  $form_state['values']['file_path'] = $file->uri;
+  //$form_state['values']['file_path'] = $file->uri;
 }
 
 /**
  * submit function for ENTITY_TYPE_form.
  */
 function patternentity_form_submit(&$form, &$form_state) {
-  //$file = $form_state['storage']['file_obj'];
-  //$file->status = FILE_STATUS_PERMANENT;
-  //file_save($file);
+  $file = $form_state['storage']['file_obj'];
+  $dir = 'public://patternentity';
+  if (!file_prepare_directory($dir)) {
+    form_set_error('pattern_file', t('public://patternentity doesn\'t exist, or isn\'t writable.'));
+  }
+  if ($file = file_move($file, $dir)) {
+    $form_state['storage']['file_obj'] = $file;
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+  }
+  else {
+    form_set_error('pattern_file', t('save to public dir failed'));
+  }
 
+  $form_state['values']['file_path'] = $file->uri;
   dsm($form_state);
 
   $patternentity = entity_ui_form_submit_build_entity($form, $form_state);
