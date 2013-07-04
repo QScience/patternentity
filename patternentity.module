@@ -87,7 +87,24 @@ function patternentity_menu() {
     'access callback' => TRUE,
   );
 
+  $items['pattern/%/download'] = array(
+    'title' => 'pattern download link',
+    'description' => 'pattern download menu link',
+    'page callback' => '_pattern_entity_download_pattern',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+  );
   return $items;
+}
+
+/**
+ * callback hook_menu() pattern/pid/download
+ */
+function _pattern_entity_download_pattern($pid) {
+  $ety_obj = entity_object_load($pid, 'patternentity');
+  $public_dir_path = variable_get('file_public_path', conf_path() . '/files');
+  $file_path = substr_replace($ety_obj->file_path, $public_dir_path, 0, 8);
+  header("Location: $file_path");
 }
 
 /**

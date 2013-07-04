@@ -101,7 +101,8 @@ class PatternEntityUIController extends EntityDefaultUIController {
     $row[] = $ety_obj->author;
     $row[] = $ety_obj->file_format;
     $row[] = $ety_obj->uuuid;
-    $row[] = $ety_obj->file_path;
+    //$row[] = $ety_obj->file_path;
+    $row[] = l(t('download'), '/pattern/' . $id . '/download');
     $usr_obj = user_load($ety_obj->uploader);
     $row[] = l($usr_obj->name , '/user/' . $ety_obj->uploader);
 
