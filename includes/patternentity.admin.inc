@@ -31,6 +31,17 @@ function patternentity_form($form, &$form_state, $patternentity) {
 function patternentity_form_validate(&$form, &$form_state) {
   $validators = array('file_validate_extensions' => array('yaml xml'));
   $file = file_save_upload('pattern_file', $validators);
+
+  $file_exist = db_select('patternentity', 'pe')
+    ->fields('pe', array('file_name'))
+    ->condition('file_name', $file->filename, '=')
+    ->execute()
+    ->fetchAssoc();
+
+  if ($file_exist) {
+      form_set_error('pattern_file', t('pattern file already exists.'));
+  }
+
   $form_state['storage']['file_obj'] = $file;
   dsm($file);
   $pattern = NULL;
@@ -50,8 +61,6 @@ function patternentity_form_validate(&$form, &$form_state) {
     if (!patterns_validate_pattern($pattern, $file_extension, PATTERNS_VALIDATE_SYNTAX)) {
       form_set_error('pattern_file', t('pattern file has wrong syntax.'));
     }
-
-
     dsm($pattern);
   }
   else {
@@ -89,6 +98,8 @@ function patternentity_form_validate(&$form, &$form_state) {
   $form_state['values']['file_name'] = $file->filename;
   $form_state['values']['file_format'] = $file_extension;
   //$form_state['values']['file_path'] = $file->uri;
+
+
 }
 
 /**
