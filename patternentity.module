@@ -72,12 +72,6 @@ function patternentity_permission() {
  */
 function patternentity_menu() {
   $items = array();
-  $items['pattern_entity_test'] = array(
-    'title' => 'pattern entity test',
-    'description' => 'pattern entity test des', 
-    'page callback' => '_pattern_entity_test_page',
-    'access callback' => TRUE,
-  );
 
   $items['pattern/%'] = array(
     'title' => 'pattern view',
@@ -104,15 +98,10 @@ function _pattern_entity_download_pattern($pid) {
   $ety_obj = entity_object_load($pid, 'patternentity');
   $public_dir_path = variable_get('file_public_path', conf_path() . '/files');
   $file_path = substr_replace($ety_obj->file_path, $public_dir_path, 0, 8);
-  header("Location: $file_path");
-}
-
-/**
- * callback hook_menu()
- */
-function _pattern_entity_test_page() {
-  //$file = files_load();
-  return "hello world";
+  $file = file_get_contents($file_path);
+  drupal_add_http_header("Content-type", " text/plain; charset=utf-8");
+  drupal_add_http_header("Content-Disposition", "attachment;filename=" . $ety_obj->file_name);
+  print $file;
 }
 
 /**
@@ -124,7 +113,9 @@ function _pattern_entity_view_page($pid) {
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
 
   $content = _pattern_entity_view_pattern_description($pe);
-  $content .= '<div id="patternentity-page-pattern-field">' . _pattern_entity_parser_field_pattern($pe->pattern) . '</div>';
+  $content .= '<div id="patternentity-page-pattern-field"><ul>';
+  $content .= _pattern_entity_parser_field_pattern($pe->pattern);
+  $content .= '</ul></div>';
 
   $field_view = entity_view('patternentity', array($pid => $pe));
   $content .= drupal_render($field_view);

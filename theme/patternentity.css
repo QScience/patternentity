@@ -1,3 +1,4 @@
+/* description part */
 dl {
 	margin-bottom: 20px;
 }
@@ -41,3 +42,30 @@ dd {
 dl dd {
 	margin-left: 180px;
 }
+
+/* pattern field part */
+#patternentity-page-pattern-field {
+	border: 1px solid #BAB1B1;
+	margin: 40px 40px 40px 10px;
+	width: 80%;
+	padding-top: 20px;
+}
+
+#patternentity-page-pattern-field ul{
+	list-style: none;
+	margin: 0;
+}
+
+.yaml_aa5500 {
+	color: #221199;
+}
+
+.yaml_221199{
+	color: #aa5500;
+}
+
+.yaml_116644 {
+	color: #116644;
+}
+
+
