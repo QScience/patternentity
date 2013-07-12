@@ -37,3 +37,18 @@ function _pattern_entity_parser_field_pattern($pattern)  {
   }
   return $content_this;
 }
+
+/**
+ * theme pattern description part
+ */
+function _pattern_entity_view_pattern_description($pe) {
+  $content = '<div id="patternentity-page-pattern-description"><dl class="dl-horizontal">';
+  $content .= '<dt>title</dt><dd>' . $pe->title . '</dd>';
+  $content .= '<dt>description</dt><dd>' . $pe->description. '</dd>';
+  $content .= '<dt>category</dt><dd>' . $pe->category. '</dd>';
+  $content .= '<dt>author</dt><dd>' . $pe->author. '</dd>';
+  $content .= '<dt>uploader</dt><dd>' . $pe->uploader. '</dd>';
+  $content .= '<dt>file name</dt><dd>' . $pe->file_name. '</dd>';
+  $content .= '</dl></div>';
+  return $content;
+}

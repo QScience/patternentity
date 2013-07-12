@@ -119,35 +119,15 @@ function _pattern_entity_test_page() {
  * callback for /pattern/pid
  */
 function _pattern_entity_view_page($pid) {
-  $pe = entity_load('patternentity', array($pid));
-  $pee = $pe;
-  dsm($pe);
-  dsm($pe[$pid]);
-  $pe = $pe[$pid];
+  $pe = entity_object_load($pid, 'patternentity');
   drupal_set_title($pe->title);
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
 
+  $content = _pattern_entity_view_pattern_description($pe);
+  $content .= '<div id="patternentity-page-pattern-field">' . _pattern_entity_parser_field_pattern($pe->pattern) . '</div>';
 
-  $items = array(
-    array( 'data' => $pe->title, 'class' => array()),
-    array( 'data' => $pe->description, 'class' => array()),
-    array( 'data' => $pe->category, 'class' => array()),
-    array( 'data' => $pe->author, 'class' => array()),
-    array( 'data' => $pe->uploader, 'class' => array()),
-    array( 'data' => $pe->file_name, 'class' => array()),
-    array( 'data' => $pe->file_format, 'class' => array()),
-    array( 'data' => $pe->file_path, 'class' => array()),
-    array( 'data' => $pe->file_downloads, 'class' => array()),
-  );
-
-  $content = theme('item_list', array(
-    'items' => $items,
-    'type' => 'ol',
-  ));
-
-  $content .= _pattern_entity_parser_field_pattern($pe->pattern);
-
-  $var = entity_view('patternentity', array($pid => $pe));
-  $content .= drupal_render($var);
+  $field_view = entity_view('patternentity', array($pid => $pe));
+  $content .= drupal_render($field_view);
 
   return $content;
 }

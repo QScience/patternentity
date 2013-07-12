@@ -13,15 +13,16 @@ function patternentity_form($form, &$form_state, $patternentity) {
     '#description' => t('Upload a file, allowed extensions: yaml, xml'),
   ); 
 
-  dsm($patternentity);
 
   field_attach_form('patternentity', $patternentity, $form, $form_state);
 
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Upload and Parser'),
+    '#weight' => 20,
   );
 
+  //dsm($form);
   return $form;
 }
 
@@ -43,7 +44,7 @@ function patternentity_form_validate(&$form, &$form_state) {
   }
 
   $form_state['storage']['file_obj'] = $file;
-  dsm($file);
+  //dsm($file);
   $pattern = NULL;
   $file_extension = NULL;
   if ($file) {
@@ -61,7 +62,7 @@ function patternentity_form_validate(&$form, &$form_state) {
     if (!patterns_validate_pattern($pattern, $file_extension, PATTERNS_VALIDATE_SYNTAX)) {
       form_set_error('pattern_file', t('pattern file has wrong syntax.'));
     }
-    dsm($pattern);
+    //dsm($pattern);
   }
   else {
     form_set_error('pattern_file', t('No file was uploaded.'));
@@ -93,7 +94,7 @@ function patternentity_form_validate(&$form, &$form_state) {
     form_set_error('pattern_file', t('file don\'t have \'author\' field.'));
   }
   Global $user;
-  dsm($user);
+  //dsm($user);
   $form_state['values']['uploader'] = $user->uid;
   $form_state['values']['file_name'] = $file->filename;
   $form_state['values']['file_format'] = $file_extension;
@@ -121,7 +122,7 @@ function patternentity_form_submit(&$form, &$form_state) {
   }
 
   $form_state['values']['file_path'] = $file->uri;
-  dsm($form_state);
+  //dsm($form_state);
 
   $patternentity = entity_ui_form_submit_build_entity($form, $form_state);
   $patternentity->save();
