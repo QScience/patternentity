@@ -52,3 +52,46 @@ function _pattern_entity_view_pattern_description($pe) {
   $content .= '</dl></div>';
   return $content;
 }
+
+/**
+ * theme pattern list page.
+ */
+function _pattern_entity_list_page($query) {
+  $header = array(
+    t('Title'),
+    t('Category'),
+    t('Author'),
+    t('Uploader'),
+    t('Downloads'),
+    t('Score'),
+    t('File'),
+    t('Like'),
+  );
+  $ids = array();
+  foreach($query->ordered_results as $value) {
+    $ids[] = $value->entity_id;
+  }
+  $entitys = entity_load('patternentity', $ids);
+  dsm($entitys);
+  $rows = array();
+  foreach($entitys as $ety_obj) {
+    $rows[] = _pattern_entity_list_table_row($ety_obj);
+  }
+  return theme('table', array('header' => $header, 'rows' => $rows));
+}
+
+/**
+ * generate pattern list table row.
+ */
+function _pattern_entity_list_table_row($ety_obj) {
+  $row = array();
+  
+  $row[] = l($ety_obj->title, '/pattern/' . $ety_obj->pid);
+  $row[] = l($ety_obj->category, '/pattern/category/' . $ety_obj->category);
+  $row[] = l($ety_obj->author, '/pattern/author/' . $ety_obj->author);
+  $usr_obj = user_load($ety_obj->uploader);
+  $row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
+  $row[] = $ety_obj->file_downloads;
+
+  return $row;
+}

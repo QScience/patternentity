@@ -88,6 +88,32 @@ function patternentity_menu() {
     'page arguments' => array(1),
     'access callback' => TRUE,
   );
+
+  $items['pattern/uploader/%'] = array(
+    'title' => 'uploader \'s all pattern',
+    'description' => 'all pattern files uploaded by user %',
+    'page callback' => '_pattern_entity_list',
+    'page arguments' => array(1, 2),
+    'access callback' => TRUE,
+  );
+
+  $items['pattern/category/%'] = array(
+    'title' => 'all pattern in % category',
+    'description' => 'all pattern files in % category',
+    'page callback' => '_pattern_entity_list',
+    'page arguments' => array(1, 2),
+    'access callback' => TRUE,
+  );
+
+  $items['pattern/author/%'] = array(
+    'title' => 'all pattern belong to author %',
+    'description' => 'all pattern belong to author %',
+    'page callback' => '_pattern_entity_list',
+    'page arguments' => array(1, 2),
+    'access callback' => TRUE,
+  );
+
+
   return $items;
 }
 
@@ -105,7 +131,7 @@ function _pattern_entity_download_pattern($pid) {
 }
 
 /**
- * callback for /pattern/pid
+ * callback hook_menu() for /pattern/pid
  */
 function _pattern_entity_view_page($pid) {
   $pe = entity_object_load($pid, 'patternentity');
@@ -123,3 +149,16 @@ function _pattern_entity_view_page($pid) {
   return $content;
 }
 
+/**
+ * callback hook_menu() for list /pattern/$property/$arg
+ */
+function _pattern_entity_list($property, $arg) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'patternentity')
+    ->propertyCondition($property, $arg)
+    ->propertyOrderBy('created', 'DESC')
+    ->execute();
+  dsm($query);
+  $list = _pattern_entity_list_page($query);
+  return $list;
+}

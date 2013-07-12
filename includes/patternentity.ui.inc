@@ -97,14 +97,14 @@ class PatternEntityUIController extends EntityDefaultUIController {
       $row[] = $col;
     }
 
-    $row[] = $ety_obj->category;
-    $row[] = $ety_obj->author;
+    $row[] = l($ety_obj->category, '/pattern/category/' . $ety_obj->category);
+    $row[] = l($ety_obj->author, '/pattern/author/' . $ety_obj->author);
     $row[] = $ety_obj->file_format;
     $row[] = $ety_obj->uuuid;
     //$row[] = $ety_obj->file_path;
     $row[] = l(t('download'), '/pattern/' . $id . '/download');
     $usr_obj = user_load($ety_obj->uploader);
-    $row[] = l($usr_obj->name , '/user/' . $ety_obj->uploader);
+    $row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
 
     // Add a row for the exportable status.
     if (!empty($this->entityInfo['exportable'])) {
