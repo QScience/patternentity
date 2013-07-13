@@ -125,6 +125,14 @@ function _pattern_entity_download_pattern($pid) {
   $public_dir_path = variable_get('file_public_path', conf_path() . '/files');
   $file_path = substr_replace($ety_obj->file_path, $public_dir_path, 0, 8);
   $file = file_get_contents($file_path);
+  if (!$file) {
+    return;
+  }
+  $downloads = $ety_obj->file_downloads + 1;
+  db_update('patternentity')
+    ->condition('pid', $ety_obj->pid)
+    ->fields(array('file_downloads' => $downloads))
+    ->execute();
   drupal_add_http_header("Content-type", " text/plain; charset=utf-8");
   drupal_add_http_header("Content-Disposition", "attachment;filename=" . $ety_obj->file_name);
   print $file;
@@ -153,6 +161,15 @@ function _pattern_entity_view_page($pid) {
  * callback hook_menu() for list /pattern/$property/$arg
  */
 function _pattern_entity_list($property, $arg) {
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
+  if ($property == 'uploader') {
+    $usr_obj = user_load($arg);
+    $arg_deal = $usr_obj->name;
+  }
+  else {
+    $arg_deal = $arg;
+  }
+  drupal_set_title($property . ': '  . $arg_deal);
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'patternentity')
     ->propertyCondition($property, $arg)

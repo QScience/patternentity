@@ -77,11 +77,12 @@ function _pattern_entity_list_page($query) {
   foreach($entitys as $ety_obj) {
     $rows[] = _pattern_entity_list_table_row($ety_obj);
   }
-  return theme('table', array('header' => $header, 'rows' => $rows));
+  return theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'))));
 }
 
 /**
  * generate pattern list table row.
+ * used by _pattern_entity_list_page($query).
  */
 function _pattern_entity_list_table_row($ety_obj) {
   $row = array();
@@ -92,6 +93,9 @@ function _pattern_entity_list_table_row($ety_obj) {
   $usr_obj = user_load($ety_obj->uploader);
   $row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
   $row[] = $ety_obj->file_downloads;
+  $row[] = 0;
+  $row[] = l(t('download'), '/pattern/' . $ety_obj->pid . '/download', array('attributes' => array('class' => 'download-link')));
+  $row[] = 0;
 
   return $row;
 }
