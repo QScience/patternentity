@@ -15,3 +15,13 @@
 # about comments
 * reply module works fine with patternentity. (though the appearance needs some improvement.)
 * commentfield don't meet our requirement, because the comment field will show in the admin ui page instead of pattern view page.
+
+# taxonomy problem
+* though patternentity is already a entity type, taxonomy can't work with it. it's because that taxonomy only works with node(content type) entity, but not all kinds of entities. (hardcode int taxonomy's source code.)
+
+# how to use
+* install patternentity module.
+* build the folder 'sites/default/files/patternentity', make sure drupal can read and write this folder. (this folder is used to store all uploaded yaml/xml pattern file.)
+* uploader some yaml/xml file in 'admin/structure/patternentity'.
+* try all kinds of links.
+* manage field on page 'admin/structure/patternentity/fields'
