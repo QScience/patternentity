@@ -12,7 +12,12 @@ function _pattern_entity_get_voting_score($pid) {
   );
   $vote = votingapi_select_results($criteria);
   //dsm($vote);
-  return $vote[0]['value'];
+  if ($vote) {
+    return $vote[0]['value'];
+  }
+  else {
+    return 0;
+  }
 }
 
 /**
