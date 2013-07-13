@@ -147,20 +147,6 @@ function _pattern_entity_download_pattern($pid) {
 }
 
 /**
- * callback hook_menu() for /pattern/pid/voting
- */
-function _pattern_entity_voting_pattern($pid) {
-  $votes = array(
-    'entity_type' => 'patternentity',
-    'entity_id' => $pid,
-    'value_type' => 'points',
-    'value' => '1',
-  );
-  votingapi_set_votes($votes);
-  drupal_goto("pattern/$pid");
-}
-
-/**
  * callback hook_menu() for /pattern/pid
  */
 function _pattern_entity_view_page($pid) {
