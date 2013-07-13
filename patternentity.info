@@ -7,7 +7,9 @@ dependencies[] = entity
 dependencies[] = patterns
 dependencies[] = patterns_xmlparser
 dependencies[] = patterns_yamlparser
+dependencies[] = votingapi
 
 files[] = includes/patternentity.inc
 files[] = includes/patternentity.controller.inc
 files[] = includes/patternentity.ui.inc
+files[] = includes/patternentity.votingapi.inc

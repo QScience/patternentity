@@ -1,6 +1,7 @@
 <?php
 
 module_load_include('inc', 'patternentity', 'theme/theme');
+module_load_include('module', 'votingapi', 'votingapi');
 
 /**
  * Implements hook_entity_info().
@@ -89,6 +90,14 @@ function patternentity_menu() {
     'access callback' => TRUE,
   );
 
+  $items['pattern/%/voting'] = array(
+    'title' => 'pattern voting link',
+    'description' => 'pattern voting link', 
+    'page callback' => '_pattern_entity_voting_pattern',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+  );
+
   $items['pattern/uploader/%'] = array(
     'title' => 'uploader \'s all pattern',
     'description' => 'all pattern files uploaded by user %',
@@ -113,7 +122,6 @@ function patternentity_menu() {
     'access callback' => TRUE,
   );
 
-
   return $items;
 }
 
@@ -136,6 +144,20 @@ function _pattern_entity_download_pattern($pid) {
   drupal_add_http_header("Content-type", " text/plain; charset=utf-8");
   drupal_add_http_header("Content-Disposition", "attachment;filename=" . $ety_obj->file_name);
   print $file;
+}
+
+/**
+ * callback hook_menu() for /pattern/pid/voting
+ */
+function _pattern_entity_voting_pattern($pid) {
+  $votes = array(
+    'entity_type' => 'patternentity',
+    'entity_id' => $pid,
+    'value_type' => 'points',
+    'value' => '1',
+  );
+  votingapi_set_votes($votes);
+  drupal_goto("pattern/$pid");
 }
 
 /**
@@ -175,7 +197,7 @@ function _pattern_entity_list($property, $arg) {
     ->propertyCondition($property, $arg)
     ->propertyOrderBy('created', 'DESC')
     ->execute();
-  dsm($query);
+  //dsm($query);
   $list = _pattern_entity_list_page($query);
   return $list;
 }

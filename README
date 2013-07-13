@@ -1,0 +1,6 @@
+= other modules required = 
+- entity api module is required.
+- include/patternentity.admin.inc row 53-64 need patterns, patterns_xmlparser, patterns_yamlparser. 
+	- rewrite these 12 rows can make patternentity module Independent of patterns, patterns_xmlparser, patterns_yamlparser; but instead, patternentity will depend on libraries module and I need to add validation code on the existence of spyc&codomirror library.
+- token is actually required by Patterns module, it's not required by this module.
+

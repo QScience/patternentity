@@ -1,5 +1,6 @@
 <?php
 
+module_load_include('inc', 'patternentity', 'includes/patternentity.votingapi');
 /**
  * theme the 'pattern' field in 'patternentity' table.
  */
@@ -72,7 +73,7 @@ function _pattern_entity_list_page($query) {
     $ids[] = $value->entity_id;
   }
   $entitys = entity_load('patternentity', $ids);
-  dsm($entitys);
+  //dsm($entitys);
   $rows = array();
   foreach($entitys as $ety_obj) {
     $rows[] = _pattern_entity_list_table_row($ety_obj);
@@ -93,9 +94,9 @@ function _pattern_entity_list_table_row($ety_obj) {
   $usr_obj = user_load($ety_obj->uploader);
   $row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
   $row[] = $ety_obj->file_downloads;
-  $row[] = 0;
+  $row[] = _pattern_entity_get_voting_score($ety_obj->pid);
   $row[] = l(t('download'), '/pattern/' . $ety_obj->pid . '/download', array('attributes' => array('class' => 'download-link')));
-  $row[] = 0;
+  $row[] = l(t('voting'), '/pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
 
   return $row;
 }

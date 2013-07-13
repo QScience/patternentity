@@ -11,4 +11,11 @@ jQuery(document).ready(function() {
       var numb = Number(download_times.text()) + 1; 
       download_times.text(numb);
   });
+
+
+  //var voting_link = jQuery(".pattern-entity-list-table .voting-link");
+  //voting_link.click(function() {
+  //  var pathname = window.location.pathname;
+  //  window.location.replace(pathname);
+  //});
 });
