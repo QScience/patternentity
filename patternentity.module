@@ -198,12 +198,14 @@ function _pattern_entity_list($property, $arg) {
     ->propertyCondition($property, $arg)
     ->propertyOrderBy('created', 'DESC')
     ->execute();
-  dsm($query);
-  if (!count($query->orderedResults)) {
+  //dsm($query);
+  if (isset($query->ordered_results) && count($query->ordered_results)) {
+    $list = _pattern_entity_list_page($query);
+    return $list;
+  }
+  else {
     drupal_set_message("The pattern list doesn't exist.", "error");
     global $base_url;
     drupal_goto($base_url);
   }
-  $list = _pattern_entity_list_page($query);
-  return $list;
 }
