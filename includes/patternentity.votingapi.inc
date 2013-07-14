@@ -3,6 +3,9 @@
  * implement some vote function based on votingapi framework.
  */
 
+/**
+ * used in theme/theme.inc to return a score of current pid.
+ */
 function _pattern_entity_get_voting_score($pid) {
   $criteria = array(
     'entity_type' => 'patternentity',
