@@ -78,7 +78,7 @@ function _pattern_entity_list_page($query) {
   foreach($entitys as $ety_obj) {
     $rows[] = _pattern_entity_list_table_row($ety_obj);
   }
-  return theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'))));
+  return theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'), 'id' => array('pattern-entity-list-table-id'))));
 }
 
 /**

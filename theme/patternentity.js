@@ -12,10 +12,16 @@ jQuery(document).ready(function() {
       download_times.text(numb);
   });
 
+  //var url_div = window.location.href;
+  //url_div += "#pattern-entity-list-table-id";
+  //alert(url_div);
 
   //var voting_link = jQuery(".pattern-entity-list-table .voting-link");
   //voting_link.click(function() {
-  //  var pathname = window.location.pathname;
-  //  window.location.replace(pathname);
+  //    //var url_div = jQuery(this).attr("href");
+  //    //url_div += "#content";
+  //    //alert(url_div);
+  //    jQuery(document).load(url_div);
+  //    return false;
   //});
 });

@@ -17,7 +17,7 @@
 * commentfield don't meet our requirement, because the comment field will show in the admin ui page instead of pattern view page.
 
 # taxonomy problem
-* though patternentity is already a entity type, taxonomy can't work with it. it's because that taxonomy only works with node(content type) entity, but not all kinds of entities. (hardcode int taxonomy's source code.)
+* though patternentity is already a entity type, taxonomy can't work with it. it's because that taxonomy only works with node(content type) entity, but not all kinds of entities. (hardcode int taxonomy's source code, just like comments module-only works with node.)
 
 # how to use
 * install patternentity module.
