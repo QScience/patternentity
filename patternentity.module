@@ -74,6 +74,15 @@ function patternentity_permission() {
 function patternentity_menu() {
   $items = array();
 
+  $items['all_pattern_entity_list'] = array(
+    'title' => 'all patternentity list ',
+    'description' => 'all patternentity list',
+    'page callback' => '_pattern_entity_all_list_page',
+    'page arguments' => array(),
+    'access callback' => TRUE,
+  );
+
+
   $items['pattern/%'] = array(
     'title' => 'pattern view',
     'description' => 'pattern view page',
@@ -123,6 +132,13 @@ function patternentity_menu() {
   );
 
   return $items;
+}
+
+/**
+ * callback hook_menu() all_pattern_entity_list 
+ */
+function _pattern_entity_all_list_page() {
+  return _pattern_entity_list('pid', '0', '>');
 }
 
 /**
@@ -178,7 +194,7 @@ function _pattern_entity_view_page($pid) {
 /**
  * callback hook_menu() for list /pattern/$property/$arg
  */
-function _pattern_entity_list($property, $arg) {
+function _pattern_entity_list($property, $arg, $operate = '=') {
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
   if ($property == 'uploader') {
     $usr_obj = user_load($arg);
@@ -195,7 +211,7 @@ function _pattern_entity_list($property, $arg) {
   drupal_set_title($property . ': '  . $arg_deal);
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'patternentity')
-    ->propertyCondition($property, $arg)
+    ->propertyCondition($property, $arg, $operate)
     ->propertyOrderBy('created', 'DESC')
     ->execute();
   //dsm($query);
