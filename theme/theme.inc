@@ -44,11 +44,20 @@ function _pattern_entity_parser_field_pattern($pattern)  {
  */
 function _pattern_entity_view_pattern_description($pe) {
   $content = '<div id="patternentity-page-pattern-description"><dl class="dl-horizontal">';
+
   $content .= '<dt>title</dt><dd>' . $pe->title . '</dd>';
   $content .= '<dt>description</dt><dd>' . $pe->description. '</dd>';
-  $content .= '<dt>category</dt><dd>' . $pe->category. '</dd>';
-  $content .= '<dt>author</dt><dd>' . $pe->author. '</dd>';
-  $content .= '<dt>uploader</dt><dd>' . $pe->uploader. '</dd>';
+
+  $category_s = l($pe->category, '/pattern/category/' . $pe->category);
+  $content .= '<dt>category</dt><dd>' . $category_s. '</dd>';
+
+  $author_s = l($pe->author, '/pattern/author/' . $pe->author);
+  $content .= '<dt>author</dt><dd>' . $author_s . '</dd>';
+
+  $usr_obj = user_load($pe->uploader);
+  $uploader_s = l($usr_obj->name , '/pattern/uploader/' . $pe->uploader);
+  $content .= '<dt>uploader</dt><dd>' . $uploader_s . '</dd>';
+
   $content .= '<dt>file name</dt><dd>' . $pe->file_name. '</dd>';
 
   $score = _pattern_entity_get_voting_score($pe->pid);
