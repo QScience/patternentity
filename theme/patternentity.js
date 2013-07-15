@@ -14,23 +14,25 @@ $(document).ready(function() {
 	});
 
 	//voting link ajax.
-	$('#pattern-entity-list-table-id .voting-link').click(function () {
+	$('#pattern-entity-list-table-id .voting-link').live('click', function () {
 		 var link = this;
 		 var url = $(this).attr('href');
 		 //console.log(url);
 		 $.ajax({
 			url: url,
 			success: function(data) {
-				var $score = $('#patternentity-page-pattern-description dl dd:last', data);
+				var $score = $('#patternentity-page-pattern-description #pattern-entity-view-page-score', data);
+				var $vote = $('#patternentity-page-pattern-description #pattern-entity-view-page-vote', data);
 				//console.log($score.text());
 				//console.log($(link).text());
 				var score_before = $(link).parent().prev().prev();
-				console.log($(score_before).text());
-				if ($score.text() == $(score_before).text()) {
-					$(link).parent().html("you vote too frequently.");
-				}
+				//console.log($(score_before).text());
+				//if ($score.text() == $(score_before).text()) {
+        //  $(link).parent().html("voted");
+				//}
 				$(link).parent().prev().prev().html($score.text());
-				//console.log(this);
+        $(link).parent().html($vote.html());
+				console.log($vote.html());
 			}
 		});
 		return false;

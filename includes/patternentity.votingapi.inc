@@ -39,3 +39,21 @@ function _pattern_entity_voting_pattern($pid) {
   
   drupal_goto("pattern/$pid");
 }
+
+/**
+ * check whether certain user can vote or not.
+ */
+function _pattern_entity_check_whether_voted($pid) {
+  global $user;
+  $criteria = array(
+    'entity_type' => 'patternentity',
+    'entity_id' => $pid,
+    'value_type' => 'points',
+    'uid' => $user->uid,
+    'vote_source' => ip_address(),
+  );
+  $votes = votingapi_select_votes($criteria);
+  return count($votes);
+  //dsm($votes);
+  //return $votes;
+}

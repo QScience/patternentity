@@ -52,7 +52,20 @@ function _pattern_entity_view_pattern_description($pe) {
   $content .= '<dt>file name</dt><dd>' . $pe->file_name. '</dd>';
 
   $score = _pattern_entity_get_voting_score($pe->pid);
-  $content .= '<dt>score</dt><dd>' . $score . '</dd>';
+  $content .= '<dt>score</dt><dd id="pattern-entity-view-page-score">' . $score . '</dd>';
+
+  $voted = _pattern_entity_check_whether_voted($pe->pid);
+  if($voted) {
+    $vote_s = t('voted');
+  }
+  else {
+    $vote_s = l(t('voting'), '/pattern/' . $pe->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
+  }
+  $content .= '<dt>voting</dt><dd id="pattern-entity-view-page-vote">' . $vote_s . '</dd>';
+
+  $file_d = l(t('download'), '/pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
+  $content .= '<dt>file</dt><dd>' . $file_d . '</dd>';
+
 
   $content .= '</dl></div>';
   return $content;
@@ -100,7 +113,14 @@ function _pattern_entity_list_table_row($ety_obj) {
   $row[] = $ety_obj->file_downloads;
   $row[] = _pattern_entity_get_voting_score($ety_obj->pid);
   $row[] = l(t('download'), '/pattern/' . $ety_obj->pid . '/download', array('attributes' => array('class' => 'download-link')));
-  $row[] = l(t('voting'), '/pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
+
+  $voted = _pattern_entity_check_whether_voted($ety_obj->pid);
+  if($voted) {
+    $row['voting_link'] = t('voted');
+  }
+  else {
+    $row['voting_link'] = l(t('voting'), '/pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
+  }
 
   return $row;
 }
