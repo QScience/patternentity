@@ -34,5 +34,8 @@ function _pattern_entity_voting_pattern($pid) {
     'value' => '1',
   );
   votingapi_set_votes($votes);
+  //$vote_score_now = _pattern_entity_get_voting_score($pid);
+  //return $vote_score_now;
+  
   drupal_goto("pattern/$pid");
 }

@@ -50,6 +50,10 @@ function _pattern_entity_view_pattern_description($pe) {
   $content .= '<dt>author</dt><dd>' . $pe->author. '</dd>';
   $content .= '<dt>uploader</dt><dd>' . $pe->uploader. '</dd>';
   $content .= '<dt>file name</dt><dd>' . $pe->file_name. '</dd>';
+
+  $score = _pattern_entity_get_voting_score($pe->pid);
+  $content .= '<dt>score</dt><dd>' . $score . '</dd>';
+
   $content .= '</dl></div>';
   return $content;
 }
