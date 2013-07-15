@@ -208,7 +208,13 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
   else {
     $arg_deal = $arg;
   }
-  drupal_set_title($property . ': '  . $arg_deal);
+
+  if ($property == 'pid') {
+    drupal_set_title('all patternentity:');
+  }
+  else {
+    drupal_set_title($property . ': '  . $arg_deal);
+  }
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'patternentity')
     ->propertyCondition($property, $arg, $operate)
