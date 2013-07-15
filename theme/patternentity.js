@@ -24,7 +24,11 @@ $(document).ready(function() {
 				var $score = $('#patternentity-page-pattern-description dl dd:last', data);
 				//console.log($score.text());
 				//console.log($(link).text());
-
+				var score_before = $(link).parent().prev().prev();
+				console.log($(score_before).text());
+				if ($score.text() == $(score_before).text()) {
+					$(link).parent().html("you vote too frequently.");
+				}
 				$(link).parent().prev().prev().html($score.text());
 				//console.log(this);
 			}
