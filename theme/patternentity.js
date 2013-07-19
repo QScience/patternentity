@@ -31,11 +31,29 @@ $(document).ready(function() {
 	});
 
 	//autofill search box.
-	//$('#patternentity-search #edit-search').attr('value');
-	//autofill({
-	//		value: 'search...',
-	//		defaultTextColor: '#666',
-	//		activeTextColor: '#333',
-	//});
+	$('#patternentity-search input#edit-search').autofill({
+		value: 'search...',
+		defaultTextColor: '#666',
+		activeTextColor: '#333',
+	});
+	var value_input = $('#patternentity-search input').attr('value');
+	var value_selected = $('#edit-selected option[selected="selected"]').attr('value');
+	$("select#edit-selected").change(function () {
+		var str = "";
+		$("select#edit-selected option:selected").each(function () {
+			var text_select = $(this).text();
+			if (text_select == 'UUID') {
+				$('#patternentity-search input#edit-search').autofill({
+					value: 'e.g. 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74',
+					defaultTextColor: '#666',
+					activeTextColor: '#333',
+				});
+			}
+		});
+	})
+
+	//search box width.
+	$('input#edit-search').css('width', '65%');
+
 });
 })(jQuery)

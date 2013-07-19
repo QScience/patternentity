@@ -186,6 +186,7 @@ function _pattern_entity_view_page($pid) {
     drupal_goto($base_url);
   }
   drupal_set_title($pe->title);
+
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
 
   $content = _pattern_entity_view_pattern_description($pe);
