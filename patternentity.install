@@ -5,6 +5,21 @@
  */
 
 /**
+ * Implements hook_install().
+ * create the public://patternentity folder.
+ */
+function patternentity_install() {
+
+  $public_dir_path = variable_get('file_public_path', conf_path() . '/files');
+  if (!file_exists($public_dir_path . '/patternentity')) {
+    if(!drupal_mkdir($public_dir_path . '/patternentity')) {
+      drupal_set_message(t('cannot create folder in public directory, this should be caused by permission of public directory. e.g. "sites/default/files".'),'error');
+    }
+  }
+
+}
+
+/**
  * Implements hook_schema().
  */
 function patternentity_schema() {
