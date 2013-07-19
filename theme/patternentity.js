@@ -49,6 +49,13 @@ $(document).ready(function() {
 					activeTextColor: '#333',
 				});
 			}
+			else {
+				$('#patternentity-search input#edit-search').autofill({
+					value: 'search...',
+					defaultTextColor: '#666',
+					activeTextColor: '#333',
+				});
+			}
 		});
 	})
 
