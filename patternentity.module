@@ -131,6 +131,14 @@ function patternentity_menu() {
     'access callback' => TRUE,
   );
 
+  $items['pattern/search/%/%'] = array(
+    'title' => 'search patternentity',
+    'description' => 'search patternentity with value/category, and so on',
+    'page callback' => '_pattern_entity_search',
+    'page arguments' => array(2,3),
+    'access callback' => TRUE,
+  );
+
   return $items;
 }
 
@@ -222,7 +230,10 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
     ->execute();
   //dsm($query);
   if (isset($query->ordered_results) && count($query->ordered_results)) {
-    $list = _pattern_entity_list_page($query);
+    $searchform = drupal_get_form('patternentity_search');
+    //dsm($searchform);
+    $list = drupal_render($searchform);
+    $list .= _pattern_entity_list_page($query);
     return $list;
   }
   else {
@@ -230,4 +241,101 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
     global $base_url;
     drupal_goto($base_url);
   }
+}
+
+/**
+ * Implement search function form for patternentity.
+ */
+function patternentity_search($form, &$form_state, $search_type='', $search_value='') {
+  $form['patternentity_search']= array(
+    '#type' => 'container',
+    '#attributes' => array('class' => array('container-inline')),
+
+  );
+  $form['patternentity_search']['search'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#title_display' => 'invisible',
+    '#size' => 15,
+    '#default_value' => ($search_value == '')?'':$search_value,
+    '#attributes' => array('title' => t('Enter the terms you wish to search for.'), 'class' => array('container-inline')),
+
+  );
+  $form['patternentity_search']['selected'] = array(
+    '#type' => 'select',
+    '#title' => t('Selected'),
+    '#title_display' => 'invisible',
+    '#options' => array(
+      0 => t('Title'),
+      1 => t('Category'),
+      2 => t('Author'),
+      3 => t('UUID'),
+      4 => t('Pid'),
+    ),
+    '#default_value' => ($search_type == '')?0:$search_type,
+  );
+
+  $form['patternentity_search']['actions'] = array('#type' => 'actions');
+  $form['patternentity_search']['actions']['submit'] = array('#type' => 'submit', '#value' => t('Search'));
+  $form['patternentity_search']['#submit'][] = 'patternentity_search_submit';
+
+  //dsm($form_state);
+  return $form;
+}
+
+/**
+ * search form's submit function.
+ */
+function patternentity_search_submit($form, &$form_state) {
+
+  if ($form_state['values']['search'] == '') {
+    form_set_error('keys', t('Please enter some keywords.'));
+  }
+
+  $form_id = $form['form_id']['#value'];
+  //dsm($form_state);
+  $form_state['redirect'] = 'pattern/search/' . trim($form_state['values']['selected']) . '/' . trim($form_state['values']['search']);
+  
+
+}
+
+/**
+ * callback hook_menu() for /pattern/search/arg1/arg2 path
+ */
+function _pattern_entity_search($selected, $value) {
+  drupal_set_title('search :');
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'patternentity');
+  switch ($selected) {
+    case 0:
+      $query->propertyCondition('title', '%' . db_like($value) . '%', 'LIKE');
+      break;
+    case 1:
+      $query->propertyCondition('category', '%' . db_like($value) . '%', 'LIKE');
+      break;
+    case 2:
+      $query->propertyCondition('author', '%' . db_like($value) . '%', 'LIKE');
+      break;
+    case 3:
+      $query->propertyCondition('uuuid', '%' . db_like($value) . '%', 'LIKE');
+      break;
+    case 4:
+      $query->propertyCondition('pid', $value, '=');
+      break;
+  }
+  $query->propertyOrderBy('created', 'DESC')
+    ->execute();
+    
+  //dsm($query);
+
+  $form = drupal_get_form('patternentity_search', $selected, $value);
+  $list = drupal_render($form);
+  if (isset($query->ordered_results) && count($query->ordered_results)) {
+    $list .= _pattern_entity_list_page($query);
+  }
+  else {
+    $list .= t('no search result.');
+  }
+  return $list;
 }
