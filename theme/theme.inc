@@ -98,10 +98,10 @@ function _pattern_entity_list_page($query) {
   foreach($query->ordered_results as $value) {
     $ids[] = $value->entity_id;
   }
-  $entitys = entity_load('patternentity', $ids);
-  //dsm($entitys);
+  $entities = entity_load('patternentity', $ids);
+  //dsm($entities);
   $rows = array();
-  foreach($entitys as $ety_obj) {
+  foreach($entities as $ety_obj) {
     $rows[] = _pattern_entity_list_table_row($ety_obj);
   }
   return theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'), 'id' => array('pattern-entity-list-table-id'))));
