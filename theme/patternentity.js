@@ -38,25 +38,21 @@ $(document).ready(function() {
 	});
 
 	//autofill search box.
-	$('#patternentity-search input#edit-search').autofill({
-		value: 'search...',
-		defaultTextColor: '#666',
-		activeTextColor: '#333',
-	});
-	//var value_selected = $('#edit-selected option[selected="selected"]').attr('value');
-	//var value_search;
-	//$('#patternentity-search input#edit-search').change(function () {
-	//	value
-	//});
-
+	var value_input_first_page = $('#patternentity-search input#edit-search').val();
+	if (!value_input_first_page) {
+		$('#patternentity-search input#edit-search').autofill({
+			value: 'search...',
+			defaultTextColor: '#666',
+			activeTextColor: '#333',
+		});
+	}
 	var value_input = null;
 	$('input#edit-search').blur(function() {
 		value_input = $(this).val();
 	});
-   
 	$("select#edit-selected").change(function () {
 		$("select#edit-selected option:selected").each(function () {
-			if (!value_input) {
+			if (!value_input && !value_input_first_page) {
 				var text_select = $(this).text();
 				if (text_select == 'UUID') {
 					$('#patternentity-search input#edit-search').autofill({
