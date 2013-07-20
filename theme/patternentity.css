@@ -46,7 +46,7 @@ dl dd {
 /* pattern field part */
 #patternentity-page-pattern-field {
 	border: 1px solid #BAB1B1;
-	margin: 40px 40px 40px 10px;
+	margin: 10px;
 	width: 80%;
 	padding-top: 20px;
 }
