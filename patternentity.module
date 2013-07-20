@@ -65,6 +65,9 @@ function patternentity_permission() {
     'administer patternentity' => array(
       'title' => t('Administer patternentity'),
     ),
+    'view patternentity' => array(
+      'title' => t('View patternentity list and page'),
+    ),
   );
 }
 
@@ -79,7 +82,7 @@ function patternentity_menu() {
     'description' => 'all patternentity list',
     'page callback' => '_pattern_entity_all_list_page',
     'page arguments' => array(),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
 
@@ -88,7 +91,7 @@ function patternentity_menu() {
     'description' => 'pattern view page',
     'page callback' => '_pattern_entity_view_page',
     'page arguments' => array(1),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
   $items['pattern/%/download'] = array(
@@ -96,7 +99,7 @@ function patternentity_menu() {
     'description' => 'pattern download menu link',
     'page callback' => '_pattern_entity_download_pattern',
     'page arguments' => array(1),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
   $items['pattern/%/voting'] = array(
@@ -104,7 +107,7 @@ function patternentity_menu() {
     'description' => 'pattern voting link', 
     'page callback' => '_pattern_entity_voting_pattern',
     'page arguments' => array(1),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
   $items['pattern/uploader/%'] = array(
@@ -112,7 +115,7 @@ function patternentity_menu() {
     'description' => 'all pattern files uploaded by user %',
     'page callback' => '_pattern_entity_list',
     'page arguments' => array(1, 2),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
   $items['pattern/category/%'] = array(
@@ -120,7 +123,7 @@ function patternentity_menu() {
     'description' => 'all pattern files in % category',
     'page callback' => '_pattern_entity_list',
     'page arguments' => array(1, 2),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
   $items['pattern/author/%'] = array(
@@ -128,7 +131,7 @@ function patternentity_menu() {
     'description' => 'all pattern belong to author %',
     'page callback' => '_pattern_entity_list',
     'page arguments' => array(1, 2),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
   $items['pattern/search/%/%'] = array(
@@ -136,7 +139,7 @@ function patternentity_menu() {
     'description' => 'search patternentity with value/category, and so on',
     'page callback' => '_pattern_entity_search',
     'page arguments' => array(2,3),
-    'access callback' => TRUE,
+    'access arguments' => array('view patternentity'),
   );
 
   return $items;
