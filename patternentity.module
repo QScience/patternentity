@@ -189,14 +189,20 @@ function _pattern_entity_view_page($pid) {
     drupal_goto($base_url);
   }
   drupal_set_title($pe->title);
+  $fieldset_title = $pe->title;
 
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.viewpage.js');
 
-  $content = _pattern_entity_view_pattern_description($pe);
+  $content = "<div id='one_pattern_div'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
+
+  $content .= _pattern_entity_view_pattern_description($pe);
+
   $content .= '<div id="patternentity-page-pattern-field"><ul>';
   $content .= _pattern_entity_parser_field_pattern($pe->pattern);
   $content .= '</ul></div>';
 
+  $content .= '</div></fieldset></div>';
   $field_view = entity_view('patternentity', array($pid => $pe));
   $content .= drupal_render($field_view);
 

@@ -80,6 +80,5 @@ $(document).ready(function() {
   $("#pattern-entity-list-table-id .upload-time").text(function(){
       return moment.unix($(this).attr("value")).fromNow();
   });
-
 });
 })(jQuery)
