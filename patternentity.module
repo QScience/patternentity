@@ -160,7 +160,10 @@ function _pattern_entity_download_pattern($pid) {
     drupal_goto($base_url);
   }
   $public_dir_path = variable_get('file_public_path', conf_path() . '/files');
-  $file_path = substr_replace($ety_obj->file_path, $public_dir_path, 0, 8);
+  
+  $file_path = $ety_obj->file_path;
+  //$file_path = substr_replace($ety_obj->file_path, $public_dir_path, 0, 8);
+  //dsm($file_path);
   $file = file_get_contents($file_path);
   if (!$file) {
     return;
@@ -221,9 +224,11 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
 
   if ($property == 'pid') {
     drupal_set_title('all patternentity:');
+    $fieldset_title = 'all patternentity:';
   }
   else {
     drupal_set_title($property . ': '  . $arg_deal);
+    $fieldset_title = $property . ': '  . $arg_deal;
   }
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'patternentity')
@@ -235,7 +240,9 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
     $searchform = drupal_get_form('patternentity_search');
     //dsm($searchform);
     $list = drupal_render($searchform);
+    $list .= "<fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
+    $list .= '</div></fieldset>';
     return $list;
   }
   else {
@@ -315,18 +322,23 @@ function _pattern_entity_search($selected, $value) {
   switch ($selected) {
     case 0:
       $query->propertyCondition('title', '%' . db_like($value) . '%', 'LIKE');
+      $fieldset_title = "pattern with title: $value";
       break;
     case 1:
       $query->propertyCondition('category', '%' . db_like($value) . '%', 'LIKE');
+      $fieldset_title = "pattern in category: $value";
       break;
     case 2:
       $query->propertyCondition('author', '%' . db_like($value) . '%', 'LIKE');
+      $fieldset_title = "pattern of author: $value";
       break;
     case 3:
       $query->propertyCondition('uuuid', '%' . db_like($value) . '%', 'LIKE');
+      $fieldset_title = "pattern with uuuid: $value";
       break;
     case 4:
       $query->propertyCondition('pid', $value, '=');
+      $fieldset_title = "pattern with pid: $value";
       break;
   }
   $query->propertyOrderBy('created', 'DESC')
@@ -337,7 +349,9 @@ function _pattern_entity_search($selected, $value) {
   $form = drupal_get_form('patternentity_search', $selected, $value);
   $list = drupal_render($form);
   if (isset($query->ordered_results) && count($query->ordered_results)) {
+    $list .= "<fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
+    $list .= '</div></fieldset>';
   }
   else {
     $list .= t('no search result.');
