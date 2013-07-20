@@ -43,25 +43,35 @@ $(document).ready(function() {
 		defaultTextColor: '#666',
 		activeTextColor: '#333',
 	});
-	var value_input = $('#patternentity-search input').attr('value');
-	var value_selected = $('#edit-selected option[selected="selected"]').attr('value');
+	//var value_selected = $('#edit-selected option[selected="selected"]').attr('value');
+	//var value_search;
+	//$('#patternentity-search input#edit-search').change(function () {
+	//	value
+	//});
+
+	var value_input = null;
+	$('input#edit-search').blur(function() {
+		value_input = $(this).val();
+	});
+   
 	$("select#edit-selected").change(function () {
-		var str = "";
 		$("select#edit-selected option:selected").each(function () {
-			var text_select = $(this).text();
-			if (text_select == 'UUID') {
-				$('#patternentity-search input#edit-search').autofill({
-					value: 'e.g. 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74',
-					defaultTextColor: '#666',
-					activeTextColor: '#333',
-				});
-			}
-			else {
-				$('#patternentity-search input#edit-search').autofill({
-					value: 'search...',
-					defaultTextColor: '#666',
-					activeTextColor: '#333',
-				});
+			if (!value_input) {
+				var text_select = $(this).text();
+				if (text_select == 'UUID') {
+					$('#patternentity-search input#edit-search').autofill({
+						value: 'e.g. 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74',
+						defaultTextColor: '#666',
+						activeTextColor: '#333',
+					});
+				}
+				else {
+					$('#patternentity-search input#edit-search').autofill({
+						value: 'search...',
+						defaultTextColor: '#666',
+						activeTextColor: '#333',
+					});
+				}
 			}
 		});
 	})
