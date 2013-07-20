@@ -76,5 +76,10 @@ $(document).ready(function() {
 	//search box width.
 	$('input#edit-search').css('width', '65%');
 
+  //use moment.js to format upload time.
+  $("#pattern-entity-list-table-id .upload-time").text(function(){
+      return moment.unix($(this).attr("value")).fromNow();
+  });
+
 });
 })(jQuery)

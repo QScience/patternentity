@@ -86,10 +86,10 @@ function _pattern_entity_view_pattern_description($pe) {
 function _pattern_entity_list_page($query) {
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.table.css');
   $header = array(
-    t('Title'),
     t('Category'),
+    t('Title'),
     t('Author'),
-    t('Uploader'),
+    t('Uploaded'),
     t('Downloads'),
     t('Score'),
     t('File'),
@@ -115,11 +115,12 @@ function _pattern_entity_list_page($query) {
 function _pattern_entity_list_table_row($ety_obj) {
   $row = array();
   
-  $row[] = l($ety_obj->title, '/pattern/' . $ety_obj->pid);
   $row[] = l($ety_obj->category, '/pattern/category/' . $ety_obj->category);
+  $row[] = l($ety_obj->title, '/pattern/' . $ety_obj->pid);
   $row[] = l($ety_obj->author, '/pattern/author/' . $ety_obj->author);
-  $usr_obj = user_load($ety_obj->uploader);
-  $row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
+  //$usr_obj = user_load($ety_obj->uploader);
+  //$row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
+  $row[] = '<i value="' . $ety_obj->created. '" ' . 'class="upload-time">' . date('j-m-Y H:i:s (P)', $ety_obj->created) . '</i>';
   $row[] = $ety_obj->file_downloads;
   $row[] = _pattern_entity_get_voting_score($ety_obj->pid);
   $row[] = l(t('download'), '/pattern/' . $ety_obj->pid . '/download', array('attributes' => array('class' => 'download-link')));

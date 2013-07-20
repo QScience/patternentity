@@ -208,6 +208,7 @@ function _pattern_entity_view_page($pid) {
  */
 function _pattern_entity_list($property, $arg, $operate = '=') {
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/jquery.autofill.min.js');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/moment.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
   if ($property == 'uploader') {
     $usr_obj = user_load($arg);
@@ -313,6 +314,7 @@ function patternentity_search_submit($form, &$form_state) {
  */
 function _pattern_entity_search($selected, $value) {
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/jquery.autofill.min.js');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/moment.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
 
   drupal_set_title('search :');
