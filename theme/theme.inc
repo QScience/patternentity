@@ -48,14 +48,14 @@ function _pattern_entity_view_pattern_description($pe) {
   $content .= '<dt>title</dt><dd>' . $pe->title . '</dd>';
   $content .= '<dt>description</dt><dd>' . $pe->description. '</dd>';
 
-  $category_s = l($pe->category, '/pattern/category/' . $pe->category);
+  $category_s = l($pe->category, 'pattern/category/' . $pe->category);
   $content .= '<dt>category</dt><dd>' . $category_s. '</dd>';
 
-  $author_s = l($pe->author, '/pattern/author/' . $pe->author);
+  $author_s = l($pe->author, 'pattern/author/' . $pe->author);
   $content .= '<dt>author</dt><dd>' . $author_s . '</dd>';
 
   $usr_obj = user_load($pe->uploader);
-  $uploader_s = l($usr_obj->name , '/pattern/uploader/' . $pe->uploader);
+  $uploader_s = l($usr_obj->name , 'pattern/uploader/' . $pe->uploader);
   $content .= '<dt>uploader</dt><dd>' . $uploader_s . '</dd>';
 
   $content .= '<dt>file name</dt><dd>' . $pe->file_name. '</dd>';
@@ -68,11 +68,11 @@ function _pattern_entity_view_pattern_description($pe) {
     $vote_s = t('voted');
   }
   else {
-    $vote_s = l(t('voting'), '/pattern/' . $pe->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
+    $vote_s = l(t('voting'), 'pattern/' . $pe->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
   }
   $content .= '<dt>voting</dt><dd class="voting-link" id="pattern-entity-view-page-vote">' . $vote_s . '</dd>';
 
-  $file_d = l(t('download'), '/pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
+  $file_d = l(t('download'), 'pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
   $content .= '<dt>file</dt><dd>' . $file_d . '</dd>';
 
   $content .= '<dt>content</dt><dd>' . '<a href="" id="pattern_file_popup">popup</a>' . '</dd>';
@@ -117,22 +117,22 @@ function _pattern_entity_list_page($query) {
 function _pattern_entity_list_table_row($ety_obj) {
   $row = array();
   
-  $row[] = l($ety_obj->category, '/pattern/category/' . $ety_obj->category);
-  $row[] = l($ety_obj->title, '/pattern/' . $ety_obj->pid);
-  $row[] = l($ety_obj->author, '/pattern/author/' . $ety_obj->author);
+  $row[] = l($ety_obj->category, 'pattern/category/' . $ety_obj->category);
+  $row[] = l($ety_obj->title, 'pattern/' . $ety_obj->pid);
+  $row[] = l($ety_obj->author, 'pattern/author/' . $ety_obj->author);
   //$usr_obj = user_load($ety_obj->uploader);
-  //$row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
+  //$row[] = l($usr_obj->name , 'pattern/uploader/' . $ety_obj->uploader);
   $row[] = '<i value="' . $ety_obj->created. '" ' . 'class="upload-time">' . date('j-m-Y H:i:s (P)', $ety_obj->created) . '</i>';
   $row[] = $ety_obj->file_downloads;
   $row[] = _pattern_entity_get_voting_score($ety_obj->pid);
-  $row[] = l(t('download'), '/pattern/' . $ety_obj->pid . '/download', array('attributes' => array('class' => 'download-link')));
+  $row[] = l(t('download'), 'pattern/' . $ety_obj->pid . '/download', array('attributes' => array('class' => 'download-link')));
 
   $voted = _pattern_entity_check_whether_voted($ety_obj->pid);
   if($voted) {
     $row['voting_link'] = t('voted');
   }
   else {
-    $row['voting_link'] = l(t('voting'), '/pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
+    $row['voting_link'] = l(t('voting'), 'pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
   }
 
   return $row;
