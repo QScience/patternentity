@@ -39,7 +39,7 @@ $(document).ready(function() {
 
 	//autofill search box.
 	var value_input_first_page = $('#patternentity-search input#edit-search').val();
-	if (!value_input_first_page) {
+	if (value_input_first_page.length == 0 ) {
 		$('#patternentity-search input#edit-search').autofill({
 			value: 'search...',
 			defaultTextColor: '#666',
@@ -52,7 +52,8 @@ $(document).ready(function() {
 	});
 	$("select#edit-selected").change(function () {
 		$("select#edit-selected option:selected").each(function () {
-			if (!value_input && !value_input_first_page) {
+			console.log(value_input);
+			if (!value_input || value_input == '') {
 				var text_select = $(this).text();
 				if (text_select == 'UUID') {
 					$('#patternentity-search input#edit-search').autofill({
