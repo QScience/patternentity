@@ -22,9 +22,16 @@ $(document).ready(function() {
 			success: function(data) {
 				var $score = $('#patternentity-page-pattern-description #pattern-entity-view-page-score', data);
 				var $vote = $('#patternentity-page-pattern-description #pattern-entity-view-page-vote', data);
-				var score_before = $(link).parent().prev().prev();
-				$(link).parent().prev().prev().html($score.text());
-				$(link).parent().html($vote.html());
+
+        var link_parent = $(link).parent();
+				$(link_parent).prev().prev().html($score.text());
+        if ($(link).hasClass('voting-link-odd')) {
+          $(link_parent).html($vote.html());
+        }
+        else {
+          $(link_parent).html($vote.html());
+          $(link_parent).children('.voting-link').addClass('voting-link-odd');
+        }
 			}
 		});
 		return false;

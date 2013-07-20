@@ -70,7 +70,7 @@ function _pattern_entity_view_pattern_description($pe) {
   else {
     $vote_s = l(t('voting'), '/pattern/' . $pe->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
   }
-  $content .= '<dt>voting</dt><dd id="pattern-entity-view-page-vote">' . $vote_s . '</dd>';
+  $content .= '<dt>voting</dt><dd class="voting-link" id="pattern-entity-view-page-vote">' . $vote_s . '</dd>';
 
   $file_d = l(t('download'), '/pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
   $content .= '<dt>file</dt><dd>' . $file_d . '</dd>';
@@ -84,6 +84,7 @@ function _pattern_entity_view_pattern_description($pe) {
  * theme pattern list page.
  */
 function _pattern_entity_list_page($query) {
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.table.css');
   $header = array(
     t('Title'),
     t('Category'),
