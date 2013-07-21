@@ -220,6 +220,14 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/moment.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
 
+  //$fields = field_info_instances('patternentity');
+  //dsm($fields);
+  //if (isset($fields['patternentity']) && count($fields['patternentity'])) {
+  //  foreach ($fields['patternentity'] as $key => $value) {
+  //    field_delete_field($key);
+  //  }
+  //}
+
   if ($property == 'uploader') {
     $usr_obj = user_load($arg);
     if(!$usr_obj) {
