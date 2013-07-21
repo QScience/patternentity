@@ -38,37 +38,58 @@ $(document).ready(function() {
 	});
 
 	//autofill search box.
-	var value_input_first_page = $('#patternentity-search input#edit-search').val();
-	if (value_input_first_page.length == 0 ) {
+	function switch_autofill(text_select) {
+		var value_autofill;
+		switch (text_select) {
+			case 'UUID': value_autofill = 'e.g. 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74'; break;
+			case 'Title': value_autofill = 'e.g. content,create,block,delete'; break;
+			case 'Category': value_autofill = 'e.g. block,color,content,menu'; break;
+			case 'Pid': value_autofill = 'e.g. 3 or any number'; break;
+			case 'Author': value_autofill = 'e.g. Qscience'; break;
+			default: value_autofill = 'search...';
+		}
+		return value_autofill;
+	}
+	var value_input = $('#patternentity-search input#edit-search').val();
+	var value_autofill = '';
+	var value_default= '';
+	var autofill_sign = false;
+	if (value_input.length == 0 ) {
+		var text_select = $("select#edit-selected option:selected").text();
+		value_default = switch_autofill(text_select);
 		$('#patternentity-search input#edit-search').autofill({
-			value: 'search...',
+			value: value_default,
 			defaultTextColor: '#666',
 			activeTextColor: '#333',
 		});
+		autofill_sign = true;
 	}
-	var value_input = null;
-	$('input#edit-search').blur(function() {
+	$('#patternentity-search input#edit-search').blur(function() {
+		var text_select = $("select#edit-selected option:selected").text();
+		value_autofill = switch_autofill(text_select);
 		value_input = $(this).val();
+		if (value_input == value_default) {
+			$(this).autofill({
+				value: value_autofill,
+				defaultTextColor: '#666',
+				activeTextColor: '#333',
+			});
+			autofill_sign = true;
+		}
+		else {
+			autofill_sign = false;
+		}
 	});
 	$("select#edit-selected").change(function () {
 		$("select#edit-selected option:selected").each(function () {
-			console.log(value_input);
-			if (!value_input || value_input == '') {
+			if ( autofill_sign ) {
 				var text_select = $(this).text();
-				if (text_select == 'UUID') {
-					$('#patternentity-search input#edit-search').autofill({
-						value: 'e.g. 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74',
-						defaultTextColor: '#666',
-						activeTextColor: '#333',
-					});
-				}
-				else {
-					$('#patternentity-search input#edit-search').autofill({
-						value: 'search...',
-						defaultTextColor: '#666',
-						activeTextColor: '#333',
-					});
-				}
+				value_autofill = switch_autofill(text_select);
+				$('#patternentity-search input#edit-search').autofill({
+					value: value_autofill,
+					defaultTextColor: '#666',
+					activeTextColor: '#333',
+				});
 			}
 		});
 	})
@@ -76,9 +97,10 @@ $(document).ready(function() {
 	//search box width.
 	$('input#edit-search').css('width', '65%');
 
-  //use moment.js to format upload time.
-  $("#pattern-entity-list-table-id .upload-time").text(function(){
-      return moment.unix($(this).attr("value")).fromNow();
-  });
+	//use moment.js to format upload time.
+	$("#pattern-entity-list-table-id .upload-time").text(function(){
+		return moment.unix($(this).attr("value")).fromNow();
+	});
+
 });
 })(jQuery)
