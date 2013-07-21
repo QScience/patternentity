@@ -13,4 +13,3 @@ files[] = includes/patternentity.inc
 files[] = includes/patternentity.controller.inc
 files[] = includes/patternentity.ui.inc
 files[] = includes/patternentity.votingapi.inc
-
