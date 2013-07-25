@@ -17,6 +17,7 @@ $(document).ready(function() {
 	$('#pattern-entity-list-table-id .voting-link').live('click', function () {
 		 var link = this;
 		 var url = $(this).attr('href');
+     console.log(url);
 		 $.ajax({
 			url: url,
 			success: function(data) {
@@ -102,5 +103,40 @@ $(document).ready(function() {
 		return moment.unix($(this).attr("value")).fromNow();
 	});
 
+  //search functionality ajax implementation
+  $('#patternentity-search #edit-submit').live('click', function() {
+    var table_wrap = $('#pattern-entity-list-table-wrap');
+
+		var text_select = $("select#edit-selected option:selected").text();
+		var value_default = switch_autofill(text_select);
+
+    var search_text = $('#patternentity-search #edit-search').val().trim();
+    if ( search_text == '' || search_text == value_default) {
+      $(table_wrap).html('please enter something.');
+    }
+    else {
+      var search_type = $('#patternentity-search #edit-selected option:selected').val();
+      var path = $(this).attr('name');
+      path += search_type + '/' + search_text;
+      console.log(encodeURI(path));
+
+      var table_wrap = $('#pattern-entity-list-table-wrap');
+
+      $.ajax({
+        url: path,
+        success: function(data) {
+          var table = $('#pattern-entity-list-table-wrap', data).html();
+          if (table == null) {
+          $(table_wrap).text('nothing found.');
+          }
+          else {
+          $(table_wrap).html(table);
+          }
+        }
+      });
+    }
+    return false;
+
+  });
 });
 })(jQuery)

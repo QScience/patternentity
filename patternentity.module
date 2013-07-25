@@ -259,9 +259,9 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
     $searchform = drupal_get_form('patternentity_search');
     //dsm($searchform);
     $list = drupal_render($searchform);
-    $list .= "<fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
+    $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
-    $list .= '</div></fieldset>';
+    $list .= '</div></fieldset></div>';
     return $list;
   }
   else {
@@ -302,9 +302,11 @@ function patternentity_search($form, &$form_state, $search_type='', $search_valu
     ),
     '#default_value' => ($search_type == '')?0:$search_type,
   );
+  
+  $button_url = url('pattern/search/');
 
   $form['patternentity_search']['actions'] = array('#type' => 'actions');
-  $form['patternentity_search']['actions']['submit'] = array('#type' => 'submit', '#value' => t('Search'));
+  $form['patternentity_search']['actions']['submit'] = array('#type' => 'submit', '#value' => t('Search'), '#attributes' => array('name' => $button_url));
   $form['patternentity_search']['#submit'][] = 'patternentity_search_submit';
 
   //dsm($form_state);
@@ -369,9 +371,9 @@ function _pattern_entity_search($selected, $value) {
   $form = drupal_get_form('patternentity_search', $selected, $value);
   $list = drupal_render($form);
   if (isset($query->ordered_results) && count($query->ordered_results)) {
-    $list .= "<fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
+    $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
-    $list .= '</div></fieldset>';
+    $list .= '</div></fieldset></div>';
   }
   else {
     $list .= t('no search result.');
