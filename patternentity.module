@@ -159,8 +159,7 @@ function _pattern_entity_download_pattern($pid) {
   $ety_obj = entity_object_load($pid, 'patternentity');
   if(!$ety_obj) {
     drupal_set_message("The pattern file doesn't exist.", "error");
-    global $base_url;
-    drupal_goto($base_url);
+    drupal_goto('all_pattern_entity_list');
   }
   $public_dir_path = variable_get('file_public_path', conf_path() . '/files');
   
@@ -188,8 +187,9 @@ function _pattern_entity_view_page($pid) {
   $pe = entity_object_load($pid, 'patternentity');
   if (!$pe) {
     drupal_set_message("The pattern file doesn't exist.", "error");
-    global $base_url;
-    drupal_goto($base_url);
+    //global $base_url;
+    //drupal_goto($base_url);
+    drupal_goto('all_pattern_entity_list');
   }
   drupal_set_title($pe->title);
   $fieldset_title = $pe->title;
@@ -232,8 +232,7 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
     $usr_obj = user_load($arg);
     if(!$usr_obj) {
       drupal_set_message("The pattern list doesn't exist.", "error");
-      global $base_url;
-      drupal_goto($base_url);
+      drupal_goto('all_pattern_entity_list');
     }
     $arg_deal = $usr_obj->name;
   }
@@ -266,8 +265,7 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
   }
   else {
     drupal_set_message("The pattern list doesn't exist.", "error");
-    global $base_url;
-    drupal_goto($base_url);
+    drupal_goto('all_pattern_entity_list');
   }
 }
 
