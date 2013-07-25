@@ -77,6 +77,15 @@ function _pattern_entity_view_pattern_description($pe) {
 
   $content .= '<dt>content</dt><dd>' . '<a href="" id="pattern_file_popup">show</a>' . '</dd>';
 
+  $public_link = variable_get('patterns_public_url', '');
+  if ($public_link == '') {
+    $all_patteren_list = url('all_pattern_entity_list');
+    $content .= '<dt>backto</dt><dd>' . "<a href=$all_patteren_list>server</a>" . '</dd>';
+  }
+  else {
+    $public_link = url($public_link);
+    $content .= '<dt>backto</dt><dd>' . "<a href=$public_link>server</a>" . '</dd>';
+  }
 
   $content .= '</dl></div>';
   return $content;
