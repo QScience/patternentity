@@ -10,6 +10,12 @@ $(document).ready(function() {
 
   //popup in view page.
   $('#pattern_file_popup').click(function() {
+	  if ($(this).text() == 'show') {
+		  $(this).text('hide');
+	  }
+	  else {
+		  $(this).text('show');
+	  }
     $('#patternentity-page-pattern-field').slideToggle('slow');
     return false;
   });

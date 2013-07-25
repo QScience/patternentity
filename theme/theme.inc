@@ -75,7 +75,7 @@ function _pattern_entity_view_pattern_description($pe) {
   $file_d = l(t('download'), 'pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
   $content .= '<dt>file</dt><dd>' . $file_d . '</dd>';
 
-  $content .= '<dt>content</dt><dd>' . '<a href="" id="pattern_file_popup">popup</a>' . '</dd>';
+  $content .= '<dt>content</dt><dd>' . '<a href="" id="pattern_file_popup">show</a>' . '</dd>';
 
 
   $content .= '</dl></div>';
