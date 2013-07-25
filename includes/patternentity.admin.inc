@@ -22,7 +22,6 @@ function patternentity_form($form, &$form_state, $patternentity) {
     '#weight' => 20,
   );
 
-  //dsm($form);
   return $form;
 }
 
@@ -44,7 +43,6 @@ function patternentity_form_validate(&$form, &$form_state) {
   }
 
   $form_state['storage']['file_obj'] = $file;
-  //dsm($file);
   $pattern = NULL;
   $file_extension = NULL;
   if ($file) {
@@ -62,7 +60,6 @@ function patternentity_form_validate(&$form, &$form_state) {
     if (!patterns_validate_pattern($pattern, $file_extension, PATTERNS_VALIDATE_SYNTAX)) {
       form_set_error('pattern_file', t('pattern file has wrong syntax.'));
     }
-    //dsm($pattern);
   }
   else {
     form_set_error('pattern_file', t('No file was uploaded.'));
@@ -94,36 +91,32 @@ function patternentity_form_validate(&$form, &$form_state) {
     form_set_error('pattern_file', t('file don\'t have \'author\' field.'));
   }
   Global $user;
-  //dsm($user);
   $form_state['values']['uploader'] = $user->uid;
   $form_state['values']['file_name'] = $file->filename;
   $form_state['values']['file_format'] = $file_extension;
   //$form_state['values']['file_path'] = $file->uri;
 
-
+  $dir = 'public://patternentity/';
+  if (!file_prepare_directory($dir)) {
+    form_set_error('pattern_file', t('public://patternentity doesn\'t exist, or isn\'t writable.'));
+  }
+  else {
+    if ($file = file_move($file, $dir)) {
+      $form_state['storage']['file_obj'] = $file;
+      $file->status = FILE_STATUS_PERMANENT;
+      file_save($file);
+      $form_state['values']['file_path'] = $file->uri;
+    }
+    else {
+      form_set_error('pattern_file', t('save to public dir failed'));
+    }
+  }
 }
 
 /**
  * submit function for ENTITY_TYPE_form.
  */
 function patternentity_form_submit(&$form, &$form_state) {
-  $file = $form_state['storage']['file_obj'];
-  $dir = 'public://patternentity';
-  if (!file_prepare_directory($dir)) {
-    form_set_error('pattern_file', t('public://patternentity doesn\'t exist, or isn\'t writable.'));
-  }
-  if ($file = file_move($file, $dir)) {
-    $form_state['storage']['file_obj'] = $file;
-    $file->status = FILE_STATUS_PERMANENT;
-    file_save($file);
-  }
-  else {
-    form_set_error('pattern_file', t('save to public dir failed'));
-  }
-
-  $form_state['values']['file_path'] = $file->uri;
-  //dsm($form_state);
-
   $patternentity = entity_ui_form_submit_build_entity($form, $form_state);
   $patternentity->save();
   $form_state['redirect'] = 'admin/structure/patternentity';
