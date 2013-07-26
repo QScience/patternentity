@@ -88,4 +88,9 @@ dl dd {
 */
 .upload-button-link {
   float: right;
+  margin-right: 20px;
+}
+
+#patternentity-upload-form-js {
+	text-align: center;
 }
