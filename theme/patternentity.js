@@ -17,22 +17,23 @@ $(document).ready(function() {
 	$('#pattern-entity-list-table-id .voting-link').live('click', function () {
 		 var link = this;
 		 var url = $(this).attr('href');
-     console.log(url);
+		 $(link).parent().children('.voting-link').addClass('voting-link-odd');
+		 //console.log(url);
 		 $.ajax({
 			url: url,
 			success: function(data) {
 				var $score = $('#patternentity-page-pattern-description #pattern-entity-view-page-score', data);
 				var $vote = $('#patternentity-page-pattern-description #pattern-entity-view-page-vote', data);
 
-        var link_parent = $(link).parent();
+				var link_parent = $(link).parent();
 				$(link_parent).prev().prev().html($score.text());
-        if ($(link).hasClass('voting-link-odd')) {
-          $(link_parent).html($vote.html());
-        }
-        else {
-          $(link_parent).html($vote.html());
-          $(link_parent).children('.voting-link').addClass('voting-link-odd');
-        }
+				//if ($(link).hasClass('voting-link-odd')) {
+				  $(link_parent).html($vote.html());
+				//}
+				//else {
+				//  $(link_parent).html($vote.html());
+				//  $(link_parent).children('.voting-link').addClass('voting-link-odd');
+				//}
 			}
 		});
 		return false;
