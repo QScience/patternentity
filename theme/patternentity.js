@@ -138,7 +138,30 @@ $(document).ready(function() {
       });
     }
     return false;
-
   });
+
+	//upload functionality ajax implementation
+	$('#pattern-entity-list-table-wrap').before('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
+	var upload_form_div = $('#patternentity-upload-form-js');
+	$(upload_form_div).hide();
+	$('.upload-button-link').live('click', function (){
+		var url = $('.upload-button-link').attr('href');
+		$.ajax({
+			url: url,
+			success: function(data) {
+				if ( $(upload_form_div).is(':hidden')) {
+					var upload_form = $('#patternentity-form', data).wrap("<div></div>").parent().html();
+					$(upload_form_div).html(upload_form).slideDown('slow');
+				}
+				else {
+					$(upload_form_div).slideUp('slow');
+				}
+				
+			}
+		});
+		return false;
+	});
+
+
 });
 })(jQuery)
