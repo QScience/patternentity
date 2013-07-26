@@ -55,7 +55,8 @@ function _pattern_entity_view_pattern_description($pe) {
   $content .= '<dt>author</dt><dd>' . $author_s . '</dd>';
 
   $usr_obj = user_load($pe->uploader);
-  $uploader_s = l($usr_obj->name , 'pattern/uploader/' . $pe->uploader);
+  //dsm($usr_obj);
+  $uploader_s = l($usr_obj->uid == 0 ? 'Anonymous' : $usr_obj->name , 'pattern/uploader/' . $pe->uploader);
   $content .= '<dt>uploader</dt><dd>' . $uploader_s . '</dd>';
 
   $content .= '<dt>file name</dt><dd>' . $pe->file_name. '</dd>';
@@ -101,11 +102,12 @@ function _pattern_entity_list_page($query) {
     t('Category'),
     t('Title'),
     t('Author'),
-    t('Uploaded'),
+    t('Created'),
     t('Downloads'),
     t('Score'),
     t('File'),
     t('Like'),
+   // t('Upload'),
   );
   $ids = array();
   foreach($query->ordered_results as $value) {

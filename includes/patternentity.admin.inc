@@ -119,5 +119,11 @@ function patternentity_form_validate(&$form, &$form_state) {
 function patternentity_form_submit(&$form, &$form_state) {
   $patternentity = entity_ui_form_submit_build_entity($form, $form_state);
   $patternentity->save();
-  $form_state['redirect'] = 'admin/structure/patternentity';
+  
+  if (user_access('administer patternentity')) {
+    $form_state['redirect'] = 'admin/structure/patternentity';
+  }
+  else {
+    $form_state['redirect'] = 'all_pattern_entity_list';
+  }
 }

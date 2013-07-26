@@ -54,7 +54,13 @@ function patternentity_entity_info() {
  * accesss callback function for hook_entity_info().
  */
 function patternentity_admin_access($op, $profile = NULL, $account = NULL) {
-  return user_access('administer patternentity', $account);
+  if (user_access('administer patternentity', $account)) {
+    return true;
+  }
+  else if ($op == 'create' && user_access('upload patternentity', $account)) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -67,6 +73,9 @@ function patternentity_permission() {
     ),
     'view patternentity' => array(
       'title' => t('View patternentity list and page'),
+    ),
+    'upload patternentity' => array(
+      'title' => t('Upload pattern file to patternentity'),
     ),
   );
 }
@@ -93,6 +102,14 @@ function patternentity_menu() {
     'page arguments' => array(1),
     'access arguments' => array('view patternentity'),
   );
+
+  //$items['pattern/upload'] = array(
+  //  'title' => 'pattern upload',
+  //  'description' => 'pattern upload page',
+  //  'page callback' => '_pattern_entity_upload_pattern',
+  //  'page arguments' => array(),
+  //  'access arguments' => array('upload patternentity'),
+  //);
 
   $items['pattern/%/download'] = array(
     'title' => 'pattern download link',
@@ -180,6 +197,16 @@ function _pattern_entity_download_pattern($pid) {
   print $file;
 }
 
+///**
+// * callback hook_menu() pattern/upload 
+// */
+//function _pattern_entity_upload_pattern() {
+//  //module_load_include('inc', 'patternentity', 'include/patternentity.admin');
+//  $form_state = array();
+//  form_load_include($form_state, 'inc', 'patternentity', 'include/patternentity.admin'); 
+//  return entity_ui_get_form('patternentity', null);
+//}
+
 /**
  * callback hook_menu() for /pattern/pid
  */
@@ -194,10 +221,11 @@ function _pattern_entity_view_page($pid) {
   drupal_set_title($pe->title);
   $fieldset_title = $pe->title;
 
-  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.viewpage.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.viewpage.js');
 
-  $content = "<div id='one_pattern_div'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
+  $upload_button = _pattern_entity_upload_button();
+  $content = "<div id='one_pattern_div'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
 
   $content .= _pattern_entity_view_pattern_description($pe);
 
@@ -216,6 +244,7 @@ function _pattern_entity_view_page($pid) {
  * callback hook_menu() for list /pattern/$property/$arg
  */
 function _pattern_entity_list($property, $arg, $operate = '=') {
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/jquery.autofill.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/moment.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
@@ -258,7 +287,8 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
     $searchform = drupal_get_form('patternentity_search');
     //dsm($searchform);
     $list = drupal_render($searchform);
-    $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
+    $upload_button = _pattern_entity_upload_button();
+    $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
     $list .= '</div></fieldset></div>';
     return $list;
@@ -369,7 +399,8 @@ function _pattern_entity_search($selected, $value) {
   $form = drupal_get_form('patternentity_search', $selected, $value);
   $list = drupal_render($form);
   if (isset($query->ordered_results) && count($query->ordered_results)) {
-    $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
+    $upload_button = _pattern_entity_upload_button();
+    $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
     $list .= '</div></fieldset></div>';
   }
@@ -377,4 +408,13 @@ function _pattern_entity_search($selected, $value) {
     $list .= t('no search result.');
   }
   return $list;
+}
+
+/**
+ * upload button link in view page and list page.
+ */
+function _pattern_entity_upload_button() {
+  $url = 'admin/structure/patternentity/add';
+  $upload_link = l(t('Upload'), $url, array('attributes' => array('class' => array('btn btn-success upload-button-link'))));
+  return "<strong>$upload_link</strong>";
 }
