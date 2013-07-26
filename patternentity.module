@@ -159,6 +159,14 @@ function patternentity_menu() {
     'access arguments' => array('view patternentity'),
   );
 
+  $items['pattern/tags/%/%'] = array(
+    'title' => 'all pattern with the tag %',
+    'description' => 'all pattern with the tag %',
+    'page callback' => '_pattern_entity_list',
+    'page arguments' => array(2, 3),
+    'access arguments' => array('view patternentity'),
+  );
+
   return $items;
 }
 
@@ -249,43 +257,50 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/moment.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
 
-  //$fields = field_info_instances('patternentity');
-  //dsm($fields);
-  //if (isset($fields['patternentity']) && count($fields['patternentity'])) {
-  //  foreach ($fields['patternentity'] as $key => $value) {
-  //    field_delete_field($key);
-  //  }
-  //}
-
-  if ($property == 'uploader') {
-    $usr_obj = user_load($arg);
-    if(!$usr_obj) {
-      drupal_set_message("The pattern list doesn't exist.", "error");
-      drupal_goto('all_pattern_entity_list');
-    }
-    $arg_deal = $usr_obj->name;
-  }
-  else {
-    $arg_deal = $arg;
+  $pos = strpos($property, 'field');
+  $property_sign = $property;
+  if ($pos !== false) {
+    $property_sign = 'tag';
   }
 
-  if ($property == 'pid') {
-    drupal_set_title('all patternentity:');
-    $fieldset_title = 'all patternentity:';
-  }
-  else {
-    drupal_set_title($property . ': '  . $arg_deal);
-    $fieldset_title = $property . ': '  . $arg_deal;
-  }
   $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'patternentity')
-    ->propertyCondition($property, $arg, $operate)
-    ->propertyOrderBy('created', 'DESC')
+  $query->entityCondition('entity_type', 'patternentity');
+
+
+  switch ($property_sign) {
+    case 'uploader':
+      $usr_obj = user_load($arg);
+      if(!$usr_obj) {
+        drupal_set_message("The pattern list doesn't exist.", "error");
+        drupal_goto('all_pattern_entity_list');
+      }
+      drupal_set_title($property . ': '  . $usr_obj->name);
+      $fieldset_title = $property . ': '  . $usr_obj->name;
+      $query->propertyCondition($property, $arg, $operate);
+      break;
+
+    case 'pid':
+      drupal_set_title('all patternentity:');
+      $fieldset_title = 'all patternentity:';
+      $query->propertyCondition($property, $arg, $operate);
+      break;
+
+    case 'tag':
+      $tax = taxonomy_term_load($arg);
+      drupal_set_title('tag: ' . $tax->name);
+      $fieldset_title = 'tag: ' . $tax->name;
+      $query->fieldCondition($property, 'tid', $arg, '=');
+      break;
+
+    default:
+      drupal_set_title($property . ': ' . $arg);
+      $fieldset_title = $property . ': ' . $arg;
+  }
+
+  $query->propertyOrderBy('created', 'DESC')
     ->execute();
-  //dsm($query);
   if (isset($query->ordered_results) && count($query->ordered_results)) {
     $searchform = drupal_get_form('patternentity_search');
-    //dsm($searchform);
     $list = drupal_render($searchform);
     $upload_button = _pattern_entity_upload_button();
     $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
