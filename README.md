@@ -25,3 +25,8 @@
 * uploader some yaml/xml file in 'admin/structure/patternentity'.
 * try all kinds of links.
 * manage field on page 'admin/structure/patternentity/fields'
+
+# about permission
+* only people having 'adminster patternentity' permission can access the admin page "admin/structure/patternentity".
+* people having 'upload patternentity' permission can upload pattern file, that means they can access "admin/structure/patternentity/add" page.
+* people having 'view patternentity' permission can view all related patternentity page.
