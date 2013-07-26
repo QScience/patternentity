@@ -342,7 +342,7 @@ function patternentity_search($form, &$form_state, $search_type='', $search_valu
       2 => t('Author'),
       3 => t('UUID'),
       4 => t('Pid'),
-      //5 => t('Tags'),
+      5 => t('Tags'),
     ),
     '#default_value' => ($search_type == '')?0:$search_type,
   );
@@ -406,14 +406,23 @@ function _pattern_entity_search($selected, $value) {
       $query->propertyCondition('pid', $value, '=');
       $fieldset_title = "pattern with pid: $value";
       break;
-    //case 5:
-    //  $query->fieldCondition($property, 'tid', $value, '=');
-    //  $fieldset_title = "pattern with tag: $value";
-    //  break;
+    case 5:
+      $tagtids = _pattern_entity_findtagtid_by_tagname($value);
+      $entity_ids = _pattern_entity_findentityid_by_tagvid($tagtids);
+      //dsm($entity_ids);
+      $entity_ids = array_keys($entity_ids);
+
+      if (count($entity_ids) == 0) {
+        $entity_ids = array('-1');
+      }
+      $query->propertyCondition('pid', $entity_ids);
+      $fieldset_title = "pattern with tag: $value";
+      break;
   }
+  
   $query->propertyOrderBy('created', 'DESC')
     ->execute();
-    
+
   //dsm($query);
 
   $form = drupal_get_form('patternentity_search', $selected, $value);
@@ -437,4 +446,38 @@ function _pattern_entity_upload_button() {
   $url = 'admin/structure/patternentity/add';
   $upload_link = l(t('Upload'), $url, array('attributes' => array('class' => array('btn btn-success upload-button-link'))));
   return "<strong>$upload_link</strong>";
+}
+
+/**
+ * find tag's tid by tag's name
+ * operate taxonomy_term_data table.
+ */
+function _pattern_entity_findtagtid_by_tagname($tagname) {
+  $query = db_select('taxonomy_term_data', 'ttd')
+    ->fields('ttd', array('tid'))
+    ->condition('name', $tagname)
+    ->execute()
+    ->fetchAllAssoc('tid');
+  return $query;
+}
+
+/**
+ * find entity_id from tid and 'patternentity' in taxonomy_entity_index.
+ */
+function _pattern_entity_findentityid_by_tagvid($tagvids) {
+  if (count($tagvids) == 0) {
+    return array(); 
+  }
+
+  $or = db_or();
+  foreach ($tagvids as $key => $value) {
+    $or->condition('tid', $key);
+  }
+
+  $query = db_select('taxonomy_entity_index', 'tei')
+    ->fields('tei', array('entity_id'))
+    ->condition($or)
+    ->execute()
+    ->fetchAllAssoc('entity_id');
+  return $query;
 }

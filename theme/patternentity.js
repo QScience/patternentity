@@ -47,6 +47,7 @@ $(document).ready(function() {
 			case 'Category': value_autofill = 'e.g. block,color,content,menu'; break;
 			case 'Pid': value_autofill = 'e.g. 3 or any number'; break;
 			case 'Author': value_autofill = 'e.g. Qscience'; break;
+			case 'Tags': value_autofill = 'e.g. helloworld'; break;
 			default: value_autofill = 'search...';
 		}
 		return value_autofill;
@@ -112,7 +113,8 @@ $(document).ready(function() {
 
     var search_text = $('#patternentity-search #edit-search').val().trim();
     if ( search_text == '' || search_text == value_default) {
-      $(table_wrap).html('please enter something.');
+      $(table_wrap).hide();
+      $(table_wrap).html('please enter something.').show('slow');
     }
     else {
       var search_type = $('#patternentity-search #edit-selected option:selected').val();
