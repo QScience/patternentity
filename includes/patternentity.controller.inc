@@ -45,7 +45,7 @@ class PatternEntityController extends EntityAPIController {
           }
         }
       }
-      dsm($build);
+      //dsm($build);
 
       $build += array(
         // If the entity type provides an implementation, use this instead the

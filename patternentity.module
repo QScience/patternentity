@@ -342,6 +342,7 @@ function patternentity_search($form, &$form_state, $search_type='', $search_valu
       2 => t('Author'),
       3 => t('UUID'),
       4 => t('Pid'),
+      //5 => t('Tags'),
     ),
     '#default_value' => ($search_type == '')?0:$search_type,
   );
@@ -405,6 +406,10 @@ function _pattern_entity_search($selected, $value) {
       $query->propertyCondition('pid', $value, '=');
       $fieldset_title = "pattern with pid: $value";
       break;
+    //case 5:
+    //  $query->fieldCondition($property, 'tid', $value, '=');
+    //  $fieldset_title = "pattern with tag: $value";
+    //  break;
   }
   $query->propertyOrderBy('created', 'DESC')
     ->execute();
