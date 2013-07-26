@@ -156,7 +156,15 @@ $(document).ready(function() {
 				else {
 					$(upload_form_div).slideUp('slow');
 				}
+				//console.log(data.error);
 				
+			},
+			error: function(jqXHR, exception) {
+				//console.log(jqXHR.status);
+				if (jqXHR.status == 403) {
+					$(upload_form_div).slideUp('slow');
+					$(upload_form_div).html('you don\'t have the permission to upload pattern files').slideDown('slow');
+				}
 			}
 		});
 		return false;
