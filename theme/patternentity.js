@@ -127,10 +127,12 @@ $(document).ready(function() {
         success: function(data) {
           var table = $('#pattern-entity-list-table-wrap', data).html();
           if (table == null) {
-          $(table_wrap).text('nothing found.');
+			  $(table_wrap).hide();
+			  $(table_wrap).text('nothing found.').show('slow');
           }
           else {
-          $(table_wrap).html(table);
+			  $(table_wrap).hide();
+			  $(table_wrap).html(table).slideDown('slow');
           }
         }
       });
