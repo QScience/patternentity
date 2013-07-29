@@ -130,12 +130,15 @@ $(document).ready(function() {
         success: function(data) {
           var table = $('#pattern-entity-list-table-wrap', data).html();
           if (table == null) {
-			  $(table_wrap).hide();
-			  $(table_wrap).text('nothing found.').show('slow');
+            $(table_wrap).hide();
+            $(table_wrap).text('nothing found.').show('slow');
           }
           else {
-			  $(table_wrap).hide();
-			  $(table_wrap).html(table).slideDown('slow');
+            $(table_wrap).hide();
+            $(table_wrap).html(table).slideDown('slow');
+            $("#pattern-entity-list-table-id .upload-time").text(function(){
+              return moment.unix($(this).attr("value")).fromNow();
+            });
           }
         }
       });
