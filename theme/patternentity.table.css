@@ -21,3 +21,11 @@
   text-indent: -9999px;
   width: 27px;
 }
+
+.voted-sign{
+  background: url("../img/like_black.png") no-repeat scroll 0 0 transparent;
+  display: block;
+  height: 25px;
+  text-indent: -9999px;
+  width: 27px;
+}

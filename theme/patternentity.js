@@ -25,15 +25,17 @@ $(document).ready(function() {
 				var $score = $('#patternentity-page-pattern-description #pattern-entity-view-page-score', data);
 				var $vote = $('#patternentity-page-pattern-description #pattern-entity-view-page-vote', data);
 
+				console.log($vote.text());
 				var link_parent = $(link).parent();
 				$(link_parent).prev().prev().html($score.text());
 				//if ($(link).hasClass('voting-link-odd')) {
+				if ($vote.text() == 'voted'){
 				  $(link_parent).html($vote.html());
-				//}
-				//else {
-				//  $(link_parent).html($vote.html());
-				//  $(link_parent).children('.voting-link').addClass('voting-link-odd');
-				//}
+				  $(link_parent).children('.voted-sign').addClass('voting-link-odd');
+				}
+				else {
+				  $(link_parent).html($vote.html());
+				}
 			}
 		});
 		return false;

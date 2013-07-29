@@ -66,7 +66,7 @@ function _pattern_entity_view_pattern_description($pe) {
 
   $voted = _pattern_entity_check_whether_voted($pe->pid);
   if($voted) {
-    $vote_s = t('voted');
+    $vote_s = '<strong class="voted-sign">voted</strong>';
   }
   else {
     $vote_s = l(t('voting'), 'pattern/' . $pe->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
@@ -141,7 +141,7 @@ function _pattern_entity_list_table_row($ety_obj) {
 
   $voted = _pattern_entity_check_whether_voted($ety_obj->pid);
   if($voted) {
-    $row['voting_link'] = t('voted');
+    $row['voting_link'] = '<strong class="voted-sign">voted</strong>';
   }
   else {
     $row['voting_link'] = l(t('voting'), 'pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
