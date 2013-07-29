@@ -103,14 +103,6 @@ function patternentity_menu() {
     'access arguments' => array('view patternentity'),
   );
 
-  //$items['pattern/upload'] = array(
-  //  'title' => 'pattern upload',
-  //  'description' => 'pattern upload page',
-  //  'page callback' => '_pattern_entity_upload_pattern',
-  //  'page arguments' => array(),
-  //  'access arguments' => array('upload patternentity'),
-  //);
-
   $items['pattern/%/download'] = array(
     'title' => 'pattern download link',
     'description' => 'pattern download menu link',
@@ -204,16 +196,6 @@ function _pattern_entity_download_pattern($pid) {
   drupal_add_http_header("Content-Disposition", "attachment;filename=" . $ety_obj->file_name);
   print $file;
 }
-
-///**
-// * callback hook_menu() pattern/upload 
-// */
-//function _pattern_entity_upload_pattern() {
-//  //module_load_include('inc', 'patternentity', 'include/patternentity.admin');
-//  $form_state = array();
-//  form_load_include($form_state, 'inc', 'patternentity', 'include/patternentity.admin'); 
-//  return entity_ui_get_form('patternentity', null);
-//}
 
 /**
  * callback hook_menu() for /pattern/pid
