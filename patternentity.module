@@ -292,7 +292,10 @@ function _pattern_entity_list($property, $arg, $operate = '=') {
   }
   else {
     drupal_set_message("The pattern list doesn't exist.", "error");
-    drupal_goto('all_pattern_entity_list');
+    if ($property_sign != 'pid') {
+      drupal_goto('all_pattern_entity_list');
+    }
+    return t("nothing found.");
   }
 }
 
