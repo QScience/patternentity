@@ -18,7 +18,7 @@ function patternentity_form($form, &$form_state, $patternentity) {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Upload and Parser'),
+    '#value' => t('Upload'),
     '#weight' => 20,
   );
 
