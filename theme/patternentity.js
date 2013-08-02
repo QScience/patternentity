@@ -152,7 +152,7 @@ $(document).ready(function() {
 	$('#pattern-entity-list-table-wrap').before('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
 	var upload_form_div = $('#patternentity-upload-form-js');
 	$(upload_form_div).hide();
-	$('.upload-button-link').live('click', function (){
+	$('.upload-button-link').bind('click', function (){
 		var url = $('.upload-button-link').attr('href');
 		$.ajax({
 			url: url,

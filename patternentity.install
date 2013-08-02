@@ -139,6 +139,7 @@ function patternentity_uninstall() {
     ->condition('entity_type', 'patternentity')
     ->execute();
 
+
   //clean all attached field.
   field_attach_delete_bundle('patternentity', 'patternentity');
   

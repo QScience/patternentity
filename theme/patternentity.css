@@ -4,5 +4,7 @@
 }
 
 #patternentity-upload-form-js {
-	text-align: center;
+	border: 2px solid #D8D8D8;
+	padding-left: 13px;
+	padding-top: 9px;
 }
