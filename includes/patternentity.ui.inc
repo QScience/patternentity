@@ -104,7 +104,12 @@ class PatternEntityUIController extends EntityDefaultUIController {
     //$row[] = $ety_obj->file_path;
     $row[] = l(t('download'), '/pattern/' . $id . '/download');
     $usr_obj = user_load($ety_obj->uploader);
-    $row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
+    if ($usr_obj->uid == 0) {
+      $row[] = l(t('anonymous'), '/pattern/uploader/' . $ety_obj->uploader);
+    }
+    else {
+      $row[] = l($usr_obj->name , '/pattern/uploader/' . $ety_obj->uploader);
+    }
 
     // Add a row for the exportable status.
     if (!empty($this->entityInfo['exportable'])) {
