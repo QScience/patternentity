@@ -234,6 +234,7 @@ function _pattern_entity_view_page($pid) {
  * callback hook_menu() for list /pattern/$property/$arg
  */
 function _pattern_entity_list($property, $arg, $operate = '=') {
+  drupal_add_js("misc/autocomplete.js");
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/jquery.autofill.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/moment.min.js');

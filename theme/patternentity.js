@@ -161,6 +161,7 @@ $(document).ready(function() {
 				if ( $(upload_form_div).is(':hidden')) {
 					var upload_form = $('#patternentity-form', data).wrap("<div></div>").parent().html();
 					$(upload_form_div).html(upload_form).slideDown('slow');
+          Drupal.attachBehaviors($("#patternentity-form"));
 				}
 				else {
 					$(upload_form_div).slideUp('slow');
@@ -176,9 +177,9 @@ $(document).ready(function() {
 				}
 			}
 		});
+    
 		return false;
 	});
-
 
 });
 })(jQuery)
