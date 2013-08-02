@@ -170,10 +170,13 @@ function _pattern_entity_all_list_page() {
   $searchform = drupal_render($searchform);
 
   $most_recent = _pattern_entity_list('pid', '0', '>');
-
-  $most_liked = _pattern_entity_list_orderby_voting();
-
-  return $searchform . $most_recent;
+  if ($most_recent === false) {
+    return t('nothing found');
+  }
+  else {
+    $most_liked = _pattern_entity_list_orderby_voting();
+    return $searchform . $most_recent . $most_liked;
+  }
 }
 
 /**
@@ -361,7 +364,8 @@ function _pattern_entity_list($property, $arg, $operate = '=', $limit = 'unlimit
   }
 
   $query->propertyOrderBy('created', 'DESC')
-    ->pager(10)
+    //->pager(10)
+    ->pager(4)
     ->execute();
   if (isset($query->ordered_results) && count($query->ordered_results)) {
     $upload_button = _pattern_entity_upload_button();
@@ -651,7 +655,28 @@ function _pattern_entity_list_orderby_voting() {
     ->propertyOrderBy('created', 'DESC')
     ->execute();
   dsm($query);
+  $vscore = array();
   if (isset($query->ordered_results) && count($query->ordered_results)) {
-  }
+    foreach ($query->ordered_results as $key => $value) {
+      $vscore[$key] = _pattern_entity_get_voting_score($value->entity_id);
+    }
+    arsort($vscore);
+    dsm($vscore);
+    $new_ordered_results = array();
+    foreach ($vscore as $key => $value) {
+      $new_ordered_results[] = $query->ordered_results[$key];
+    }
+    $query->ordered_results = $new_ordered_results;
+    dsm($query);
 
+    $fieldset_title = 'Most Liked Patterns:';
+    $upload_button = _pattern_entity_upload_button();
+    $list = "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
+    $list .= _pattern_entity_list_page($query);
+    $list .= '</div></fieldset></div>';
+    return $list;
+  }
+  else {
+    return false;
+  }
 }
