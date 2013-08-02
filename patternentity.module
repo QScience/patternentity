@@ -430,7 +430,7 @@ function _pattern_entity_search($selected, $value) {
  */
 function _pattern_entity_upload_button() {
   $url = 'admin/structure/patternentity/add';
-  $upload_link = l(t('New Pattern'), $url, array('attributes' => array('class' => array('btn btn-success upload-button-link'))));
+  $upload_link = l(t('New Pattern'), $url, array('attributes' => array('class' => array('upload-button-link'))));
   return "<strong>$upload_link</strong>";
 }
 

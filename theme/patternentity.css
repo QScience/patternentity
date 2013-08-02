@@ -1,6 +1,13 @@
 .upload-button-link {
-  float: right;
   margin-right: 20px;
+  float: right;
+  margin-top: 6px;
+	background: url("../img/file_add.png") no-repeat scroll 0 0 transparent;
+	display: block;
+	height: 39px;
+	text-indent: -9999px;
+	width: 48px;
+  margin-right: 1px;
 }
 
 #patternentity-upload-form-js {
