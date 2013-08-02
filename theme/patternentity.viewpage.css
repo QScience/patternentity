@@ -86,11 +86,39 @@ dl dd {
   width: 27px;
 }
 */
-.upload-button-link {
+
+.voting-link {
   float: right;
-  margin-right: 20px;
+  margin-top: 3px;
+  background: url("../img/like_white.png") no-repeat scroll 0 0 transparent;
+  display: block;
+  height: 25px;
+  text-indent: -9999px;
+  width: 27px;
+  margin-right: 5px;
 }
 
-#patternentity-upload-form-js {
+.voted-sign{
+  float: right;
+  margin-top: 3px;
+  background: url("../img/like_black.png") no-repeat scroll 0 0 transparent;
+  display: block;
+  height: 25px;
+  text-indent: -9999px;
+  width: 27px;
+  margin-right: 5px;
+}
+
+/*#patternentity-upload-form-js {
 	text-align: center;
+}*/
+
+.backtoserver-button-link {
+  float: right;
+  background: url("../img/home.png") no-repeat scroll 0 0 transparent;
+  display: block;
+  height: 25px;
+  text-indent: -9999px;
+  width: 27px;
+  margin-top: 2px;
 }

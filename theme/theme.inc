@@ -64,30 +64,22 @@ function _pattern_entity_view_pattern_description($pe) {
   $score = _pattern_entity_get_voting_score($pe->pid);
   $content .= '<dt>score</dt><dd id="pattern-entity-view-page-score">' . $score . '</dd>';
 
-  $voted = _pattern_entity_check_whether_voted($pe->pid);
-  if($voted) {
-    $vote_s = '<strong class="voted-sign">voted</strong>';
-  }
-  else {
-    $vote_s = l(t('voting'), 'pattern/' . $pe->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
-  }
-  $content .= '<dt>voting</dt><dd class="voting-link" id="pattern-entity-view-page-vote">' . $vote_s . '</dd>';
+  //$voted = _pattern_entity_check_whether_voted($pe->pid);
+  //if($voted) {
+  //  $vote_s = '<strong class="voted-sign">voted</strong>';
+  //}
+  //else {
+  //  $vote_s = l(t('voting'), 'pattern/' . $pe->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
+  //}
+  //$content .= '<dt>voting</dt><dd class="voting-link" id="pattern-entity-view-page-vote">' . $vote_s . '</dd>';
 
   $file_d = l(t('download'), 'pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
   $content .= '<dt>file</dt><dd>' . $file_d . '</dd>';
 
   $content .= '<dt>content</dt><dd>' . '<a href="" id="pattern_file_popup">show</a>' . '</dd>';
 
-  //$public_link = variable_get('patterns_public_url', '');
-  //if ($public_link == '') {
-    $all_patteren_list = url('all_pattern_entity_list');
-    $content .= '<dt>backto</dt><dd>' . "<a href=$all_patteren_list>server</a>" . '</dd>';
-  //}
-  //else {
-  //  $public_link = url($public_link);
-  //  $content .= '<dt>backto</dt><dd>' . "<a href=$public_link>server</a>" . '</dd>';
-  //}
-  //dsm($public_link);
+  //$all_patteren_list = url('all_pattern_entity_list');
+  //$content .= '<dt>backto</dt><dd>' . "<a href=$all_patteren_list>server</a>" . '</dd>';
 
   $content .= '</dl></div>';
   return $content;

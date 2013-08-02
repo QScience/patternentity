@@ -214,8 +214,8 @@ function _pattern_entity_view_page($pid) {
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.viewpage.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.viewpage.js');
 
-  $upload_button = _pattern_entity_upload_button();
-  $content = "<div id='one_pattern_div'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
+  $backtoserver_voting_link = _pattern_entity_back_like_button($pid);
+  $content = "<div id='one_pattern_div'><fieldset><legend>$fieldset_title$backtoserver_voting_link</legend><div class='fieldset-wrapper'>";
 
   $content .= _pattern_entity_view_pattern_description($pe);
 
@@ -425,12 +425,33 @@ function _pattern_entity_search($selected, $value) {
 }
 
 /**
- * upload button link in view page and list page.
+ * upload button link in the list page.
  */
 function _pattern_entity_upload_button() {
   $url = 'admin/structure/patternentity/add';
   $upload_link = l(t('New Pattern'), $url, array('attributes' => array('class' => array('btn btn-success upload-button-link'))));
   return "<strong>$upload_link</strong>";
+}
+
+/**
+ * backtoserver button link and like lint in the view page.
+ */
+function _pattern_entity_back_like_button($pid) {
+  $url = 'all_pattern_entity_list';
+  $backtoserver_link = l(t('Back To Server'), $url, array('attributes' => array('class' => array('backtoserver-button-link'))));
+  $backtoserver_link = "<strong>$backtoserver_link</strong>";
+  
+  $voted = _pattern_entity_check_whether_voted($pid);
+  if($voted) {
+    $vote_s = '<strong class="voted-sign">voted</strong>';
+  }
+  else {
+    $url = 'pattern/' . $pid . '/voting';
+    $vote_s = l(t('voting'), $url, array('attributes' => array('class' => array('voting-link'), 'id' => array('pattern-entity-view-page-vote'))));
+  }
+
+  
+  return $backtoserver_link . $vote_s;
 }
 
 /**

@@ -23,18 +23,19 @@ $(document).ready(function() {
 			url: url,
 			success: function(data) {
 				var $score = $('#patternentity-page-pattern-description #pattern-entity-view-page-score', data);
-				var $vote = $('#patternentity-page-pattern-description #pattern-entity-view-page-vote', data);
+				var $vote = $('#pattern-entity-view-page-vote', data);
 
 				console.log($vote.text());
 				var link_parent = $(link).parent();
 				$(link_parent).prev().prev().html($score.text());
 				//if ($(link).hasClass('voting-link-odd')) {
 				if ($vote.text() == 'voted'){
-				  $(link_parent).html($vote.html());
+				  $(link_parent).html($vote.wrap("<div></div>").parent().html());
 				  $(link_parent).children('.voted-sign').addClass('voting-link-odd');
 				}
 				else {
-				  $(link_parent).html($vote.html());
+				  //$(link_parent).html($vote.html());
+				  $(link_parent).html($vote.wrap("<div></div>").parent().html());
 				}
 			}
 		});
