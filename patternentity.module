@@ -443,7 +443,7 @@ function _pattern_entity_back_like_button($pid) {
   
   $voted = _pattern_entity_check_whether_voted($pid);
   if($voted) {
-    $vote_s = '<strong class="voted-sign">voted</strong>';
+    $vote_s = '<strong class="voted-sign" id="pattern-entity-view-page-vote">voted</strong>';
   }
   else {
     $url = 'pattern/' . $pid . '/voting';
