@@ -89,6 +89,7 @@ function _pattern_entity_view_pattern_description($pe) {
  * theme pattern list page.
  */
 function _pattern_entity_list_page($query) {
+  //dsm($query);
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.table.css');
   $header = array(
     t('Category'),
@@ -111,7 +112,9 @@ function _pattern_entity_list_page($query) {
   foreach($entities as $ety_obj) {
     $rows[] = _pattern_entity_list_table_row($ety_obj);
   }
-  return theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'), 'id' => array('pattern-entity-list-table-id'))));
+  $html = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'), 'id' => array('pattern-entity-list-table-id'))));
+  $html .= theme('pager', array('tags' => array()));
+  return $html;
 }
 
 /**
