@@ -73,8 +73,8 @@ function _pattern_entity_view_pattern_description($pe) {
   //}
   //$content .= '<dt>voting</dt><dd class="voting-link" id="pattern-entity-view-page-vote">' . $vote_s . '</dd>';
 
-  $file_d = l(t('download'), 'pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
-  $content .= '<dt>file</dt><dd>' . $file_d . '</dd>';
+  //$file_d = l(t('download'), 'pattern/' . $pe->pid . '/download', array('attributes' => array('class' => 'download-link')));
+  //$content .= '<dt>file</dt><dd>' . $file_d . '</dd>';
 
   $content .= '<dt>content</dt><dd>' . '<a href="" id="pattern_file_popup">show</a>' . '</dd>';
 

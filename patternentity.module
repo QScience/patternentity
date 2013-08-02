@@ -442,6 +442,9 @@ function _pattern_entity_back_like_button($pid) {
   $backtoserver_link = l(t('Back To Server'), $url, array('attributes' => array('class' => array('backtoserver-button-link'))));
   $backtoserver_link = "<strong>$backtoserver_link</strong>";
   
+  
+  $file_d = l(t('download'), 'pattern/' . $pid . '/download', array('attributes' => array('class' => 'download-link')));
+
   $voted = _pattern_entity_check_whether_voted($pid);
   if($voted) {
     $vote_s = '<strong class="voted-sign" id="pattern-entity-view-page-vote">voted</strong>';
@@ -452,7 +455,7 @@ function _pattern_entity_back_like_button($pid) {
   }
 
   
-  return $backtoserver_link . $vote_s;
+  return $backtoserver_link . $file_d . $vote_s;
 }
 
 /**
