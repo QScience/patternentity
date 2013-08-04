@@ -36,12 +36,16 @@ class PatternEntityController extends EntityAPIController {
     foreach ($entities as $entity) {
       $build = entity_build_content($this->entityType, $entity, $view_mode, $langcode);
 
+      //dsm($build);
+      
       foreach ($build as $key => $value) {
         if (isset($value['#field_type']) and $value['#field_type'] == 'taxonomy_term_reference') {
           if (isset($value['#items'])) {
-            $tid = $value['#items'][0]['tid'];
-            $tags_name = $value['#field_name'];
-            $build[$key][0]['#href'] = "pattern/tags/$tags_name/$tid";
+            foreach ($value['#items'] as $_key => $_value) {
+              $tid = $_value['tid'];
+              $tags_name = $value['#field_name'];
+              $build[$key][$_key]['#href'] = "pattern/tags/$tags_name/$tid";
+            }
           }
         }
       }
