@@ -14,33 +14,37 @@ $(document).ready(function() {
 	});
 
 	//voting link ajax.
-	$('#pattern-entity-list-table-id .voting-link').live('click', function () {
-		 var link = this;
-		 var url = $(this).attr('href');
-		 $(link).parent().children('.voting-link').addClass('voting-link-odd');
-		 //console.log(url);
-		 $.ajax({
-			url: url,
-			success: function(data) {
-				var $score = $('#patternentity-page-pattern-description #pattern-entity-view-page-score', data);
-				var $vote = $('#pattern-entity-view-page-vote', data);
+  $('.pattern-entity-list-table a[class*="voting-link-"]').live('click', function () {
 
-				console.log($vote.text());
-				var link_parent = $(link).parent();
-				$(link_parent).prev().prev().html($score.text());
-				//if ($(link).hasClass('voting-link-odd')) {
-				if ($vote.text() == 'voted'){
-				  $(link_parent).html($vote.wrap("<div></div>").parent().html());
-				  $(link_parent).children('.voted-sign').addClass('voting-link-odd');
-				}
-				else {
-				  //$(link_parent).html($vote.html());
-				  $(link_parent).html($vote.wrap("<div></div>").parent().html());
-				}
-			}
-		});
-		return false;
-	});
+    var class_pid = $(this).attr('title');
+    var link = $('.' + class_pid);
+    $(link).each(function() {
+      $(this).parent().children('.voting-link').addClass('voting-link-odd');
+    });
+
+    var url = $(this).attr('href');
+
+    $.ajax({
+      url: url,
+      success: function(data) {
+        var $score = $('#patternentity-page-pattern-description #pattern-entity-view-page-score', data);
+        var $vote = $('#pattern-entity-view-page-vote', data);
+
+        console.log($vote.text());
+        var link_parent = $(link).parent();
+        console.log(link_parent);
+        $(link_parent).prev().prev().html($score.text());
+        if ($vote.text() == 'voted'){
+          $(link_parent).html($vote.wrap("<div></div>").parent().html());
+          $(link_parent).children('.voted-sign').addClass('voting-link-odd');
+        }
+        else {
+          $(link_parent).html($vote.wrap("<div></div>").parent().html());
+        }
+      }
+    });
+    return false;
+  });
 
 	//autofill search box.
 	function switch_autofill(text_select) {
@@ -104,7 +108,7 @@ $(document).ready(function() {
 	$('input#edit-search').css('width', '65%');
 
 	//use moment.js to format upload time.
-	$("#pattern-entity-list-table-id .upload-time").text(function(){
+	$(".pattern-entity-list-table .upload-time").text(function(){
 		return moment.unix($(this).attr("value")).fromNow();
 	});
 
@@ -139,7 +143,7 @@ $(document).ready(function() {
           else {
             $(table_wrap).hide();
             $(table_wrap).html(table).slideDown('slow');
-            $("#pattern-entity-list-table-id .upload-time").text(function(){
+            $(".pattern-entity-list-table .upload-time").text(function(){
               return moment.unix($(this).attr("value")).fromNow();
             });
           }

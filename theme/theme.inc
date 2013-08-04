@@ -112,7 +112,7 @@ function _pattern_entity_list_page($query) {
   foreach($entities as $ety_obj) {
     $rows[] = _pattern_entity_list_table_row($ety_obj);
   }
-  $html = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'), 'id' => array('pattern-entity-list-table-id'))));
+  $html = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'))));
   $html .= theme('pager', array('tags' => array()));
   return $html;
 }
@@ -139,7 +139,7 @@ function _pattern_entity_list_table_row($ety_obj) {
     $row['voting_link'] = '<strong class="voted-sign">voted</strong>';
   }
   else {
-    $row['voting_link'] = l(t('voting'), 'pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => 'voting-link')));
+    $row['voting_link'] = l(t('voting'), 'pattern/' . $ety_obj->pid . '/voting', array('attributes' => array('class' => "voting-link voting-link-$ety_obj->pid", 'title' => "voting-link-$ety_obj->pid")));
   }
 
   return $row;
