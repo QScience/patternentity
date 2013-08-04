@@ -138,6 +138,9 @@ function patternentity_uninstall() {
   $num_deleted = db_delete('votingapi_vote')
     ->condition('entity_type', 'patternentity')
     ->execute();
+  $num_deleted = db_delete('votingapi_cache')
+    ->condition('entity_type', 'patternentity')
+    ->execute();
 
 
   //clean all attached field.
