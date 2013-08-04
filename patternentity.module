@@ -597,9 +597,16 @@ function _pattern_entity_back_like_button($pid) {
  * operate taxonomy_term_data table.
  */
 function _pattern_entity_findtagtid_by_tagname($tagname) {
+  $split_strings = preg_split('/[\,]+/', $tagname);
+
+  $or = db_or();
+  foreach ($split_strings as $value) {
+    $or->condition('name', $value);
+  }
+
   $query = db_select('taxonomy_term_data', 'ttd')
     ->fields('ttd', array('tid'))
-    ->condition('name', $tagname)
+    ->condition($or)
     ->execute()
     ->fetchAllAssoc('tid');
   return $query;
