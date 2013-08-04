@@ -166,6 +166,7 @@ function patternentity_menu() {
  * callback hook_menu() all_pattern_entity_list 
  */
 function _pattern_entity_all_list_page() {
+
   drupal_add_js("misc/autocomplete.js");
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/jquery.autofill.min.js');
@@ -204,7 +205,7 @@ function _pattern_entity_all_list_page() {
     $query->ordered_results = array_slice($new_ordered_results, 0, 10);
     $fieldset_title = 'Most Liked Patterns:';
     $upload_button = _pattern_entity_upload_button();
-    $list .= "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
+    $list .= "<div id='pattern-entity-list-table-wrap-mostlike'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
     $list .= '</div></fieldset></div>';
 
@@ -512,7 +513,21 @@ function _pattern_entity_search($selected, $value) {
       break;
     case 5:
       $tagtids = _pattern_entity_findtagtid_by_tagname($value);
-      $entity_ids = _pattern_entity_findentityid_by_tagvid($tagtids);
+     // dsm($tagtids);
+
+      $tags_table_db = array();
+      $fields_info = field_info_instances('patternentity');
+      if (isset($fields_info['patternentity']) && count($fields_info['patternentity'])) {
+        $fields_info = $fields_info['patternentity'];
+        foreach ($fields_info as $field_name => $_value) {
+          $field_info = field_info_field($field_name);
+          if ($field_info['type'] == 'taxonomy_term_reference') {
+            $tags_table_db[] = $field_name;
+          }
+        }
+      }
+
+      $entity_ids = _pattern_entity_findentityid_by_tagvid($tagtids, $tags_table_db);
       //dsm($entity_ids);
       $entity_ids = array_keys($entity_ids);
 
@@ -593,22 +608,34 @@ function _pattern_entity_findtagtid_by_tagname($tagname) {
 /**
  * find entity_id from tid and 'patternentity' in taxonomy_entity_index.
  */
-function _pattern_entity_findentityid_by_tagvid($tagvids) {
+function _pattern_entity_findentityid_by_tagvid($tagvids, $tables) {
   if (count($tagvids) == 0) {
     return array(); 
   }
 
-  $or = db_or();
-  foreach ($tagvids as $key => $value) {
-    $or->condition('tid', $key);
+  $query = array();
+  foreach ($tables as $table) {
+    $or = db_or();
+    foreach ($tagvids as $key => $value) {
+      $or->condition($table . '_tid', $key);
+    }
+   // dsm($table);
+
+    $table = 'field_data_' . $table;
+    $query[] = db_select($table)
+      ->fields($table, array('entity_id'))
+      ->condition($or)
+      ->execute()
+      ->fetchAllAssoc('entity_id');
+   // dsm($query);
   }
 
-  $query = db_select('taxonomy_entity_index', 'tei')
-    ->fields('tei', array('entity_id'))
-    ->condition($or)
-    ->execute()
-    ->fetchAllAssoc('entity_id');
-  return $query;
+  $result = array();
+  foreach ($query as $q) {
+    $result = array_merge($q, $result);
+  }
+ // dsm($result);
+  return $result;
 }
 
 /**

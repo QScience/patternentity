@@ -138,10 +138,12 @@ $(document).ready(function() {
           var table = $('#pattern-entity-list-table-wrap', data).html();
           if (table == null) {
             $(table_wrap).hide();
+            $('#pattern-entity-list-table-wrap-mostlike').hide();
             $(table_wrap).text('nothing found.').show('slow');
           }
           else {
             $(table_wrap).hide();
+            $('#pattern-entity-list-table-wrap-mostlike').hide();
             $(table_wrap).html(table).slideDown('slow');
             $(".pattern-entity-list-table .upload-time").text(function(){
               return moment.unix($(this).attr("value")).fromNow();
