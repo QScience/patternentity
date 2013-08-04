@@ -127,3 +127,18 @@ dl dd {
   margin-top: 2px;
 }
 
+/*
+.field-type-taxonomy-term-reference .field-label {
+	display: inline;
+	padding-right: 10px;
+}
+
+.field-type-taxonomy-term-reference .field-items {
+	display: inline;
+}
+*/
+
+.field-type-taxonomy-term-reference .field-item {
+	display: inline;
+	padding-right: 10px;
+}

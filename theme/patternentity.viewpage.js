@@ -49,7 +49,10 @@ $(document).ready(function() {
 		return false;
 	});
 
-
+	//tags before content
+	var content = $('#patternentity-page-pattern-field');
+	var tags = $('.field-type-taxonomy-term-reference');
+	$(content).before($(tags));
 
 });
 })(jQuery)
