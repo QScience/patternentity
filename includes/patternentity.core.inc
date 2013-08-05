@@ -210,10 +210,8 @@ function _pattern_entity_search($selected, $value) {
       break;
 
     default:
-      $list .= '<div id="pattern-entity-all-table-wrap">';
-      $list .= NOSEARCHRESULT;
-      $list .= '</div>';
-      return $list;
+      drupal_set_message("The pattern list doesn't exist.", "error");
+      drupal_goto('all_pattern_entity_list');
   }
   
 }
