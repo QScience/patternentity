@@ -1,6 +1,7 @@
 <?php
 
 module_load_include('inc', 'patternentity', 'theme/theme');
+module_load_include('inc', 'patternentity', 'includes/patternentity.blocks');
 module_load_include('module', 'votingapi', 'votingapi');
 
 /**
@@ -78,6 +79,38 @@ function patternentity_permission() {
       'title' => t('Upload pattern file to patternentity'),
     ),
   );
+}
+
+/** 
+ * Implements hook_block_info().
+ */
+function patternentity_block_info() {
+  $blocks = array();
+  $blocks['patternentity_prolific_author'] = array(
+    'info' => t('Most Prolific authors in patternentity'),
+  );
+  $blocks['patternentity_hottest_tags'] = array(
+    'info' => t('Hottest tags in patternentity'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function patternentity_block_view($delta='') {
+  $block = array();
+  switch ($delta) {
+    case 'patternentity_prolific_author':
+      $block['subject'] = t('Most Prolific Authors:');
+      $block['content'] = _pattern_entity_block_most_prolific_author();
+      break;
+    case 'patternentity_hottest_tags':
+      $block['subject'] = t('Most Popular Tags:');
+      $block['content'] = _pattern_entity_block_hottest_tags();
+      break;
+  }
+  return $block;
 }
 
 /**
@@ -159,6 +192,14 @@ function patternentity_menu() {
     'access arguments' => array('view patternentity'),
   );
 
+  $items['pattern/alltags/%'] = array(
+    'title' => 'all pattern with the tag % in all fields',
+    'description' => 'all pattern with the tag % in all fields',
+    'page callback' => '_pattern_entity_list_tags_all',
+    'page arguments' => array(2),
+    'access arguments' => array('view patternentity'),
+  );
+
   return $items;
 }
 
@@ -204,18 +245,18 @@ function _pattern_entity_all_list_page() {
     }
     $query->ordered_results = array_slice($new_ordered_results, 0, 10);
     $fieldset_title = 'Most Liked Patterns:';
-    $upload_button = _pattern_entity_upload_button();
-    $list .= "<div id='pattern-entity-list-table-wrap-mostlike'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
+    $list .= "<div id='pattern-entity-list-table-wrap-mostlike'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
     $list .= '</div></fieldset></div>';
 
-    return $list;
   }
   else {
-    return false;
+    $list .= "<div id='pattern-entity-list-table-wrap'>";
+    $list .= "nothing found.";
+    $list .= '</div>';
   }
 
-  return "helloworld";
+  return $list;
 }
 
 /**
@@ -291,6 +332,28 @@ function _pattern_entity_list_tags($vocabulary, $terms) {
 }
 
 /**
+ * callback hook_menu() alltags list
+ */
+function _pattern_entity_list_tags_all($tid) {
+  $searchform = drupal_get_form('patternentity_search');
+  $list = drupal_render($searchform);
+
+  $tags_fields_name = _pattern_entity_get_all_taxonomyfields_name('patternentity');
+  //dsm($tags_fields_name); 
+
+  if ($tags_fields_name === false) {
+    drupal_set_message("The pattern list doesn't exist.", "error");
+    drupal_goto('all_pattern_entity_list');
+  }
+  
+  foreach ($tags_fields_name as $field_name) {
+    $list .= _pattern_entity_list($field_name, $tid, '=', false);
+  }
+
+  return $list;
+}
+
+/**
  * callback hook_menu() pattern/pid/download
  */
 function _pattern_entity_download_pattern($pid) {
@@ -354,7 +417,7 @@ function _pattern_entity_view_page($pid) {
 /**
  * callback hook_menu() for list /pattern/$property/$arg
  */
-function _pattern_entity_list($property, $arg, $operate = '=', $limit = 'unlimit') {
+function _pattern_entity_list($property, $arg, $operate = '=', $showupload = true) {
   drupal_add_js("misc/autocomplete.js");
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/jquery.autofill.min.js');
@@ -392,7 +455,7 @@ function _pattern_entity_list($property, $arg, $operate = '=', $limit = 'unlimit
     case 'tag':
       $tax = taxonomy_term_load($arg);
       drupal_set_title('tag: ' . $tax->name);
-      $fieldset_title = 'tag: ' . $tax->name;
+      $fieldset_title = "tag: " . $tax->name . " in $property field";
       $query->fieldCondition($property, 'tid', $arg, '=');
       break;
 
@@ -406,7 +469,12 @@ function _pattern_entity_list($property, $arg, $operate = '=', $limit = 'unlimit
     ->pager(10)
     ->execute();
   if (isset($query->ordered_results) && count($query->ordered_results)) {
-    $upload_button = _pattern_entity_upload_button();
+    if ($showupload) {
+      $upload_button = _pattern_entity_upload_button();
+    }
+    else {
+      $upload_button = '';
+    }
     $list = "<div id='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
     $list .= _pattern_entity_list_page($query);
     $list .= '</div></fieldset></div>';
@@ -513,7 +581,7 @@ function _pattern_entity_search($selected, $value) {
       break;
     case 5:
       $tagtids = _pattern_entity_findtagtid_by_tagname($value);
-     // dsm($tagtids);
+      // dsm($tagtids);
 
       $tags_table_db = array();
       $fields_info = field_info_instances('patternentity');
