@@ -170,28 +170,28 @@ function patternentity_menu() {
   $items['pattern/uploader/%'] = array(
     'title' => 'uploader \'s all pattern',
     'description' => 'all pattern files uploaded by user %',
-    'page callback' => '_pattern_entity_list_uploader',
+    'page callback' => '_pattern_entity_list_basicpage',
     'page arguments' => array(1, 2),
     'access arguments' => array('view patternentity'),
   );
   $items['pattern/category/%'] = array(
     'title' => 'all pattern in % category',
     'description' => 'all pattern files in % category',
-    'page callback' => '_pattern_entity_list_category',
+    'page callback' => '_pattern_entity_list_basicpage',
     'page arguments' => array(1, 2),
     'access arguments' => array('view patternentity'),
   );
   $items['pattern/author/%'] = array(
     'title' => 'all pattern belong to author %',
     'description' => 'all pattern belong to author %',
-    'page callback' => '_pattern_entity_list_author',
+    'page callback' => '_pattern_entity_list_basicpage',
     'page arguments' => array(1, 2),
     'access arguments' => array('view patternentity'),
   );
   $items['pattern/tags/%/%'] = array(
     'title' => 'all pattern with the tag %',
     'description' => 'all pattern with the tag %',
-    'page callback' => '_pattern_entity_list_tags',
+    'page callback' => '_pattern_entity_list_basicpage',
     'page arguments' => array(2, 3),
     'access arguments' => array('view patternentity'),
   );
@@ -226,13 +226,6 @@ function patternentity_menu() {
  */
 function _pattern_entity_all_list_page() {
 
-  drupal_add_js("misc/autocomplete.js");
-  drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.css');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/jquery.autofill.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/moment.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.table.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
-
   $searchform = drupal_get_form('patternentity_search');
   $list = drupal_render($searchform);
 
@@ -240,18 +233,15 @@ function _pattern_entity_all_list_page() {
   $query->entityCondition('entity_type', 'patternentity')
     ->propertyOrderBy('created', 'DESC')
     ->execute();
-  //dsm($query);
 
   $vscore = array();
   if (isset($query->ordered_results) && count($query->ordered_results)) {
     $ordered_results_backup = $query->ordered_results;
+
     //Most Recent Patterns. 
     $query->ordered_results = array_slice($ordered_results_backup, 0, 10);
     $fieldset_title = 'Most Recent Patterns:';
-    $upload_button = _pattern_entity_upload_button();
-    $list .= "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
-    $list .= _pattern_entity_list_page($query);
-    $list .= '</div></fieldset></div>';
+    $list .= _pattern_entity_list_page($query, $fieldset_title);
 
     //Most Liked Patterns.
     foreach ($ordered_results_backup as $key => $value) {
@@ -264,10 +254,7 @@ function _pattern_entity_all_list_page() {
     }
     $query->ordered_results = array_slice($new_ordered_results, 0, 10);
     $fieldset_title = 'Most Liked Patterns:';
-    $list .= "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title</legend><div class='fieldset-wrapper'>";
-    $list .= _pattern_entity_list_page($query);
-    $list .= '</div></fieldset></div>';
-
+    $list .= _pattern_entity_list_page($query, $fieldset_title);
   }
   else {
     $list .= "<div class='pattern-entity-list-table-wrap'>";
@@ -340,68 +327,14 @@ function _pattern_entity_download_pattern($pid) {
 }
 
 /**
- * callback hook_menu() uploader list
+ * callback hook_menu() four basic page.
  */
-function _pattern_entity_list_uploader($property, $arg) {
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
+function _pattern_entity_list_basicpage($property, $arg) {
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.research.js');
   $searchform = drupal_get_form('patternentity_search');
   $searchform = drupal_render($searchform);
 
   $list = _pattern_entity_list($property, $arg);
-
-  if ($list === false) {
-    drupal_set_message("The pattern list doesn't exist.", "error");
-    drupal_goto('all_pattern_entity_list');
-  }
-  else {
-    return $searchform . $list;
-  }
-}
-
-/**
- * callback hook_menu() category list
- */
-function _pattern_entity_list_category($property, $arg) {
-  $searchform = drupal_get_form('patternentity_search');
-  $searchform = drupal_render($searchform);
-
-  $list = _pattern_entity_list($property, $arg);
-
-  if ($list === false) {
-    drupal_set_message("The pattern list doesn't exist.", "error");
-    drupal_goto('all_pattern_entity_list');
-  }
-  else {
-    return $searchform . $list;
-  }
-}
-
-/**
- * callback hook_menu() author list
- */
-function _pattern_entity_list_author($property, $arg) {
-  $searchform = drupal_get_form('patternentity_search');
-  $searchform = drupal_render($searchform);
-
-  $list = _pattern_entity_list($property, $arg);
-
-  if ($list === false) {
-    drupal_set_message("The pattern list doesn't exist.", "error");
-    drupal_goto('all_pattern_entity_list');
-  }
-  else {
-    return $searchform . $list;
-  }
-}
-
-/**
- * callback hook_menu() tags list
- */
-function _pattern_entity_list_tags($vocabulary, $terms) {
-  $searchform = drupal_get_form('patternentity_search');
-  $searchform = drupal_render($searchform);
-
-  $list = _pattern_entity_list($vocabulary, $terms);
 
   if ($list === false) {
     drupal_set_message("The pattern list doesn't exist.", "error");

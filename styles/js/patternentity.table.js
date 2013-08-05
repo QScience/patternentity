@@ -45,6 +45,7 @@ $(document).ready(function() {
     });
     return false;
   });
+
 	//use moment.js to format upload time.
 	$(".pattern-entity-list-table .upload-time").text(function(){
 		return moment.unix($(this).attr("value")).fromNow();
@@ -84,5 +85,6 @@ $(document).ready(function() {
 
 	//only show upload link at the first table
 	$('.pattern-entity-list-table-wrap .upload-button-link').not(':first').hide();
+
 });
 })(jQuery)
