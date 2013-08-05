@@ -9,7 +9,7 @@
  * used by patternentity_block_view.
  */
 function _pattern_entity_block_most_prolific_author() {
-  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.block.css');
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.block.css');
   $result = array();
   $result['type'] = "ul";
   $result['attributes'] = array('class' => 'patternentity-most-prolific-authors');
@@ -54,7 +54,7 @@ function _pattern_entity_block_most_prolific_author() {
  * used by patternentity_block_view.
  */
 function _pattern_entity_block_hottest_tags() {
-  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.block.css');
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.block.css');
   $result = array();
   $result['type'] = "ul";
   $result['attributes'] = array('class' => 'patternentity-most-popular-tags');
