@@ -230,7 +230,7 @@ function _pattern_entity_all_list_page() {
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/jquery.autofill.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/moment.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.js');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.table.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
 
   $searchform = drupal_get_form('patternentity_search');

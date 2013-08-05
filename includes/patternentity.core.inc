@@ -22,7 +22,7 @@ function _pattern_entity_list($property, $arg, $operate = '=', $showupload = tru
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/jquery.autofill.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/moment.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.js');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.table.js');
 
   $pos = strpos($property, 'field');
   $property_sign = $property;
@@ -95,7 +95,7 @@ function _pattern_entity_search($selected, $value) {
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.css');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/jquery.autofill.min.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/moment.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.js');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.table.js');
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
 
   drupal_set_title('search :');
