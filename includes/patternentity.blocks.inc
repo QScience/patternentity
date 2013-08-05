@@ -9,8 +9,9 @@
  * used by patternentity_block_view.
  */
 function _pattern_entity_block_most_prolific_author() {
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.block.css');
   $result = array();
-  $result['type'] = "ol";
+  $result['type'] = "ul";
   $result['attributes'] = array('class' => 'patternentity-most-prolific-authors');
 
 
@@ -38,7 +39,7 @@ function _pattern_entity_block_most_prolific_author() {
   $items = array();
   foreach ($authors_score as $author => $score) {
     $items[] = array(
-      'data' => l($author, 'pattern/author/' . $author) . ' x ' . $score,
+      'data' => l($author, 'pattern/author/' . $author) . ' × ' . $score,
     );
   }
 
@@ -53,8 +54,9 @@ function _pattern_entity_block_most_prolific_author() {
  * used by patternentity_block_view.
  */
 function _pattern_entity_block_hottest_tags() {
+  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.block.css');
   $result = array();
-  $result['type'] = "ol";
+  $result['type'] = "ul";
   $result['attributes'] = array('class' => 'patternentity-most-popular-tags');
 
   //get all tags field for patternentity.
@@ -106,7 +108,7 @@ function _pattern_entity_block_hottest_tags() {
     $tagname = _pattern_entity_tagname_by_tagid($tid);
     //dsm($score_tb['table']);
     $items[] = array(
-      'data' => l($tagname['name'], 'pattern/alltags/' . $tid) . ' x ' . $score_tb['score'],
+      'data' => l($tagname['name'], 'pattern/alltags/' . $tid) . ' × ' . $score_tb['score'],
     );
   }
 
