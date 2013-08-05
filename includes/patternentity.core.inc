@@ -1,5 +1,7 @@
 <?php
 
+define("NOSEARCHRESULT", " <div class='pattern-entity-list-table-wrap'>nothing found.</div>");
+
 /**
  * this function return a html table. 
  * style: <div class='pattern-entity-list-table-wrap'>a table</div>
@@ -75,7 +77,10 @@ function _pattern_entity_list($property, $arg, $operate = '=', $showupload = tru
 /**
  * callback hook_menu() for /pattern/search/arg1/arg2 path
  * search type: title, category, author, uuid, tags. five types.
+ * every type are implemented as an option.
  * this is a core function.
+ *    title is good enough with db_like.
+ *    
  */
 function _pattern_entity_search($selected, $value) {
 
@@ -84,41 +89,112 @@ function _pattern_entity_search($selected, $value) {
   $form = drupal_get_form('patternentity_search', $selected, $value);
   $list = drupal_render($form);
 
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'patternentity');
+
+  $query;
+  $fieldset_title;
+
   switch ($selected) {
-    case 0:
-      $query->propertyCondition('title', '%' . db_like($value) . '%', 'LIKE');
+    case 0: //title.
       $fieldset_title = "pattern with title: $value";
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'patternentity')
+        ->propertyCondition('title', '%' . db_like($value) . '%', 'LIKE')
+        ->propertyOrderBy('created', 'DESC')
+        ->pager(10)
+        ->execute();
+      $list .= '<div id="pattern-entity-all-table-warp">';
+      if (isset($query->ordered_results) && count($query->ordered_results)) {
+        $list .= _pattern_entity_list_page($query, $fieldset_title);
+      }
+      else {
+        $list .= NOSEARCHRESULT;
+      }
+      $list .= '</div>';
+      return $list;
       break;
-    case 1:
-      $query->propertyCondition('category', '%' . db_like($value) . '%', 'LIKE');
-      $fieldset_title = "pattern in category: $value";
+
+    case 1: //category
+      $split_strings = preg_split('/[\,]+/', $value);
+      dsm($split_strings);
+      $sign_has_table = false;
+      $list .= '<div id="pattern-entity-all-table-warp">';
+      foreach ($split_strings as $category_name) {
+        $a_table = _pattern_entity_list('category', trim($category_name));
+        if ($a_table) {
+          $sign_has_table = true;
+          $list .= $a_table;
+        }
+      }
+      if (!$sign_has_table) {
+        $list .= NOSEARCHRESULT;
+      }
+      $list .= '</div>';
+      return $list;
       break;
-    case 2:
-      $query->propertyCondition('author', '%' . db_like($value) . '%', 'LIKE');
-      $fieldset_title = "pattern of author: $value";
+
+    case 2: //author
+      $split_strings = preg_split('/[\,]+/', $value);
+      dsm($split_strings);
+      $sign_has_table = false;
+      $list .= '<div id="pattern-entity-all-table-warp">';
+      foreach ($split_strings as $author_name) {
+        $a_table = _pattern_entity_list('author', trim($author_name));
+        if ($a_table) {
+          $sign_has_table = true;
+          $list .= $a_table;
+        }
+      }
+      if (!$sign_has_table) {
+        $list .= NOSEARCHRESULT;
+      }
+      $list .= '</div>';
+      return $list;
       break;
-    case 3:
-      $query->propertyCondition('uuuid', '%' . db_like($value) . '%', 'LIKE');
+
+    case 3: //uuid
       $fieldset_title = "pattern with uuuid: $value";
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'patternentity')
+        ->propertyCondition('uuuid', $value)
+        ->propertyOrderBy('created', 'DESC')
+        ->pager(10)
+        ->execute();
+      $list .= '<div id="pattern-entity-all-table-warp">';
+      if (isset($query->ordered_results) && count($query->ordered_results)) {
+        $list .= _pattern_entity_list_page($query, $fieldset_title);
+      }
+      else {
+        $list .= NOSEARCHRESULT;
+      }
+      $list .= '</div>';
+      return $list;
       break;
-    case 4:
-      $query->propertyCondition('pid', $value, '=');
+
+    case 4: //pid (not use anymore).
       $fieldset_title = "pattern with pid: $value";
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'patternentity')
+        ->propertyCondition('pid', $value, '=')
+        ->propertyOrderBy('created', 'DESC')
+        ->pager(10)
+        ->execute();
+      $list .= '<div id="pattern-entity-all-table-warp">';
+      if (isset($query->ordered_results) && count($query->ordered_results)) {
+        $list .= _pattern_entity_list_page($query, $fieldset_title);
+      }
+      else {
+        $list .= NOSEARCHRESULT;
+      }
+      $list .= '</div>';
+      return $list;
       break;
-    case 5:
+
+    case 5: //tags
       $tagtids = _pattern_entity_findtagtid_by_tagname($value);
-      dsm($tagtids);
+      //dsm($tagtids);
       $tags_table_db = _pattern_entity_get_all_taxonomyfields_name('patternentity');
-      dsm($tags_table_db);
-      //$entity_ids = _pattern_entity_findentityid_by_tagvid($tagtids, $tags_table_db);
-      //$entity_ids = array_keys($entity_ids);
-      //if (count($entity_ids) == 0) {
-      //  $entity_ids = array('-1');
-      //}
-      //$query->propertyCondition('pid', $entity_ids);
-      $fieldset_title = "pattern with tag: $value";
+      //dsm($tags_table_db);
+      $list .= '<div id="pattern-entity-all-table-warp">';
       if (count($tags_table_db) && count($tagtids)) {
         foreach($tags_table_db as $field_name) {
           foreach ($tagtids as $tid => $_temp) {
@@ -127,21 +203,17 @@ function _pattern_entity_search($selected, $value) {
         }
       }
       else {
-        $list .= t('no search result.');
+        $list .= NOSEARCHRESULT;
       }
+      $list .= '</div>';
       return $list;
       break;
+
+    default:
+      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= NOSEARCHRESULT;
+      $list .= '</div>';
+      return $list;
   }
   
-  $query->propertyOrderBy('created', 'DESC')
-    ->pager(10)
-    ->execute();
-
-  if (isset($query->ordered_results) && count($query->ordered_results)) {
-    $list = _pattern_entity_list_page($query, $fieldset_title);
-  }
-  else {
-    $list = t('no search result.');
-  }
-  return $list;
 }
