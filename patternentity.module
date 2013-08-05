@@ -235,6 +235,7 @@ function _pattern_entity_all_list_page() {
     ->propertyOrderBy('created', 'DESC')
     ->execute();
 
+  $list .= "<div id='pattern-entity-all-table-wrap'>";
   $vscore = array();
   if (isset($query->ordered_results) && count($query->ordered_results)) {
     $ordered_results_backup = $query->ordered_results;
@@ -263,6 +264,7 @@ function _pattern_entity_all_list_page() {
     $list .= '</div>';
   }
 
+  $list .= '</div>';
   return $list;
 }
 

@@ -64,7 +64,8 @@ $(document).ready(function() {
 
   //search functionality ajax implementation
   $('#patternentity-search #edit-submit').bind('click', function() {
-    var table_wrap = $('.pattern-entity-list-table-wrap');
+    var table_wrap = $('#pattern-entity-all-table-wrap');
+    //var table_wrap = $('.pattern-entity-list-table-wrap');
 
 	var text_select = $("select#edit-selected option:selected").text();
 	var value_default = switch_autofill(text_select);
@@ -72,34 +73,34 @@ $(document).ready(function() {
     var search_text = $('#patternentity-search #edit-search').val().trim();
     if ( search_text == '' || search_text == value_default) {
       $(table_wrap).hide();
-      $(table_wrap).first().html('To begin the search type something, e.g. "Block"').show('slow');
+      $(table_wrap).html('To begin the search type something, e.g. "Block"').show('slow');
+      //$(table_wrap).first().html('To begin the search type something, e.g. "Block"').show('slow');
     }
     else {
       var search_type = $('#patternentity-search #edit-selected option:selected').val();
       var path = $(this).attr('name');
-      path += search_type + '/' + search_text;
-      console.log(encodeURI(path));
+      path += search_type + '/' + encodeURIComponent(search_text);
+	 	console.log(path); 
+	 	console.log(encodeURIComponent(search_text)); 
+      //console.log(encodeURI(path));
 
       //var table_wrap = $('.pattern-entity-list-table-wrap');
 
       $.ajax({
         url: path,
         success: function(data) {
-          var table = $('.pattern-entity-list-table-wrap', data).html();
-          if (table == null) {
-            $(table_wrap).hide();
-            $(table_wrap).first().text('nothing found.').show('slow');
-          }
-          else {
-            $(table_wrap).hide();
-            $(table_wrap).first().html(table).slideDown('slow');
-            $(".pattern-entity-list-table .upload-time").text(function(){
-              return moment.unix($(this).attr("value")).fromNow();
-            });
-			$('.pattern-entity-list-table-wrap').first().prepend('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
-			var upload_form_div = $('#patternentity-upload-form-js');
-			$(upload_form_div).hide();
-          }
+			//console.log(data);
+          var table = $('#pattern-entity-all-table-wrap', data).html();
+          var tablekk = $('.pattern-entity-list-table-wrap', data);
+		$(table_wrap).hide();
+		$(table_wrap).html(table).slideDown('slow');
+		$(".pattern-entity-list-table .upload-time").text(function(){
+		  return moment.unix($(this).attr("value")).fromNow();
+		});
+		$('.pattern-entity-list-table-wrap').first().prepend('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
+		var upload_form_div = $('#patternentity-upload-form-js');
+		$(upload_form_div).hide();
+		$('.pattern-entity-list-table-wrap .upload-button-link').not(':first').hide();
         }
       });
     }

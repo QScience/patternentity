@@ -102,7 +102,7 @@ function _pattern_entity_search($selected, $value) {
         ->propertyOrderBy('created', 'DESC')
         ->pager(10)
         ->execute();
-      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= '<div id="pattern-entity-all-table-wrap">';
       if (isset($query->ordered_results) && count($query->ordered_results)) {
         $list .= _pattern_entity_list_page($query, $fieldset_title);
       }
@@ -117,7 +117,7 @@ function _pattern_entity_search($selected, $value) {
       $split_strings = preg_split('/[\,]+/', $value);
       dsm($split_strings);
       $sign_has_table = false;
-      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= '<div id="pattern-entity-all-table-wrap">';
       foreach ($split_strings as $category_name) {
         $a_table = _pattern_entity_list('category', trim($category_name));
         if ($a_table) {
@@ -136,7 +136,7 @@ function _pattern_entity_search($selected, $value) {
       $split_strings = preg_split('/[\,]+/', $value);
       dsm($split_strings);
       $sign_has_table = false;
-      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= '<div id="pattern-entity-all-table-wrap">';
       foreach ($split_strings as $author_name) {
         $a_table = _pattern_entity_list('author', trim($author_name));
         if ($a_table) {
@@ -159,7 +159,7 @@ function _pattern_entity_search($selected, $value) {
         ->propertyOrderBy('created', 'DESC')
         ->pager(10)
         ->execute();
-      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= '<div id="pattern-entity-all-table-wrap">';
       if (isset($query->ordered_results) && count($query->ordered_results)) {
         $list .= _pattern_entity_list_page($query, $fieldset_title);
       }
@@ -178,7 +178,7 @@ function _pattern_entity_search($selected, $value) {
         ->propertyOrderBy('created', 'DESC')
         ->pager(10)
         ->execute();
-      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= '<div id="pattern-entity-all-table-wrap">';
       if (isset($query->ordered_results) && count($query->ordered_results)) {
         $list .= _pattern_entity_list_page($query, $fieldset_title);
       }
@@ -194,7 +194,7 @@ function _pattern_entity_search($selected, $value) {
       //dsm($tagtids);
       $tags_table_db = _pattern_entity_get_all_taxonomyfields_name('patternentity');
       //dsm($tags_table_db);
-      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= '<div id="pattern-entity-all-table-wrap">';
       if (count($tags_table_db) && count($tagtids)) {
         foreach($tags_table_db as $field_name) {
           foreach ($tagtids as $tid => $_temp) {
@@ -210,7 +210,7 @@ function _pattern_entity_search($selected, $value) {
       break;
 
     default:
-      $list .= '<div id="pattern-entity-all-table-warp">';
+      $list .= '<div id="pattern-entity-all-table-wrap">';
       $list .= NOSEARCHRESULT;
       $list .= '</div>';
       return $list;
