@@ -114,15 +114,15 @@ $(document).ready(function() {
 
   //search functionality ajax implementation
   $('#patternentity-search #edit-submit').live('click', function() {
-    var table_wrap = $('#pattern-entity-list-table-wrap');
+    var table_wrap = $('.pattern-entity-list-table-wrap');
 
-		var text_select = $("select#edit-selected option:selected").text();
-		var value_default = switch_autofill(text_select);
+	var text_select = $("select#edit-selected option:selected").text();
+	var value_default = switch_autofill(text_select);
 
     var search_text = $('#patternentity-search #edit-search').val().trim();
     if ( search_text == '' || search_text == value_default) {
       $(table_wrap).hide();
-      $(table_wrap).html('please enter something.').show('slow');
+      $(table_wrap).first().html('To begin the search type something, e.g. "Block"').show('slow');
     }
     else {
       var search_type = $('#patternentity-search #edit-selected option:selected').val();
@@ -130,21 +130,19 @@ $(document).ready(function() {
       path += search_type + '/' + search_text;
       console.log(encodeURI(path));
 
-      var table_wrap = $('#pattern-entity-list-table-wrap');
+      //var table_wrap = $('.pattern-entity-list-table-wrap');
 
       $.ajax({
         url: path,
         success: function(data) {
-          var table = $('#pattern-entity-list-table-wrap', data).html();
+          var table = $('.pattern-entity-list-table-wrap', data).html();
           if (table == null) {
             $(table_wrap).hide();
-            $('#pattern-entity-list-table-wrap-mostlike').hide();
-            $(table_wrap).text('nothing found.').show('slow');
+            $(table_wrap).first().text('nothing found.').show('slow');
           }
           else {
             $(table_wrap).hide();
-            $('#pattern-entity-list-table-wrap-mostlike').hide();
-            $(table_wrap).html(table).slideDown('slow');
+            $(table_wrap).first().html(table).slideDown('slow');
             $(".pattern-entity-list-table .upload-time").text(function(){
               return moment.unix($(this).attr("value")).fromNow();
             });
@@ -156,7 +154,7 @@ $(document).ready(function() {
   });
 
 	//upload functionality ajax implementation
-	$('#pattern-entity-list-table-wrap').before('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
+	$('.pattern-entity-list-table-wrap').first().before('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
 	var upload_form_div = $('#patternentity-upload-form-js');
 	$(upload_form_div).hide();
 	$('.upload-button-link').bind('click', function (){
