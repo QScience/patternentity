@@ -63,7 +63,7 @@ $(document).ready(function() {
 	$('input#edit-search').css('width', '65%');
 
   //search functionality ajax implementation
-  $('#patternentity-search #edit-submit').live('click', function() {
+  $('#patternentity-search #edit-submit').bind('click', function() {
     var table_wrap = $('.pattern-entity-list-table-wrap');
 
 	var text_select = $("select#edit-selected option:selected").text();

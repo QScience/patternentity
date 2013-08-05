@@ -14,7 +14,8 @@ $(document).ready(function() {
 	});
 
 	//voting link ajax.
-  $('.pattern-entity-list-table a[class*="voting-link-"]').live('click', function () {
+  $('body').delegate('.pattern-entity-list-table a[class*="voting-link-"]', 'click', function () {
+  //$('.pattern-entity-list-table a[class*="voting-link-"]').bind('click', function () {
 
     var class_pid = $(this).attr('title');
     var link = $('.' + class_pid);
@@ -55,7 +56,7 @@ $(document).ready(function() {
 	$('.pattern-entity-list-table-wrap').first().prepend('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
 	var upload_form_div = $('#patternentity-upload-form-js');
 	$(upload_form_div).hide();
-	$('.upload-button-link').live('click', function (){
+	$('body').delegate('a.upload-button-link', 'click', function (){
 		var upload_form_div = $('#patternentity-upload-form-js');
 		var url = $('.upload-button-link').attr('href');
 		$.ajax({
