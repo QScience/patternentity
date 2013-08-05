@@ -2,6 +2,7 @@
 
 module_load_include('inc', 'patternentity', 'theme/theme');
 module_load_include('inc', 'patternentity', 'includes/patternentity.blocks');
+module_load_include('inc', 'patternentity', 'includes/patternentity.core');
 module_load_include('module', 'votingapi', 'votingapi');
 
 /**
@@ -414,76 +415,7 @@ function _pattern_entity_view_page($pid) {
   return $content;
 }
 
-/**
- * callback hook_menu() for list /pattern/$property/$arg
- */
-function _pattern_entity_list($property, $arg, $operate = '=', $showupload = true) {
-  drupal_add_js("misc/autocomplete.js");
-  drupal_add_css(drupal_get_path('module', 'patternentity') . '/theme/patternentity.css');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/jquery.autofill.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/moment.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
 
-  $pos = strpos($property, 'field');
-  $property_sign = $property;
-  if ($pos !== false) {
-    $property_sign = 'tag';
-  }
-
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'patternentity');
-
-
-  switch ($property_sign) {
-    case 'uploader':
-      $usr_obj = user_load($arg);
-      if(!$usr_obj) {
-        drupal_set_message("The pattern list doesn't exist.", "error");
-        drupal_goto('all_pattern_entity_list');
-      }
-      drupal_set_title($property . ': '  . $usr_obj->name);
-      $fieldset_title = $property . ': '  . $usr_obj->name;
-      $query->propertyCondition($property, $arg, $operate);
-      break;
-
-    case 'pid':
-      drupal_set_title('all patternentity:');
-      $fieldset_title = 'Most Recent Patterns:';
-      $query->propertyCondition($property, $arg, $operate);
-      break;
-
-    case 'tag':
-      $tax = taxonomy_term_load($arg);
-      drupal_set_title('tag: ' . $tax->name);
-      $fieldset_title = "tag: " . $tax->name . " in $property field";
-      $query->fieldCondition($property, 'tid', $arg, '=');
-      break;
-
-    default:
-      drupal_set_title($property . ': ' . $arg);
-      $fieldset_title = $property . ': ' . $arg;
-      $query->propertyCondition($property, $arg, $operate);
-  }
-
-  $query->propertyOrderBy('created', 'DESC')
-    ->pager(10)
-    ->execute();
-  if (isset($query->ordered_results) && count($query->ordered_results)) {
-    if ($showupload) {
-      $upload_button = _pattern_entity_upload_button();
-    }
-    else {
-      $upload_button = '';
-    }
-    $list = "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
-    $list .= _pattern_entity_list_page($query);
-    $list .= '</div></fieldset></div>';
-    return $list;
-  }
-  else {
-    return false;
-  }
-}
 
 /**
  * Implement search function form for patternentity.
@@ -555,6 +487,8 @@ function _pattern_entity_search($selected, $value) {
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/theme/patternentity.js');
 
   drupal_set_title('search :');
+  $form = drupal_get_form('patternentity_search', $selected, $value);
+  $list = drupal_render($form);
 
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'patternentity');
@@ -581,18 +515,27 @@ function _pattern_entity_search($selected, $value) {
       break;
     case 5:
       $tagtids = _pattern_entity_findtagtid_by_tagname($value);
+      dsm($tagtids);
       $tags_table_db = _pattern_entity_get_all_taxonomyfields_name('patternentity');
-      $entity_ids = _pattern_entity_findentityid_by_tagvid($tagtids, $tags_table_db);
-      //dsm($entity_ids);
-
-      $entity_ids = array_keys($entity_ids);
-     // dsm($entity_ids);
-
-      if (count($entity_ids) == 0) {
-        $entity_ids = array('-1');
-      }
-      $query->propertyCondition('pid', $entity_ids);
+      dsm($tags_table_db);
+      //$entity_ids = _pattern_entity_findentityid_by_tagvid($tagtids, $tags_table_db);
+      //$entity_ids = array_keys($entity_ids);
+      //if (count($entity_ids) == 0) {
+      //  $entity_ids = array('-1');
+      //}
+      //$query->propertyCondition('pid', $entity_ids);
       $fieldset_title = "pattern with tag: $value";
+      if (count($tags_table_db) && count($tagtids)) {
+        foreach($tags_table_db as $field_name) {
+          foreach ($tagtids as $tid => $_temp) {
+            $list .= _pattern_entity_list($field_name, $tid);
+          }
+        }
+      }
+      else {
+        $list .= t('no search result.');
+      }
+      return $list;
       break;
   }
   
@@ -600,10 +543,6 @@ function _pattern_entity_search($selected, $value) {
     ->pager(10)
     ->execute();
 
-  //dsm($query);
-
-  $form = drupal_get_form('patternentity_search', $selected, $value);
-  $list = drupal_render($form);
   if (isset($query->ordered_results) && count($query->ordered_results)) {
     $upload_button = _pattern_entity_upload_button();
     $list .= "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
