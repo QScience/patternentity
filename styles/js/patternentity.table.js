@@ -51,7 +51,7 @@ $(document).ready(function() {
 	});
 
 	//upload functionality ajax implementation
-	$('.pattern-entity-list-table-wrap').first().before('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
+	$('.pattern-entity-list-table-wrap').first().prepend('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
 	var upload_form_div = $('#patternentity-upload-form-js');
 	$(upload_form_div).hide();
 	$('.upload-button-link').bind('click', function (){

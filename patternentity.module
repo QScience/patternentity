@@ -343,6 +343,7 @@ function _pattern_entity_download_pattern($pid) {
  * callback hook_menu() uploader list
  */
 function _pattern_entity_list_uploader($property, $arg) {
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
   $searchform = drupal_get_form('patternentity_search');
   $searchform = drupal_render($searchform);
 
