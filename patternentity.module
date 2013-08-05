@@ -347,7 +347,7 @@ function _pattern_entity_list_tags_all($tid) {
   }
   
   foreach ($tags_fields_name as $field_name) {
-    $list .= _pattern_entity_list($field_name, $tid, '=', false);
+    $list .= _pattern_entity_list($field_name, $tid);
   }
 
   return $list;

@@ -185,5 +185,7 @@ $(document).ready(function() {
 		return false;
 	});
 
+	//only show upload link at the first table
+	$('.pattern-entity-list-table-wrap .upload-button-link').not(':first').hide();
 });
 })(jQuery)
