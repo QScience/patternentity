@@ -581,23 +581,12 @@ function _pattern_entity_search($selected, $value) {
       break;
     case 5:
       $tagtids = _pattern_entity_findtagtid_by_tagname($value);
-      // dsm($tagtids);
-
-      $tags_table_db = array();
-      $fields_info = field_info_instances('patternentity');
-      if (isset($fields_info['patternentity']) && count($fields_info['patternentity'])) {
-        $fields_info = $fields_info['patternentity'];
-        foreach ($fields_info as $field_name => $_value) {
-          $field_info = field_info_field($field_name);
-          if ($field_info['type'] == 'taxonomy_term_reference') {
-            $tags_table_db[] = $field_name;
-          }
-        }
-      }
-
+      $tags_table_db = _pattern_entity_get_all_taxonomyfields_name('patternentity');
       $entity_ids = _pattern_entity_findentityid_by_tagvid($tagtids, $tags_table_db);
       //dsm($entity_ids);
+
       $entity_ids = array_keys($entity_ids);
+     // dsm($entity_ids);
 
       if (count($entity_ids) == 0) {
         $entity_ids = array('-1');
@@ -684,7 +673,7 @@ function _pattern_entity_findtagtid_by_tagname($tagname) {
  * find entity_id from tid and 'patternentity' in taxonomy_entity_index.
  */
 function _pattern_entity_findentityid_by_tagvid($tagvids, $tables) {
-  if (count($tagvids) == 0) {
+  if (count($tagvids) == 0 || !$tables) {
     return array(); 
   }
 
@@ -694,7 +683,6 @@ function _pattern_entity_findentityid_by_tagvid($tagvids, $tables) {
     foreach ($tagvids as $key => $value) {
       $or->condition($table . '_tid', $key);
     }
-   // dsm($table);
 
     $table = 'field_data_' . $table;
     $query[] = db_select($table)
@@ -707,10 +695,10 @@ function _pattern_entity_findentityid_by_tagvid($tagvids, $tables) {
 
   $result = array();
   foreach ($query as $q) {
-    $result = array_merge($q, $result);
+    $result += $q;
   }
- // dsm($result);
   return $result;
+
 }
 
 /**
