@@ -88,9 +88,11 @@ function _pattern_entity_view_pattern_description($pe) {
 /**
  * theme pattern list page.
  */
-function _pattern_entity_list_page($query) {
-  //dsm($query);
+function _pattern_entity_list_page($query, $fieldset_title) {
   drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.table.css');
+  drupal_add_js("misc/autocomplete.js");
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.table.js');
+
   $header = array(
     t('Category'),
     t('Title'),
@@ -114,7 +116,12 @@ function _pattern_entity_list_page($query) {
   }
   $html = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'))));
   $html .= theme('pager', array('tags' => array()));
-  return $html;
+
+  $upload_button = _pattern_entity_upload_button();
+  $div_b = "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
+  $div_e = '</div></fieldset></div>';
+
+  return $div_b . $html . $div_e;
 }
 
 /**

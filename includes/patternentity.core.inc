@@ -18,11 +18,6 @@
  *
  */
 function _pattern_entity_list($property, $arg, $operate = '=', $showupload = true) {
-  drupal_add_js("misc/autocomplete.js");
-  drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.css');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/jquery.autofill.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/moment.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.table.js');
 
   $pos = strpos($property, 'field');
   $property_sign = $property;
@@ -69,15 +64,7 @@ function _pattern_entity_list($property, $arg, $operate = '=', $showupload = tru
     ->pager(10)
     ->execute();
   if (isset($query->ordered_results) && count($query->ordered_results)) {
-    if ($showupload) {
-      $upload_button = _pattern_entity_upload_button();
-    }
-    else {
-      $upload_button = '';
-    }
-    $list = "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
-    $list .= _pattern_entity_list_page($query);
-    $list .= '</div></fieldset></div>';
+    $list = _pattern_entity_list_page($query, $fieldset_title);
     return $list;
   }
   else {
@@ -91,14 +78,9 @@ function _pattern_entity_list($property, $arg, $operate = '=', $showupload = tru
  * this is a core function.
  */
 function _pattern_entity_search($selected, $value) {
-  drupal_add_js("misc/autocomplete.js");
-  drupal_add_css(drupal_get_path('module', 'patternentity') . '/styles/css/patternentity.css');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/jquery.autofill.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/moment.min.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.table.js');
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
 
   drupal_set_title('search :');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
   $form = drupal_get_form('patternentity_search', $selected, $value);
   $list = drupal_render($form);
 
@@ -156,13 +138,10 @@ function _pattern_entity_search($selected, $value) {
     ->execute();
 
   if (isset($query->ordered_results) && count($query->ordered_results)) {
-    $upload_button = _pattern_entity_upload_button();
-    $list .= "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
-    $list .= _pattern_entity_list_page($query);
-    $list .= '</div></fieldset></div>';
+    $list = _pattern_entity_list_page($query, $fieldset_title);
   }
   else {
-    $list .= t('no search result.');
+    $list = t('no search result.');
   }
   return $list;
 }
