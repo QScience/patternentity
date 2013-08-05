@@ -62,7 +62,6 @@ $(document).ready(function() {
 	//search box width.
 	$('input#edit-search').css('width', '65%');
 
-
   //search functionality ajax implementation
   $('#patternentity-search #edit-submit').live('click', function() {
     var table_wrap = $('.pattern-entity-list-table-wrap');
@@ -97,6 +96,9 @@ $(document).ready(function() {
             $(".pattern-entity-list-table .upload-time").text(function(){
               return moment.unix($(this).attr("value")).fromNow();
             });
+			$('.pattern-entity-list-table-wrap').first().prepend('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
+			var upload_form_div = $('#patternentity-upload-form-js');
+			$(upload_form_div).hide();
           }
         }
       });

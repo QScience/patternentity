@@ -226,6 +226,7 @@ function patternentity_menu() {
  */
 function _pattern_entity_all_list_page() {
 
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
   $searchform = drupal_get_form('patternentity_search');
   $list = drupal_render($searchform);
 
@@ -330,12 +331,11 @@ function _pattern_entity_download_pattern($pid) {
  * callback hook_menu() four basic page.
  */
 function _pattern_entity_list_basicpage($property, $arg) {
-  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.research.js');
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
   $searchform = drupal_get_form('patternentity_search');
   $searchform = drupal_render($searchform);
 
   $list = _pattern_entity_list($property, $arg);
-
   if ($list === false) {
     drupal_set_message("The pattern list doesn't exist.", "error");
     drupal_goto('all_pattern_entity_list');

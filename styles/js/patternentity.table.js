@@ -55,7 +55,8 @@ $(document).ready(function() {
 	$('.pattern-entity-list-table-wrap').first().prepend('<div id="patternentity-upload-form-js" class="hero-unit"></div>');
 	var upload_form_div = $('#patternentity-upload-form-js');
 	$(upload_form_div).hide();
-	$('.upload-button-link').bind('click', function (){
+	$('.upload-button-link').live('click', function (){
+		var upload_form_div = $('#patternentity-upload-form-js');
 		var url = $('.upload-button-link').attr('href');
 		$.ajax({
 			url: url,
@@ -63,7 +64,7 @@ $(document).ready(function() {
 				if ( $(upload_form_div).is(':hidden')) {
 					var upload_form = $('#patternentity-form', data).wrap("<div></div>").parent().html();
 					$(upload_form_div).html(upload_form).slideDown('slow');
-          Drupal.attachBehaviors($("#patternentity-form"));
+					Drupal.attachBehaviors($("#patternentity-form"));
 				}
 				else {
 					$(upload_form_div).slideUp('slow');
