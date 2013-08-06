@@ -6,11 +6,11 @@ $(document).ready(function() {
     var value_autofill;
     switch (text_select) {
       case 'UUID': value_autofill = 'e.g. 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74'; break;
-      case 'Title': value_autofill = 'e.g. content,create,block,delete'; break;
-      case 'Category': value_autofill = 'e.g. block,color,content,menu'; break;
+      case 'Title': value_autofill = 'should have a sentence without commas'; break;
+      case 'Category': value_autofill = 'should have words separated by commas'; break;
       case 'Pid': value_autofill = 'e.g. 3 or any number'; break;
-      case 'Author': value_autofill = 'e.g. Qscience'; break;
-      case 'Tags': value_autofill = 'e.g. helloworld'; break;
+      case 'Author': value_autofill = 'should have words separated by commas'; break;
+      case 'Tags': value_autofill = 'should have words separated by commas'; break;
       default: value_autofill = 'search...';
     }
     return value_autofill;
