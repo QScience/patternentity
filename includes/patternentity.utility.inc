@@ -38,10 +38,12 @@ function _pattern_entity_back_like_button($pid) {
  */
 function _pattern_entity_findtagtid_by_tagname($tagname) {
   $split_strings = preg_split('/[\,]+/', $tagname);
+  //dsm($split_strings);
 
   $or = db_or();
   foreach ($split_strings as $value) {
-    $or->condition('name', $value);
+    $or->condition('name', trim($value));
+    //dsm($value);
   }
 
   $query = db_select('taxonomy_term_data', 'ttd')
