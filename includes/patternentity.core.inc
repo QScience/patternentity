@@ -89,7 +89,6 @@ function _pattern_entity_search($selected, $value) {
   $form = drupal_get_form('patternentity_search', $selected, $value);
   $list = drupal_render($form);
 
-
   $query;
   $fieldset_title;
 
