@@ -38,7 +38,7 @@ function _pattern_entity_block_most_prolific_author() {
     return t('no available authors.');
   }
   arsort($authors_score);
-  $authors_score = array_slice($authors_score, 0, 10);
+  $authors_score = array_slice($authors_score, 0, 10, true);
 
   $items = array();
   foreach ($authors_score as $author => $score) {
@@ -104,7 +104,7 @@ function _pattern_entity_block_hottest_tags() {
     }
   }
   arsort($tags_score);
-  $tags_score = array_slice($tags_score, 0, 10);
+  $tags_score = array_slice($tags_score, 0, 10, true);
 
   $items = array();
   foreach ($tags_score as $tid => $score_tb) {

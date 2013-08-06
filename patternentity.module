@@ -241,7 +241,7 @@ function _pattern_entity_all_list_page() {
     $ordered_results_backup = $query->ordered_results;
 
     //Most Recent Patterns. 
-    $query->ordered_results = array_slice($ordered_results_backup, 0, 10);
+    $query->ordered_results = array_slice($ordered_results_backup, 0, 10, true);
     $fieldset_title = 'Most Recent Patterns:';
     $list .= _pattern_entity_list_page($query, $fieldset_title);
 
@@ -254,7 +254,7 @@ function _pattern_entity_all_list_page() {
     foreach ($vscore as $key => $value) {
       $new_ordered_results[] = $ordered_results_backup[$key];
     }
-    $query->ordered_results = array_slice($new_ordered_results, 0, 10);
+    $query->ordered_results = array_slice($new_ordered_results, 0, 10, true);
     $fieldset_title = 'Most Liked Patterns:';
     $list .= _pattern_entity_list_page($query, $fieldset_title);
   }
@@ -354,6 +354,10 @@ function _pattern_entity_list_basicpage($property, $arg) {
  * callback hook_menu() alltags list
  */
 function _pattern_entity_list_tags_all($tid) {
+  $tag_name = _pattern_entity_tagname_by_tagid($tid);
+  drupal_set_title("Patterns with tags: " . $tag_name['name']);
+
+  drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
   $searchform = drupal_get_form('patternentity_search');
   $list = drupal_render($searchform);
 
@@ -365,9 +369,11 @@ function _pattern_entity_list_tags_all($tid) {
     drupal_goto('all_pattern_entity_list');
   }
   
+  $list .= "<div id='pattern-entity-all-table-wrap'>"; 
   foreach ($tags_fields_name as $field_name) {
     $list .= _pattern_entity_list($field_name, $tid);
   }
+  $list .= "</div>";
 
   return $list;
 }
