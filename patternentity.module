@@ -345,7 +345,7 @@ function _pattern_entity_list_basicpage($property, $arg) {
     drupal_goto('all_pattern_entity_list');
   }
   else {
-    return $searchform . "<div class='pattern-entity-list-table-wrap'>" . $list . "</div>";
+    return $searchform . "<div id='pattern-entity-all-table-wrap'>" . $list . "</div>";
   }
 
 }

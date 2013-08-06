@@ -115,7 +115,8 @@ function _pattern_entity_list_page($query, $fieldset_title) {
     $rows[] = _pattern_entity_list_table_row($ety_obj);
   }
   $html = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('pattern-entity-list-table'))));
-  $html .= theme('pager', array('tags' => array()));
+  static $patternentity_static_pager_element = 0;
+  $html .= theme('pager', array('tags' => array(), 'element' => $patternentity_static_pager_element++));
 
   $upload_button = _pattern_entity_upload_button();
   $div_b = "<div class='pattern-entity-list-table-wrap'><fieldset><legend>$fieldset_title$upload_button</legend><div class='fieldset-wrapper'>";
