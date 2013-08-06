@@ -86,7 +86,7 @@ $(document).ready(function() {
   $('.pattern-entity-list-table-wrap .upload-button-link').not(':first').hide();
 
   //pager ajax functionality.
-  $('body').delegate( '.pattern-entity-list-table-wrap ul.pager li a', 'click', function(e) {
+  $('body').delegate( '.pattern-entity-list-table-wrap ul li a', 'click', function(e) {
     var url = $(this).attr('href');
     var current_table = $(this).closest('.pattern-entity-list-table-wrap');
     var index = $(current_table).index('.pattern-entity-list-table-wrap');
