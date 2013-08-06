@@ -1,5 +1,6 @@
 (function($){
 $(document).ready(function() {
+
   //autofill search box.
   function switch_autofill(text_select) {
     var value_autofill;
@@ -64,6 +65,7 @@ $(document).ready(function() {
   //search functionality ajax implementation
   $('#patternentity-search #edit-submit').bind('click', function() {
     var table_wrap = $('#pattern-entity-all-table-wrap');
+    var page_title = $('#page-title');
 
     var text_select = $("select#edit-selected option:selected").text();
     var value_default = switch_autofill(text_select);
@@ -83,7 +85,9 @@ $(document).ready(function() {
         success: function(data) {
           //console.log(data);
           var table = $('#pattern-entity-all-table-wrap', data).html();
-          var tablekk = $('.pattern-entity-list-table-wrap', data);
+          var page_title_new = $('#page-title', data).html();
+
+          $(page_title).html(page_title_new);
           $(table_wrap).hide();
           $(table_wrap).html(table).slideDown('slow');
 

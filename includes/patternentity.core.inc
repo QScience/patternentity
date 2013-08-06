@@ -38,26 +38,26 @@ function _pattern_entity_list($property, $arg, $operate = '=', $showupload = tru
         drupal_set_message("The pattern list doesn't exist.", "error");
         drupal_goto('all_pattern_entity_list');
       }
-      drupal_set_title($property . ': '  . $usr_obj->name);
+      //drupal_set_title($property . ': '  . $usr_obj->name);
       $fieldset_title = $property . ': '  . $usr_obj->name;
       $query->propertyCondition($property, $arg, $operate);
       break;
 
     case 'pid':
-      drupal_set_title('all patternentity:');
+      //drupal_set_title('all patternentity:');
       $fieldset_title = 'Most Recent Patterns:';
       $query->propertyCondition($property, $arg, $operate);
       break;
 
     case 'tag':
       $tax = taxonomy_term_load($arg);
-      drupal_set_title('tag: ' . $tax->name);
+      //drupal_set_title('tag: ' . $tax->name);
       $fieldset_title = "tag: " . $tax->name . " in $property field";
       $query->fieldCondition($property, 'tid', $arg, '=');
       break;
 
     default:
-      drupal_set_title($property . ': ' . $arg);
+      //drupal_set_title($property . ': ' . $arg);
       $fieldset_title = $property . ': ' . $arg;
       $query->propertyCondition($property, $arg, $operate);
   }
@@ -95,7 +95,8 @@ function _pattern_entity_search($selected, $value) {
 
   switch ($selected) {
     case 0: //title.
-      $fieldset_title = "pattern with title: $value";
+      drupal_set_title('patterns with title: ' . $value);
+      $fieldset_title = "patterns with title: $value";
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'patternentity')
         ->propertyCondition('title', '%' . db_like($value) . '%', 'LIKE')
@@ -114,8 +115,9 @@ function _pattern_entity_search($selected, $value) {
       break;
 
     case 1: //category
+      drupal_set_title('patterns with category: ' . $value);
       $split_strings = preg_split('/[\,]+/', $value);
-      dsm($split_strings);
+      //dsm($split_strings);
       $sign_has_table = false;
       $list .= '<div id="pattern-entity-all-table-wrap">';
       foreach ($split_strings as $category_name) {
@@ -133,8 +135,9 @@ function _pattern_entity_search($selected, $value) {
       break;
 
     case 2: //author
+      drupal_set_title('patterns created by: ' . $value);
       $split_strings = preg_split('/[\,]+/', $value);
-      dsm($split_strings);
+      //dsm($split_strings);
       $sign_has_table = false;
       $list .= '<div id="pattern-entity-all-table-wrap">';
       foreach ($split_strings as $author_name) {
@@ -152,6 +155,7 @@ function _pattern_entity_search($selected, $value) {
       break;
 
     case 3: //uuid
+      drupal_set_title('pattern with: ' . $value);
       $fieldset_title = "pattern with uuuid: $value";
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'patternentity')
@@ -190,6 +194,7 @@ function _pattern_entity_search($selected, $value) {
       break;
 
     case 5: //tags
+      drupal_set_title('patterns with tags: ' . $value);
       $tagtids = _pattern_entity_findtagtid_by_tagname($value);
       //dsm($tagtids);
       $tags_table_db = _pattern_entity_get_all_taxonomyfields_name('patternentity');
