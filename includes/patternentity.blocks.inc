@@ -26,6 +26,7 @@ function _pattern_entity_block_most_prolific_author() {
     }
     $entities = entity_load('patternentity', $ids);
     foreach($entities as $pe) {
+      $pe->author = strtolower($pe->author);
       if (isset($authors_score[$pe->author])) {
         $authors_score[$pe->author]++;
       }

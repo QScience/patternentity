@@ -56,6 +56,11 @@ function _pattern_entity_list($property, $arg, $operate = '=', $showupload = tru
       $query->fieldCondition($property, 'tid', $arg, '=');
       break;
 
+    case 'author': 
+      $fieldset_title = $property . ': ' . $arg;
+      $query->propertyCondition($property, $arg, '=');
+      break;
+      
     default:
       //drupal_set_title($property . ': ' . $arg);
       $fieldset_title = $property . ': ' . $arg;
