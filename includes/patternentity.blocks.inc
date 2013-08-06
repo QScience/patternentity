@@ -34,7 +34,11 @@ function _pattern_entity_block_most_prolific_author() {
       }
     }
   }
+  if (!count($authors_score)) {
+    return t('no available authors.');
+  }
   arsort($authors_score);
+  $authors_score = array_slice($authors_score, 0, 10);
 
   $items = array();
   foreach ($authors_score as $author => $score) {
@@ -83,8 +87,8 @@ function _pattern_entity_block_hottest_tags() {
       ->fields($table_name, array($table . '_tid'))
       ->execute()
       ->fetchAll();
-    //dsm($query[$table]);
   }
+ // dsm($query);
 
   $tags_score = array();
   foreach ($query as $tb => $value) {
@@ -99,14 +103,12 @@ function _pattern_entity_block_hottest_tags() {
       }
     }
   }
-  //dsm($tags_score);
   arsort($tags_score);
-  //dsm($tags_score);
+  $tags_score = array_slice($tags_score, 0, 10);
 
   $items = array();
   foreach ($tags_score as $tid => $score_tb) {
     $tagname = _pattern_entity_tagname_by_tagid($tid);
-    //dsm($score_tb['table']);
     $items[] = array(
       'data' => l($tagname['name'], 'pattern/alltags/' . $tid) . ' × ' . $score_tb['score'],
     );
@@ -115,7 +117,6 @@ function _pattern_entity_block_hottest_tags() {
   $result['items'] = $items;
 
   return theme('item_list', $result);
-  return "helloworld";
 }
 
 /**
