@@ -225,7 +225,6 @@ function patternentity_menu() {
  * the page contain three part: search, most recent, most liked.
  */
 function _pattern_entity_all_list_page() {
-
   drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.search.js');
   $searchform = drupal_get_form('patternentity_search');
   $list = drupal_render($searchform);
@@ -238,6 +237,7 @@ function _pattern_entity_all_list_page() {
   $list .= "<div id='pattern-entity-all-table-wrap'>";
   $vscore = array();
   if (isset($query->ordered_results) && count($query->ordered_results)) {
+
     $ordered_results_backup = $query->ordered_results;
 
     //Most Recent Patterns. 
@@ -259,8 +259,12 @@ function _pattern_entity_all_list_page() {
     $list .= _pattern_entity_list_page($query, $fieldset_title);
   }
   else {
+    drupal_add_js(drupal_get_path('module', 'patternentity') . '/styles/js/patternentity.firstpage.js');
     $list .= "<div class='pattern-entity-list-table-wrap'>";
-    $list .= "nothing found.";
+    $list .= "There is no pattern file in database.</br>Do you want to upload ";
+    $list .= _pattern_entity_upload_button();
+    $list .= " ?";
+    $list .= '<div id="patternentity-upload-form-js" class="hero-unit"></div>';
     $list .= '</div>';
   }
 
