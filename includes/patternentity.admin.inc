@@ -30,10 +30,10 @@ function patternentity_form($form, &$form_state, $patternentity) {
  */
 function patternentity_form_validate(&$form, &$form_state) {
   $validators = array('file_validate_extensions' => array('yaml xml'));
-  if (empty($form_state['value']['pattern_file'])) {
-    form_set_error('pattern_file', t('please choose a pattern file.'));
-  }
-  else {
+  //if (empty($form_state['value']['pattern_file'])) {
+  //  form_set_error('pattern_file', t('please choose a pattern file.'));
+  //}
+  //else {
     $file = file_save_upload('pattern_file', $validators);
 
     $file_exist = db_select('patternentity', 'pe')
@@ -115,7 +115,7 @@ function patternentity_form_validate(&$form, &$form_state) {
         form_set_error('pattern_file', t('save to public dir failed'));
       }
     }
-  }
+  //}
 }
 
 /**
