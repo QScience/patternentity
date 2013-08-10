@@ -8,33 +8,43 @@
 /**
  * latest patterns
  */
-function patterns_server_get_pattern_timeDESC_from_db($num) {
+function _pattern_entity_get_pattern_timeDESC_from_db($num) {
   $num = is_numeric($num)?$num:10;
-  $result = db_select('patterns', 'p')
+  $result = db_select('patternentity', 'p')
                   ->fields('p', array())
-                  ->orderBy('updated', 'DESC')
+                  ->orderBy('created', 'DESC')
                   ->range(0, $num)
                   ->execute()
                   ->fetchAll();
+  foreach ($result as $k => $v) {
+    $v->uuuid = "helloworld-test";
+    $v->format = $v->file_format;
+    $result[$k] = $v;
+  }
   return $result;
 }
 
 /**
  * one pattern defined by pid.
  */
-function patterns_server_get_pattern_pid_from_db($pid) {
-  $result = db_select('patterns', 'p')
+function _pattern_entity_get_pattern_pid_from_db($pid) {
+  $result = db_select('patternentity', 'p')
                   ->fields('p', array())
                   ->condition('p.pid', $pid)
                   ->execute()
                   ->fetchAll();
+  foreach ($result as $k => $v) {
+    $v->uuuid = "helloworld-test";
+    $v->format = $v->file_format;
+    $result[$k] = $v;
+  }
   return $result;
 }
 
 /**
  * Used by search page.
  */
-function patterns_server_search_pattern($key, $type) {
+function _pattern_entity_search_pattern($key, $type) {
   $or = db_or();
   switch ($type) {
     case 0:
@@ -53,12 +63,18 @@ function patterns_server_search_pattern($key, $type) {
       $or->condition('pid', $key, '=');
       break;
   }
-  $result = db_select('patterns', 'p')
+  $result = db_select('patternentity', 'p')
                   ->fields('p', array())
                   ->condition($or)
                   ->orderBy('updated', 'DESC')
                   ->execute()
                   ->fetchAll();
+  foreach ($result as $k => $v) {
+    $v->uuuid = "helloworld-test";
+    $v->format = $v->file_format;
+    $result[$k] = $v;
+  }
+
   $patterns = array();
   foreach ($result as $pattern) {
     $patterns[$pattern->pid] = $pattern;
@@ -70,47 +86,16 @@ function patterns_server_search_pattern($key, $type) {
 }
 
 /**
- * Use by patterns server page.
  */
-function patterns_server_get_pattern_from_db($numorid, $sign = TRUE) {
-  if ($sign == TRUE) {
-    $result = patterns_server_get_pattern_timeDESC_from_db($numorid);
-  }
-  else {
-    $result = patterns_server_get_pattern_pid_from_db($numorid);
-  }
-  $patterns = array();
-
-  foreach ($result as $pattern) {
-    $patterns[$pattern->pid] = $pattern;
-    $data = unserialize($pattern->pattern);
-    $patterns[$pattern->pid]->pattern = $data;
-    $patterns[$pattern->pid]->info = $data['info'];
-  }
-
-  return $patterns;
-}
-
-/**
- */
-function patterns_server_download_recode($id) {
-  $download_origin_times = db_select('patterns_server', 'ps')
-    ->fields('ps', array('downloadnum', 'pid'))
+function _pattern_entity_download_recode($id) {
+  $download_origin_times = db_select('patternentity', 'ps')
+    ->fields('ps', array('file_downloads', 'pid'))
     ->condition('pid', $id)
     ->execute()
     ->fetchAssoc();
-  if (empty($download_origin_times['pid'])) {
-    db_insert('patterns_server')
-      ->fields(array( 'pid' => $id, 'downloadnum' => 1, 'liked' => 0))
-      ->execute();
-  }
-  else {
-    $download_origin_times['downloadnum']  += 1;
-    db_update('patterns_server')
-      ->condition('pid', $id)
-      ->fields(array('downloadnum' => $download_origin_times['downloadnum']))
-      ->execute();
-  }
+  $download_origin_times['file_downloads']  += 1;
+  db_update('patternentity')
+    ->condition('pid', $id)
+    ->fields(array('file_downloads' => $download_origin_times['file_downloads']))
+    ->execute();
 }
-
-

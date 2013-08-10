@@ -255,7 +255,7 @@ function _pattern_entity_incoming_patterns($arguments, $rpc_info) {
 /**
  *
  * Provides the list of patterns currently stored in this server.
- * It makes use of patterns_server_get_pattern_timeDESC_from_db()
+ * It makes use of _pattern_entity_get_pattern_timeDESC_from_db()
  * to perform the operation
  *
  * @param array $arguments Set of arguments as defined by D2D
@@ -275,7 +275,7 @@ function _pattern_entity_get_patterns_list($arguments, $rpc_info) {
   }else{
     // Perform the casting manually, applying already d2d_implode
     $pattern_data = array();
-    foreach (patterns_server_get_pattern_timeDESC_from_db($arguments['limit']) as $pattern) {
+    foreach (_pattern_entity_get_pattern_timeDESC_from_db($arguments['limit']) as $pattern) {
       $pattern_data['pid'] = $pattern->pid;
       $pattern_data['uuuid'] = $pattern->uuuid;
       $pattern_data['format'] = $pattern->format;
@@ -316,12 +316,12 @@ function _pattern_entity_fetch_pattern($arguments, $rpc_info) {
     $error_string = 'PID should be a positive number';
   }else{
     // Retrieve the pattern using the function developed for the server itself
-    $query = patterns_server_get_pattern_pid_from_db($arguments['pid']);
+    $query = _pattern_entity_get_pattern_pid_from_db($arguments['pid']);
     if (sizeof($query) == 1) {
       // Obtain the pattern file to be imploded as a string
       $pattern = file_get_contents($query[0]->file);
       // If everyting is correct, increase the counter
-      patterns_server_download_recode($arguments['pid']);
+      _pattern_entity_download_recode($arguments['pid']);
       // Prepare the response
       $return['file'] = $pattern;
       $return['format'] = $query[0]->format;
@@ -336,7 +336,7 @@ function _pattern_entity_fetch_pattern($arguments, $rpc_info) {
 
 /**
  * Retrieves a set of patterns that matches the given criteria. It makes
- * use of the DB function patterns_server_search_pattern().
+ * use of the DB function _pattern_entity_search_pattern().
  *
  * @param array $arguments Set of arguments as defined by D2D
  * @param array $rpc_info  Metadata about the RPC call as defined by D2D
@@ -353,7 +353,7 @@ function _pattern_entity_search($arguments, $rpc_info) {
     $error_string = 'Type should be an integer value in the range 0-4';
   }else{
     // Retrieve the patterns using the function developed for the server itself.
-    $query = patterns_server_search_pattern($arguments['token'], $arguments['type']);
+    $query = _pattern_entity_search_pattern($arguments['token'], $arguments['type']);
     if (sizeof($query) >= 0) {
       // Perform the casting manually. No results will return an empty array
       $pattern_data = array();
