@@ -10,13 +10,37 @@
  */
 function patternentity_install() {
 
+  //create public://patternentity folder.
   $public_dir_path = variable_get('file_public_path', conf_path() . '/files');
   if (!file_exists($public_dir_path . '/patternentity')) {
     if(!drupal_mkdir($public_dir_path . '/patternentity')) {
       drupal_set_message(t('cannot create folder in public directory, this should be caused by permission of public directory. e.g. "sites/default/files".'),'error');
     }
   }
-
+	
+	// Check if role patterns_server_user exists
+ 	$result = db_select('role', 'r')
+    ->fields('r', array('name'))
+    ->condition('name', 'patterns_server_user', '=')
+    ->execute()
+    ->fetchAssoc();
+  if (!empty($result['name'])) {
+    return;
+  }
+	// Otherwise creates the role
+	$role = new stdClass();
+	$role->name = 'patterns_server_user';
+	user_role_save($role);
+	$role = user_role_load_by_name('patterns_server_user');
+	$role_rid = $role->rid;
+	// Define our 'editor' role permissions
+	$role_permissions = array(
+    'administer patternentity' => TRUE,
+    'view patternentity' => TRUE,
+    'upload patternentity' => TRUE,
+	);
+	// Grant permissions to our 'editor' role
+	user_role_change_permissions($role_rid, $role_permissions);
 }
 
 /**
@@ -146,5 +170,7 @@ function patternentity_uninstall() {
   //clean all attached field.
   field_attach_delete_bundle('patternentity', 'patternentity');
   
+  //delete the role.
+  user_role_delete('patterns_server_user');
 }
 
