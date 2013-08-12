@@ -8,6 +8,7 @@ dependencies[] = patterns
 dependencies[] = patterns_xmlparser
 dependencies[] = patterns_yamlparser
 dependencies[] = votingapi
+dependencies[] = d2d
 
 files[] = includes/patternentity.inc
 files[] = includes/patternentity.controller.inc
