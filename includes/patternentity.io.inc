@@ -14,37 +14,37 @@ module_load_include('inc', 'patterns', 'includes/io/io');
  */
 function patternentity_d2d_secure_rpc() {
   $methods = array();
-  $methods['patterns_server_publish_patterns'] = array(
+  $methods['patternentity_publish_patterns'] = array(
     'arguments' => array('credentials' => 'is_string', 'patterns' => 'is_string'),
     'callback' => '_pattern_entity_incoming_patterns',
     'description' => 'save incoming patterns to the database',
   );
   
-  $methods['patterns_server_register_client'] = array(
+  $methods['patternentity_register_client'] = array(
     'arguments' => array('user' => 'is_string', 'pwd' => 'is_string', 'email' => 'is_string'),
     'callback' => '_pattern_entity_register_client',
     'description' => 'creates programmatically a new user with patterns_server access privileges',
   );
   
-  $methods['patterns_server_link_client'] = array(
+  $methods['patternentity_link_client'] = array(
     'arguments' => array('user' => 'is_string', 'pwd' => 'is_string'),
     'callback' => '_pattern_entity_link_client',
     'description' => 'confirms that a client is the authorized owner of an existing account',
   );
   
-  $methods['patterns_server_get_patterns_list'] = array(
+  $methods['patternentity_get_patterns_list'] = array(
     'arguments' => array('limit' => 'is_string'),
     'callback' => '_pattern_entity_get_patterns_list',
     'description' => 'Returns a list of the patterns currently hosted in this server',
   );
   
-  $methods['patterns_server_fetch_pattern'] = array(
+  $methods['patternentity_fetch_pattern'] = array(
       'arguments' => array('pid' => 'is_string'),
       'callback' => '_pattern_entity_fetch_pattern',
       'description' => 'Returns a imploded version of the whole pattern',
   );
   
-  $methods['patterns_server_search'] = array(
+  $methods['patternentity_search'] = array(
       'arguments' => array('token' => 'is_string', 'type' => 'is_string',),
       'callback' => '_pattern_entity_search_2',
       'description' => 'Returns a list of patterns according to the given criteria',
@@ -284,9 +284,9 @@ function _pattern_entity_get_patterns_list($arguments, $rpc_info) {
       $pattern_data['author'] = $pattern->author;
       //We will provide the full download url ready to be downloaded. Check if clean urls are enabled
       if ($GLOBALS['conf']['clean_url']) {
-       $pattern_data['view_url'] = $GLOBALS['base_url'] . '/' . variable_get('patterns_public_url', '') . '/info/' . $pattern->pid;
+       $pattern_data['view_url'] = $GLOBALS['base_url'] . 'pattern/' . $pattern->pid;
       }else{
-        $pattern_data['view_url'] = $GLOBALS['base_url'] . '/?q=' . variable_get('patterns_public_url', '') . '/info/' . $pattern->pid;
+        $pattern_data['view_url'] = $GLOBALS['base_url'] . '/?q=' . 'pattern/' . $pattern->pid;
       }
       $patterns_list[] = d2d_implode($pattern_data);
     }
@@ -319,7 +319,7 @@ function _pattern_entity_fetch_pattern($arguments, $rpc_info) {
     $query = _pattern_entity_get_pattern_pid_from_db($arguments['pid']);
     if (sizeof($query) == 1) {
       // Obtain the pattern file to be imploded as a string
-      $pattern = file_get_contents($query[0]->file);
+      $pattern = file_get_contents($query[0]->file_path);
       // If everyting is correct, increase the counter
       _pattern_entity_download_recode($arguments['pid']);
       // Prepare the response
