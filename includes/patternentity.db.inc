@@ -51,7 +51,7 @@ function _pattern_entity_search_pattern($key, $type) {
       $or->condition('title', '%' . db_like($key) . '%', 'LIKE');
       break;
     case 1:
-      $or->condition('description', '%' . db_like($key) . '%', 'LIKE');
+      $or->condition('category', '%' . db_like($key) . '%', 'LIKE');
       break;
     case 2:
       $or->condition('author', '%' . db_like($key) . '%', 'LIKE');

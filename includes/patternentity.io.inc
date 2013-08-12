@@ -349,8 +349,8 @@ function _pattern_entity_search_2($arguments, $rpc_info) {
   // We will perform the error checking first and implode the error string as well if any
   if(!d2d_check_convert_int($arguments['type'])){
     $error_string = 'Expected an integer value as type';
-  }elseif ($arguments['type']<0 || $arguments['type']>5) {
-    $error_string = 'Type should be an integer value in the range 0-5';
+  }elseif ($arguments['type']<0 || $arguments['type']>3) {
+    $error_string = 'Type should be an integer value in the range 0-3';
   }else{
     // Retrieve the patterns using the function developed for the server itself.
     $query = _pattern_entity_search_pattern($arguments['token'], $arguments['type']);
@@ -366,9 +366,9 @@ function _pattern_entity_search_2($arguments, $rpc_info) {
         $pattern_data['author'] = $pattern->author;
         //We will provide the full download url ready to be downloaded. Check if clean urls are enabled
         if ($GLOBALS['conf']['clean_url']) {
-          $pattern_data['view_url'] = $GLOBALS['base_url'] . '/' . variable_get('patterns_public_url', '') . '/info/' . $pattern->pid;
+         $pattern_data['view_url'] = $GLOBALS['base_url'] . 'pattern/' . $pattern->pid;
         }else{
-          $pattern_data['view_url'] = $GLOBALS['base_url'] . '/?q=' . variable_get('patterns_public_url', '') . '/info/' . $pattern->pid;
+          $pattern_data['view_url'] = $GLOBALS['base_url'] . '/?q=' . 'pattern/' . $pattern->pid;
         }
         $patterns_list[] = d2d_implode($pattern_data);
       }
