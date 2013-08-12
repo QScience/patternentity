@@ -5,12 +5,12 @@ $(document).ready(function() {
   function switch_autofill(text_select) {
     var value_autofill;
     switch (text_select) {
-      case 'UUID': value_autofill = 'e.g. 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74'; break;
-      case 'Title': value_autofill = 'should have a sentence without commas'; break;
-      case 'Category': value_autofill = 'should have words separated by commas'; break;
+      case 'UUID': value_autofill = 'for example: 1f672fdf-24d2-64a4-e981-3d3f4cbe3d74'; break;
+      case 'Title': value_autofill = 'for example: disable modules'; break;
+      case 'Category': value_autofill = 'for example: system, block'; break;
       case 'Pid': value_autofill = 'e.g. 3 or any number'; break;
-      case 'Author': value_autofill = 'should have words separated by commas'; break;
-      case 'Tags': value_autofill = 'should have words separated by commas'; break;
+      case 'Author': value_autofill = 'for example: qscience, edward'; break;
+      case 'Tags': value_autofill = 'for example: create, bigfile'; break;
       default: value_autofill = 'search...';
     }
     return value_autofill;
