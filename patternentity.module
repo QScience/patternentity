@@ -5,6 +5,7 @@ module_load_include('inc', 'patternentity', 'includes/patternentity.search');
 module_load_include('inc', 'patternentity', 'includes/patternentity.theme');
 module_load_include('inc', 'patternentity', 'includes/patternentity.blocks');
 module_load_include('inc', 'patternentity', 'includes/patternentity.core');
+module_load_include('inc', 'patternentity', 'includes/patternentity.io');
 module_load_include('module', 'votingapi', 'votingapi');
 
 /**

@@ -46,7 +46,7 @@ function patternentity_d2d_secure_rpc() {
   
   $methods['patterns_server_search'] = array(
       'arguments' => array('token' => 'is_string', 'type' => 'is_string',),
-      'callback' => '_pattern_entity_search',
+      'callback' => '_pattern_entity_search_2',
       'description' => 'Returns a list of patterns according to the given criteria',
   );
   
@@ -342,7 +342,7 @@ function _pattern_entity_fetch_pattern($arguments, $rpc_info) {
  * @param array $rpc_info  Metadata about the RPC call as defined by D2D
  * @return string Imploded string with the error and the list of Patterns.
  */
-function _pattern_entity_search($arguments, $rpc_info) {
+function _pattern_entity_search_2($arguments, $rpc_info) {
   $error_string = null;
   $patterns_list = array();
 
