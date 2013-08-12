@@ -66,7 +66,7 @@ function _pattern_entity_search_pattern($key, $type) {
   $result = db_select('patternentity', 'p')
                   ->fields('p', array())
                   ->condition($or)
-                  ->orderBy('updated', 'DESC')
+                  ->orderBy('created', 'DESC')
                   ->execute()
                   ->fetchAll();
   foreach ($result as $k => $v) {
